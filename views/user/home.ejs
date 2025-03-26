@@ -1,0 +1,412 @@
+
+<%-include("../../views/partials/user/header")%>
+<!-- FontAwesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+	.btn:hover {
+    background-color: #ffc107 !important;
+    color: #fff !important;
+	}
+
+	/* Card Styling */
+.product-card {
+    transition: transform 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.product-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-card .card-body {
+    padding: 16px;
+}
+
+.product-card .price h6 {
+    margin-bottom: 0;
+}
+
+.product-actions .btn {
+    margin-right: 4px;
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.l-through {
+    text-decoration: line-through;
+}
+/* Category Card Styling */
+.category-card {
+    background-color:rgb(26, 25, 25); /* Green Background */
+    color: white; /* White Text */
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card .card-img-top {
+    height: 180px;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.category-card .card-title a {
+    color: #ffffff; /* White text */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    background-color: #f8faf8; /* Darker Green on Hover */
+}
+
+.text-primary {
+    color: #ff5722 !important; /* Orange Title */
+}
+
+.text-light {
+    color: #f1f1f1 !important;
+}
+
+
+</style>
+	<!-- start banner Area -->
+	<section class="banner-area">
+		<div class="container">
+			<div class="row fullscreen align-items-center justify-content-start">
+				<div class="col-lg-12">
+					<div class="active-banner-slider owl-carousel">
+						<!-- single-slide -->
+						<div class="row single-slide align-items-center d-flex">
+							<div class="col-lg-5 col-md-6">
+								<div class="banner-content">
+									<h1>UNLEASH<br>THE WORLD OF LAPTOPS!</h1>
+									<p>Your One-Stop shop for Laptops and Accessories Top Brands|Gaming Rigs|Office Essential|
+										Custome Builds
+									</p>
+									<div class="add-bag d-flex align-items-center">
+										<a class="add-btn" href=""><span class="lnr lnr-cross"></span></a>
+										<span class="add-text text-uppercase">Add to Bag</span>
+									</div>
+								</div>
+							</div>
+							<%for(let i=0;i<banners.length;i++){%>
+							<div class="col-lg-7">
+								<div class="banner-img">
+									<img class="img-fluid" src="/uploads/re-image/<%=banners[i].image%>" alt="">
+								</div>
+							</div>
+							<%}%>
+						</div>
+						<!-- single-slide -->
+						<div class="row single-slide">
+							<div class="col-lg-5">
+								<div class="banner-content">
+									<h1>UNLEASH<br>THE WORLD OF LAPTOPS!</h1>
+									<p>Your One-Stop shop for Laptops and Accessories Top Brands|Gaming Rigs|Office Essential|
+										Custome Builds
+									<div class="add-bag d-flex align-items-center">
+										<a class="add-btn" href=""><span class="lnr lnr-cross"></span></a>
+										<span class="add-text text-uppercase">Add to Bag</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-7">
+								<div class="banner-img">
+									<img class="img-fluid" src="/img/hp4.jpg" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End banner Area -->
+
+	<!-- start features Area -->
+	<section class="features-area section_gap">
+		<div class="container">
+			<div class="row features-inner">
+				<!-- single features -->
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img src="img/features/f-icon1.png" alt="">
+						</div>
+						<h6>Free Delivery</h6>
+						<p>Free Shipping on all order</p>
+					</div>
+				</div>
+				<!-- single features -->
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img src="img/features/f-icon2.png" alt="">
+						</div>
+						<h6>Return Policy</h6>
+						<p>Free Shipping on all order</p>
+					</div>
+				</div>
+				<!-- single features -->
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img src="img/features/f-icon3.png" alt="">
+						</div>
+						<h6>24/7 Support</h6>
+						<p>Free Shipping on all order</p>
+					</div>
+				</div>
+				<!-- single features -->
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img src="img/features/f-icon4.png" alt="">
+						</div>
+						<h6>Secure Payment</h6>
+						<p>Free Shipping on all order</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- end features Area -->
+	<div class="container mt-4">
+		<h1 class="text-center text-dark">Categories</h1>
+		<% for (let i = 0; i < categories.length; i += 2) { %>
+		<div class="row">
+			<% for (let j = i; j < i + 2 && j < categories.length; j++) { %>
+			<div class="col-md-6 mb-4">
+				<div class="card category-card shadow-sm border-0">
+					<a href="/category?id=<%= categories[j]._id %>">
+						<!-- <img src="/uploads/re-image/<%= categories[j].image %>" 
+							class="card-img-top" 
+							alt="<%= categories[j].name %>"> -->
+					</a>
+					<div class="card-body text-center">
+						<h6 class="card-title">
+							<a href="/category?id=<%= categories[j]._id %>" class="text-dark">
+								<%= categories[j].name %>
+							</a>
+						</h6>
+						<p class="text-muted">
+							<%= categories[j].productCount %> Products
+						</p>
+					</div>
+				</div>
+			</div>
+			<% } %>
+		</div>
+		<% } %>
+	</div>
+	
+	<!-- start product Area -->
+<section class="section_gap" id="product_section_main">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-6 text-center">
+				<div class="section-title">
+					<h1>Latest Products</h1>
+					<p>Discover the latest in high-performance laptops, designed to deliver power and efficiency for all your computing needs.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<% for (let i = 0; i < products.length; i++) { %>
+			<div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+				<div class="card product-card shadow-sm border-0">
+					<a href="/productDetails?id=<%= products[i]._id %>">
+						<img src="/uploads/re-image/<%= products[i].productImage[0] %>" class="card-img-top" alt="<%= products[i].productName %>">
+					</a>
+					<div class="card-body text-center">
+						<h6 class="card-title"><%= products[i].productName %></h6>
+						<div class="price">
+							<h6 class="text-danger">₹<%= products[i].salePrice %></h6>
+							<h6 class="text-muted l-through"><del>₹<%= products[i].regularPrice %></del></h6>
+						</div>
+						<div class="product-actions mt-3">
+							<!-- <a href="#" onclick="addToCart('<%= products[i]._id %>')" class="btn btn-outline-primary btn-sm">
+								<i class="fas fa-shopping-bag"></i> Add to Cart
+							</a> -->
+							<button class="btn btn-primary flex-grow-1 me-2 addToCartBtn" data-id="<%= products[i]._id %>">
+								<i class="fas fa-shopping-cart me-2"></i>Add to cart
+							</button>
+							<a href="#" onclick="addToWishlist('<%=products[i]._id%>')" class="social-info">
+								<span class="lnr lnr-heart">Wishlist</span>
+								</a>
+							<a href="/productDetails?id=<%= products[i]._id %>" class="btn btn-outline-secondary btn-sm">
+								<i class="fas fa-eye"></i> View More
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% } %>
+		</div>
+	</div>
+</section>
+<!-- end product Area -->
+	
+	
+	
+	<!-- Start brand Area -->
+	<section class="brand-area section_gap">
+		<h1 class="text-center">Popular Brands</h1>
+		<div class="container">
+			<div class="row">
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/applelogo.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/Asuslogo.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/delllogo.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/hplogo.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/samsunglogo.jpeg" alt="">
+				</a>
+			</div>
+		</div>
+	</section>
+	<!-- End brand Area -->
+<!-- Start deals of the week -->
+<section class="related-product-area section_gap_bottom">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="section-title">
+                    <h1>Deals of the Week</h1>
+                    <p>Grab the best deals with up to 50% off on top brands!</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <% for (let i = 0; i < discountProducts.length; i++) { %>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <a href="/productDetails?id=<%= products[i]._id %>">
+                            <img src="/uploads/re-image/<%= discountProducts[i].productImage[0] %>" 
+                                 class="card-img-top" 
+                                 alt="<%= discountProducts[i].productName %>">
+                        </a>
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <a href="/product/<%= discountProducts[i]._id %>" class="text-dark">
+                                    <%= discountProducts[i].productName %>
+                                </a>
+                            </h6>
+                            <div class="price d-flex align-items-center">
+                                <h6 class="text-success me-2">
+                                    ₹<%= discountProducts[i].salePrice.toLocaleString('en-IN') %>
+                                </h6>
+                                <h6 class="l-through text-muted">
+                                    ₹<%= discountProducts[i].regularPrice.toLocaleString('en-IN') %>
+                                </h6>
+                            </div>
+                            <span class="badge bg-danger mt-2">
+                                <% 
+                                    let discountPercentage = ((discountProducts[i].regularPrice - discountProducts[i].salePrice) / discountProducts[i].regularPrice) * 100;
+                                    discountPercentage = Math.round(discountPercentage);
+                                %>
+                                <%= discountPercentage %>% OFF
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+<!-- End deals of the week -->
+
+<script>
+	document.querySelectorAll(".addToCartBtn").forEach(button => {
+    button.addEventListener("click", async () => {
+        const productId = button.getAttribute("data-id");
+
+        try {
+            const response = await fetch(`/cart/${productId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ quantity: 1 }) // Example quantity
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Product added to Cart",
+                    showConfirmButton: false,
+                    timer:1000
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed to add to cart",
+                    text: result.message,
+                    showConfirmButton: false,
+                    timer:1000
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+           
+        }
+    });
+});
+
+
+function addToWishlist(productId){
+			$.ajax({
+				url:'/wishlist',
+				method:'POST',
+				data :{productId :productId},
+				success :(response)=>{
+					if(response.status){
+						Swal.fire({
+							title : "Added to wishlist",
+							text : "The product has been added to you wishlist",
+							icon : "success",
+							timer : 2000,
+						})
+					} else {
+						Swal.fire({
+							title:response.message,
+							icon:"warning",
+							timer:2000,
+
+						})
+					}
+				},
+				error:(error)=>{
+					Swal.fire({
+						title : "Error",
+						text:"Product already in your Cart",
+						icon:"error",
+						timer :2000,
+					})
+					}
+
+			})
+		}
+
+</script>
+
+	<%-include("../../views/partials/user/footer")%>

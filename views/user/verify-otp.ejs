@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: "Nunito Sans", sans-serif;
+            background: #f8f9fa;
+        }
+        .login_wrap {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .otp-timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: #dc3545;
+            margin-top: 10px;
+        }
+        .btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login_wrap">
+        <h3>Email Verification</h3>
+        <form id="otpForm" action="/verify-otp" method="post" onsubmit="return validateOTPForm()">
+            <div class="form-group">
+                <label for="otp">Enter OTP:</label>
+                <input type="text" id="otp" name="otp" class="form-control text-center" required maxlength="6" pattern="\d*" autofocus />
+            </div>
+            <button type="submit" class="btn btn-primary">Verify Email</button>
+            <p class="otp-timer" id="otpTimer">Time Left: <span id="timerValue">60</span>s</p>
+            <button type="button" class="btn btn-secondary" id="resendOtp" disabled>Resend OTP</button>
+        </form>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let timer = 60;
+        let timerInterval;
+        const timerValue = document.getElementById("timerValue");
+        const otpInput = document.getElementById("otp");
+        const resendButton = document.getElementById("resendOtp");
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timer--;
+                timerValue.textContent = timer;
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    timerValue.textContent = "Expired";
+                    resendButton.disabled = false;
+                }
+            }, 1000);
+        }
+        startTimer();
+
+        document.getElementById("otpForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            Swal.fire("Success!", "OTP Verified Successfully", "success");
+        });
+
+        resendButton.addEventListener("click", function () {
+            Swal.fire("OTP Sent", "A new OTP has been sent to your email.", "info");
+            timer = 60;
+            resendButton.disabled = true;
+            timerValue.textContent = timer;
+            startTimer();
+        });
+
+
+        function validateOTPForm() {
+            const otpInput=document.getElementById('otp').value;
+            $.ajax({
+                type:"POST",
+                url:"verify-otp",
+                data:{otp:otpInput},
+                success:function(response) {
+                    if(response.success){
+                        Swal.fire({
+                            icone:"success",
+                            title:"OTP verified suucessfully",
+                            showConfirmButton:false,
+                            timer:1500,
+                        }).then(()=>{
+                            window.location.href=response.redirectUrl;
+                        })
+                    }else{
+                        Swal.fire({
+                            icon:"error",
+                            title:"Error",
+                            text:response.message,
+                        })
+                    }
+                },error:function() {
+                    Swal.fire({
+                        icon:"error",
+                        title:"Invalid OTP",
+                        text:"please try again"
+                    })
+                }
+            })
+            return false
+        }
+        
+
+        document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("resendOtp").addEventListener("click", resendOtp);
+});
+
+
+    window.resendOtp=function() {
+    console.log("Resend OTP button clicked!");
+
+    clearInterval(timerInterval);
+    timer = 60;
+    document.getElementById("otp").disabled = false;
+    document.getElementById("timerValue").classList.remove("expired");
+    startTimer();
+
+    $.ajax({
+        type: "POST",
+        url: "/resend-otp",
+        success: function (response) {
+            console.log("Resend OTP Response:", response);
+            if (response.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "OTP Resent Successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+
+                
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: response.message,
+                });
+            }
+        },
+        error: function (xhr) {
+            console.error("AJAX Error:", xhr);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: xhr.responseJSON ? xhr.responseJSON.message : "Failed to communicate with the server",
+            });
+        },
+    });
+
+    return false;
+}
+
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ 
+</body>
+</html>

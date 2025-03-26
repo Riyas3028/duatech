@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="img/pc-logo.png">
+	<!-- Author Meta -->
+	<meta name="author" content="CodePixar">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>DuaTech</title>
+	<!--
+		CSS
+		============================================= -->
+	<link rel="stylesheet" href="css/linearicons.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/themify-icons.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/owl.carousel.css">
+	<link rel="stylesheet" href="css/nice-select.css">
+	<link rel="stylesheet" href="css/nouislider.min.css">
+	<link rel="stylesheet" href="css/ion.rangeSlider.css" />
+	<link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
+	<link rel="stylesheet" href="css/magnific-popup.css">
+	<link rel="stylesheet" href="css/main.css">
+	<style>
+		.dropdown-menu li a:hover {
+    background-color: #ffba00 !important;
+    color: #000 !important;
+}
+
+@media (max-width: 991px) {
+    .navbar-right {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 0.5rem 0;
+    }
+    
+    .navbar-right .nav-item {
+        margin: 0 1rem 0 0; /* Space between icons on mobile */
+    }
+    
+    .navbar-right .cart,
+    .navbar-right .wishlist,
+    .navbar-right .search {
+        display: inline-block; /* Ensure icons are visible */
+    }
+    
+    .navbar-right .search {
+        background: none;
+        border: none;
+        padding: 0;
+    }
+}
+
+	</style>
+</head>
+
+<body>
+
+	<!-- Start Header Area -->
+	<header class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle -->
+					<a class="navbar-brand logo_h" href="/"><img src="/img/logo mine.PNG" alt="" style="height: 42px;"></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collapsible content -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+							<li class="nav-item submenu dropdown">
+								<a href="/shop" class="nav-link active" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
+							</li>
+							<li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+							<li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+							<li class="nav-item">
+								<% if(user) { %>
+									<div class="dropdown">
+										<a href="#" class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+											<%= user.name %>
+											<span class="ti-angle-down ms-1"></span>
+										</a>
+										<ul class="dropdown-menu" aria-labelledby="userDropdown">
+											<li><a class="dropdown-item" href="/userProfile">Profile</a></li>
+											<li><a class="dropdown-item" href="#" onclick="confirmLogout(event)">Logout</a></li>
+										</ul>
+									</div>
+								<% } else { %>
+									<a href="/login" class="nav-link">Login</a>
+								<% } %>
+							</li>
+						</ul>
+						<!-- Right-aligned items moved inside collapse -->
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item">
+								<a href="" class="cart" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cart">
+									<span></span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="/wishlist" class="wishlist" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Wishlist">
+									<span class="ti-heart"></span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="/cart" class="wishlist" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cart">
+									<span class="ti-bag"></span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="/shop#advanced-search-glow">
+									<button data-bs-toggle="tooltip" data-bs-placement="top" title="Search" class="search">
+										<span class="lnr lnr-magnifier" id="search"></span>
+									</button>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</header>
+	<!-- End Header Area -->
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script>
+		function confirmLogout(event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will be logged out!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Logout"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/logout"; 
+            }
+        });
+    }
+
+
+	document.getElementById('searchForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const query = document.getElementById('search_input').value.trim();
+
+    if (query) {
+        console.log("Search query:", query); 
+        const response = await fetch(`/search?query=${encodeURIComponent(query)}`);
+        const data = await response.json();
+
+        
+        renderProducts(data.products, data.totalPages, data.currentPage, data.selectedCategory);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+
+	</script>

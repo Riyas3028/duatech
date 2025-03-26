@@ -1,0 +1,163 @@
+<%- include("../../views/partials/user/header") %>
+
+<style>
+    #country {
+        height: calc(2.25rem + 2px) !important;
+        padding-top: 5px !important;
+    }
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Space between columns */
+}
+
+.form-group {
+    flex: 1; /* Ensures equal width for both country & state */
+    min-width: 280px; /* Prevents columns from shrinking too much */
+}
+
+.form-control {
+    height: calc(2.25rem + 2px) !important; /* Matches input field height */
+    padding: 5px 10px; /* Ensures consistent spacing */
+}
+
+</style>
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Add Address</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/userProfile">Profile<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/address">Address<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/addAddress">Add Address</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-4">
+    <div class="form-container">
+        <h3 class="text-center" style="color: #046963;">Create User Address</h3>
+        <form id="addressForm" method="POST" action="/addAddress">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="addressType">Address Type:</label>
+                    <input type="text" class="form-control" id="addressType" name="addressType" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="country">Country:</label>
+                    <select class="form-control" id="country" name="country" required>
+                        <option value="India">India</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="state">State:</label>
+                    <select class="form-control" id="state" name="state" required>
+                        <option value="Kerala">Kerala</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="city">City:</label>
+                    <input type="text" class="form-control" id="city" name="city" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="landMark">Landmark:</label>
+                    <input type="text" class="form-control" id="landMark" name="landMark" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="streetAddress">Street Address:</label>
+                    <input type="text" class="form-control" id="streetAddress" name="streetAddress" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="pincode">Pincode:</label>
+                    <input type="number" class="form-control" id="pincode" name="pincode" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="phone">Phone:</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="altPhone">Alternate Phone:</label>
+                    <input type="text" class="form-control" id="altPhone" name="altPhone" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+   document.getElementById('addressForm').addEventListener('submit', function(event) {
+       if (!validateForm()) {
+           event.preventDefault();
+       }
+   });
+
+   function validateForm() {
+       let isValid = true;
+       const phonePattern = /^\d{10}$/;
+       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+       const phone = document.getElementById('phone').value;
+       const altPhone = document.getElementById('altPhone').value;
+       const email = document.getElementById('email').value;
+
+       if (!phonePattern.test(phone)) {
+           Swal.fire({ title: 'Error', text: 'Invalid phone number.', icon: 'error' });
+           isValid = false;
+       }
+       if (!phonePattern.test(altPhone)) {
+           Swal.fire({ title: 'Error', text: 'Invalid alternate phone number.', icon: 'error' });
+           isValid = false;
+       }
+       if (phone === altPhone) {
+           Swal.fire({ title: 'Error', text: 'Phone and alternate phone must be different.', icon: 'error' });
+           isValid = false;
+       }
+       if (!emailPattern.test(email)) {
+           Swal.fire({ title: 'Error', text: 'Invalid email address.', icon: 'error' });
+           isValid = false;
+       }
+       return isValid;
+   }
+</script>
+
+<%- include("../../views/partials/user/footer") %>

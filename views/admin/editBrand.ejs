@@ -1,0 +1,199 @@
+<%- include("../../views/partials/admin/adminheader") %>
+<%- include("../../views/partials/admin/adminsidebar") %>
+
+<link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.0/sweetalert2.all.min.js"></script>
+
+<head>
+    <style>
+        .thumbnails-container {
+            display: flex;
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            margin-right: 10px;
+        }
+
+        .error-message {
+            color: red;
+            display: none;
+        }
+
+        .content-main {
+            margin-left: 280px;
+            margin-top: 3%;
+            width: 85%;
+        }
+    </style>
+</head>
+
+<header>
+    <div class="content-header">
+        <h2 class="content-title">Edit Brands</h2>
+    </div>
+</header>
+
+<section class="content-main">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <!-- FORM -->
+                    <form method="POST" action="/admin/editBrand/<%= brand._id %>" enctype="multipart/form-data" onsubmit="validateForm(event)">
+                        <div class="mb-4">
+                            <label for="brand_name" class="form-label">Brand Name</label>
+                            <input type="text" name="brandName" value="<%= brand.brandName %>" class="form-control border" id="brand_name">
+                            <div id="brandName-error" class="error-message"></div>
+                        </div>
+
+                        <!-- Existing Brand Images -->
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                <h4>Choose Images</h4>
+                            </div>
+
+                            <% if (brand && brand.brandImage && brand.brandImage.length > 0) { %>
+                                <div class="col-md-12">
+                                    <div class="mb-4">
+                                        <div class="col-12 position-relative">
+                                            <input type="hidden" value="<%= brand.brandImage[0] %>" id="imageDatas">
+                                            <img class="rounded" style="width: 50px; height: 60px;" 
+                                                 src="/uploads/re-image/<%= brand.brandImage[0] %>" 
+                                                 alt="Brand Image">
+                                            <i onclick="deleteSingleImage('<%= brand.brandImage[0] %>', '<%= brand._id %>')" 
+                                               style="position: absolute; top: 5px; right: 5px; cursor: pointer;" 
+                                               class="fa fa-times">
+                                            </i>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } else { %>
+                                <p>No images available</p>
+                            <% } %>
+                        </div>
+
+                        <!-- New Image Uploads -->
+                        <div class="card-body">
+                                <div class="card-body align-items-center mb-4">
+                                    <img src="" alt="" id="imgView1">
+                                    <input class="form-control" type="file" name="images" 
+                                           id="input1"
+                                           accept="image/png, image/jpeg, image/jpg"
+                                           data-id="1"
+                                           onchange="viewImage(event)">
+                                    <div id="images-error-1" class="error-message"></div>
+                                </div>
+                        
+                        </div>
+
+                        <button class="btn btn-md rounded font-sm hover-up" type="submit">
+                            Update
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
+
+<script>
+function validateForm(event) {
+    event.preventDefault();
+
+    console.log("Validating form...");
+    clearErrorMessages();
+
+    const brandName = document.getElementById('brand_name').value.trim();
+
+    let isValid = true;
+
+    if (brandName === "") {
+        displayErrorMessage('brandName-error', 'Brand name is required.');
+        isValid = false;
+    }
+
+    if (!isValid) return;
+
+    const formData = new FormData();
+    formData.append("brandName", brandName);
+
+    const inputElement = document.getElementById('input1');
+    if (inputElement.files[0]) {
+        formData.append("images", inputElement.files[0]); 
+    }
+
+    
+    fetch(`/admin/editBrand/<%= brand._id %>`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) return response.json().then(data => Promise.reject(data));
+        return response.json();
+    })
+    .then(data => {
+        Swal.fire({
+            icon: 'success',
+            title: "Success",
+            text: data.message || "Brand updated successfully"
+        }).then(() => window.location.reload());
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        if (error.error === "Brand already exists") {
+            Swal.fire({
+                icon: 'error',
+                title: "Oops",
+                text: "Brand already exists"
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: "Oops",
+                text: error.error || "An error occurred while updating the brand"
+            });
+        }
+    });
+}
+
+function displayErrorMessage(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    errorElement.innerText = message;
+    errorElement.style.display = "block";
+}
+
+function clearErrorMessages() {
+    const errorElements = document.getElementsByClassName('error-message');
+    Array.from(errorElements).forEach(element => {
+        element.innerText = '';
+        element.style.display = "none";
+    });
+}
+
+
+function viewImage(event) {
+    const id = event.target.getAttribute('data-id');
+    const img = document.getElementById(`imgView1`);
+
+
+    if (event.target.files && event.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            img.src = e.target.result;
+            cropper.style.display = 'flex';
+            document.getElementById(`input1`).src = e.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+}
+
+
+
+</script>

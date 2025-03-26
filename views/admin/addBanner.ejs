@@ -1,0 +1,354 @@
+<%- include("../../views/partials/admin/adminheader") %> <%-
+include("../../views/partials/admin/adminsidebar") %>
+
+<link rel="stylesheet" href="/css/admin.css" />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+/>
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css"
+/>
+
+<header>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css"
+  />
+  <div class="content-header">
+    <h2 class="content-title">Add New Banner</h2>
+  </div>
+</header>
+
+<style>
+  .error-message {
+    color: red;
+    margin-top: 5px;
+    font-size: 14px;
+  }
+  .card {
+    margin-left: 40%;
+    margin-top: 10%;
+    width: 90%;
+  }
+  .me-2 {
+    margin-right: 0.5rem !important;
+  }
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+  .img-area .icon {
+    font-size: 100px;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  .img-area h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .img-area {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    background: var(--grey);
+    margin-bottom: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .img-area p {
+    color: #999;
+  }
+  .img-area p span {
+    font-weight: 600;
+  }
+  .img-area img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+  }
+
+  .select-image {
+    display: block;
+    width: 100%;
+    padding: 16px 0;
+    border-radius: 15px;
+    background: var(--blue);
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .thumbnails-container {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .thumbnail {
+    margin-right: 10px;
+  }
+</style>
+<section class="content-main">
+  <div class="row">
+    <div class="col-9"></div>
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <form
+            method="post"
+            action="/admin/addBanner"
+            enctype="multipart/form-data"
+            onsubmit="return validateForm()"
+          >
+            <div class="mb-4">
+              <label for="banner_name" class="form-label">Banner Title</label>
+              <input
+                type="text"
+                placeholder="Type here"
+                name="banner_name"
+                class="form-control border"
+                id="banner_name"
+              />
+              <div id="bannerName-error" class="error-message"></div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Description</label>
+              <textarea
+                placeholder="Type here"
+                name="description"
+                class="form-control border"
+                rows="4"
+              ></textarea>
+              <div id="description-error" class="error-message"></div>
+            </div>
+
+            <div class="mb-4">
+              <label for="startingDate" class="form-label">Start Date</label>
+              <input
+                type="date"
+                name="startDate"
+                class="form-control"
+                required
+                id="startingDate"
+              />
+              <div id="error-start-date" class="error-message"></div>
+            </div>
+
+            <div class="mb-4">
+              <label for="expiringDate" class="form-label">End Date</label>
+              <input
+                type="date"
+                name="endDate"
+                class="form-control"
+                id="expiringDate"
+                required
+              />
+              <div id="error-end-date" class="error-message"></div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="mb-4">
+                <label class="form-label">Link</label>
+                <input
+                  placeholder=""
+                  name="link"
+                  type="text"
+                  class="form-control border"
+                />
+                <div id="link-error" class="error-message"></div>
+              </div>
+            </div>
+            <div class="card-header">
+              <h4>Choose Banner Image</h4>
+            </div>
+            <div class="border row">
+              <div id="addedImagesContainer" class="thumbnails-container"></div>
+            </div>
+            <div class="card-body">
+              <img src="user/imgs/theme/upload.svg" alt="" id="imgView1" />
+              <input
+                class="form-control"
+                type="file"
+                name="images"
+                id="inputFile"
+                accept="image/png, image/jpeg, image/jpg"
+                onchange="viewImage1(event)"
+              />
+
+              <div id="image-error" class="error-message"></div>
+            </div>
+
+            <div>
+              <button
+                class="btn btn-md rounded font-sm hover-up ml-200"
+                type="submit"
+                onclick="validateAndSubmit(event)"
+              >
+                Publish
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+<script>
+
+  function validateAndSubmit(event) {
+    // Validate the form first
+
+    if (validateForm()) {
+      // Check if all images are cropped before submitting
+      // if (Object.keys(croppers).length > 0) {
+      //     alert("Please crop all images before submitting.");
+      //     return false;
+      // }
+
+      // Prepare the form data
+      let form = document.forms[0];
+      let formData = new FormData(form);
+
+      // Log submission to the console for debugging
+      console.log("Submitting form via fetch...");
+
+      // Use fetch to submit the form asynchronously
+      fetch(form.action, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            Swal.fire({
+              icon: "success",
+              title: "Banner added",
+            }).then(() => {
+              window.location.href = "/admin/addBanner";
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Banner already exits",
+            });
+          }
+
+          console.log("Success:", data);
+          // After fetch success, submit the form normally
+          console.log(
+            "Form submission successful, now submitting the form normally..."
+          );
+          // document.forms[0].submit();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("There was an error submitting the form.");
+        });
+    }
+  }
+
+  function validateForm() {
+    resetErrorMessages();
+
+    var isValid = true;
+
+    var bannerName = document.getElementById("banner_name").value;
+
+    const sDate = document.getElementsByName("startDate")[0].value;
+    const eDate = document.getElementsByName("endDate")[0].value;
+
+    if (!sDate) {
+      displayErrorMessage("error-start-date", "Starting date is required");
+      isValid = false;
+    }
+
+    if (!eDate) {
+      displayErrorMessage("error-end-date", "End date is required");
+      isValid = false;
+    }
+
+    const sDateObj = new Date(sDate);
+    const eDateObj = new Date(eDate);
+    const todayDateObj = new Date();
+    todayDateObj.setHours(0, 0, 0, 0);
+
+    if (sDateObj > eDateObj) {
+      document.getElementById("error-end-date").innerHTML =
+        "End date should be after the start date";
+      isValid = false;
+    }
+    if (bannerName === "") {
+      displayErrorMessage("bannerName-error", "Banner Name is required");
+      isValid = false;
+    }
+    var description = document.getElementsByName("description")[0].value;
+    if (description === "") {
+      displayErrorMessage("description-error", "Description is required");
+      isValid = false;
+    }
+
+    let imageFile = document.getElementById("inputFile");
+    let File = imageFile.files[0];
+    console.log(File, "File");
+    if (!file) {
+  displayErrorMessage("image-error", "Please upload an image file.");
+  isValid = false;
+} else if (!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+  displayErrorMessage("image-error", "Invalid file type. Please upload a JPEG, PNG, or GIF file.");
+  isValid = false;
+}
+
+    return isValid;
+  }
+
+  function displayErrorMessage(elementId, message) {
+    var errorElement = document.getElementById(elementId);
+    errorElement.innerText = message;
+    errorElement.style.display = "block";
+  }
+
+  function resetErrorMessages() {
+    var errorElements = document.querySelectorAll(".error-message");
+    errorElements.forEach(function (element) {
+      element.innerText = "";
+      element.style.display = "none";
+    });
+  }
+  function viewImage1(event) {
+  if (event.target.files && event.target.files[0]) {
+    document.getElementById("imgView1").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+  } else {
+    console.error("No file selected");
+  }
+}
+
+</script>
+
+
+
+

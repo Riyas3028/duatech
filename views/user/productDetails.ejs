@@ -1,0 +1,511 @@
+<%- include('../partials/user/header') %>
+<!-- Font Awesome 6 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+	.icon_btn {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip {
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* Product Card Styling */
+.product-card {
+    transition: transform 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.product-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-card .card-body {
+    padding: 16px;
+}
+
+.product-card .price h6 {
+    margin-bottom: 0;
+}
+
+.product-actions .btn {
+    margin-right: 4px;
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.l-through {
+    text-decoration: line-through;
+}
+
+
+</style>
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Product Details Page</h1>
+					<nav class="d-flex align-items-center">
+						<a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="/shop">Shop<span class="lnr lnr-arrow-right"></span></a>
+						<a href="#">Product Details</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Single Product Area =================-->
+	<div class="product_image_area">
+		<div class="container">
+			<div class="row s_product_inner">
+				<div class="col-lg-6">
+					<div class="s_Product_carousel">
+						<div class="single-prd-item zoom-container">
+							<img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[0] %>" alt="">
+						</div>
+						<div class="single-prd-item zoom-container">
+							<img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[1] %>" alt="">
+						</div>
+						<div class="single-prd-item zoom-container">
+							<img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[2] %>" alt="">
+						</div>
+                        <div class="single-prd-item zoom-container">
+							<img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[3] %>" alt="">
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-5 offset-lg-1">
+					<div class="s_product_text">
+						<h3><%=product.productName%></h3>
+						<h2>₹ <%= Math.round(product.salePrice) %>.00</h2>
+						<div style="display: flex; align-items: center;">
+                        	<h6 style="text-decoration: line-through;
+								color: #cccccc;
+								margin-bottom: 0;" class="l-through">₹ <%=product.regularPrice%>.00</h6>
+						
+							<h4 style="margin-left: 10px;"> <%=product.category.categoryOffer > product.productOffer ? product.category.categoryOffer : product.productOffer %> % Off</h4>
+						</div>
+						<ul class="list">
+							<li><a class="active" href="#"><span>Category</span> : <%=product.category.name%></a></li>
+							<%if(product.quantity >=1){%>
+							<li><a href="#" ><span>Availibility</span> : <span style="color: green;">In Stock</span></a></li>
+							<%} else{%>
+								<li><a href="#"><span>Availibility</span> : <span style="color: red;">No Stock</span></a></li>
+								<%}%>
+                            <li><a href="#"><span>Colour</span> : <%=product.color%></a></li>
+						</ul>
+						<p><%=product.description%></p>
+						<div class="product-extra-link2">
+							<button class="qty-btn decrease">−</button>
+						<input type="number" id="quantity" class="qty-input" value="1" min="1" max="10" readonly>
+						<button class="qty-btn increase">+</button>
+						</div>
+						
+						<div class="card_area d-flex align-items-center">
+							<!-- <a class="primary-btn" href="#" onclick="addToCart('<%=product._id%>')">Add to Cart</a> -->
+							
+								<button type="submit" class="btn btn-warning px-4 addToCartBtn main" data-id="<%= product._id %>">
+								  Add To Cart
+							  </button>
+							<a class="icon_btn d-inline-block" onclick="addToWishlist('<%=product._id%>')"  href="#">
+								<i class="lnr lnr-heart"></i>
+							</a>
+							
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--================End Single Product Area =================-->
+
+	<!--================Product Description Area =================-->
+	<section class="product_description_area">
+		<div class="container">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Description</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+					 aria-selected="false">Specification</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+					 aria-selected="false">Comments</a>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+					<p><%=product.description%></p>
+					
+				</div>
+				<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+					<div class="table-responsive">
+						<table class="table">
+							<tbody>
+								<tr>
+									<td>
+										<h5>Warranty</h5>
+									</td>
+									<td>
+										<h5>1 Year Brand Warranty</h5>
+									</td>
+								</tr>
+								<!-- <tr> -->
+									<!-- <td>
+										<h5>Processor</h5>
+									</td>
+									<td>
+										<h5><%=product.processor%></h5>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h5>Graphics Card</h5>
+									</td>
+									<td>
+										<h5><%=product.graphicsCard%></h5>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h5>Storages</h5>
+									</td>
+									<td>
+										<h5><%=product.storages%></h5>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h5>Display</h5>
+									</td>
+									<td>
+										<h5><%=product.display%></h5>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h5>Colour</h5>
+									</td>
+									<td>
+										<h5><%=product.color%></h5>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h5>Operating System</h5>
+									</td>
+									<td>
+										<h5><%=product.operatingSystem%></h5>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h5>Box Contains</h5>
+									</td>
+									<td>
+										<h5><%=product.boxContains%></h5>
+									</td>
+								</tr> -->
+							</tbody>
+						</table>
+					</div>
+				</div> 
+				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+					<div class="row">
+					  <div class="col-lg-6">
+						<div class="comment_list" id="comments-container">
+						  <!-- Comments will be loaded here dynamically -->
+						</div>
+						<div id="comments-pagination" class="d-flex justify-content-center mt-4">
+						  <!-- Pagination will be added here -->
+						</div>
+					  </div>
+					  <div class="col-lg-6">
+						<div class="review_box">
+						  <h4>Post a comment</h4>
+						  <% if (locals.user) { %>
+							<form class="row contact_form" onsubmit="submitComment('<%= product._id %>'); return false;">
+							  <div class="col-md-12">
+								<div class="form-group">
+								  <textarea class="form-control" id="comment-text" rows="4" placeholder="Your Comment" maxlength="500" required></textarea>
+								  <small class="text-muted">Maximum 500 characters</small>
+								</div>
+							  </div>
+							  <div class="col-md-12 text-right">
+								<button type="submit" class="btn primary-btn">Submit Comment</button>
+							  </div>
+							</form>
+						  <% } else { %>
+							<div class="alert alert-info">
+							  Please <a href="/login">login</a> to post a comment.
+							</div>
+						  <% } %>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>				  
+			</div>
+		</div>
+	</section>
+	<!--================End Product Description Area =================-->
+
+	<!-- Start related-product Area -->
+	<section class="related-product-area section_gap_bottom">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6 text-center">
+					<div class="section-title">
+						<h1>Related Products</h1>
+						<p>Explore our range of related products that complement your purchase. Each item is carefully selected to ensure the highest quality and satisfaction.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+                <div class="col-lg-9">
+                    <div class="row">
+                        <% for (let i = 0; i < products.length; i++) { %>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-6 mb-4">
+                            <div class="card product-card shadow-sm border-0">
+                                <a href="/productDetails?id=<%= products[i]._id %>">
+                                    <img src="/uploads/re-image/<%= products[i].productImage[0] %>" class="card-img-top" alt="<%= products[i].productName.split('|')[0] %>">
+                                </a>
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">
+                                        <a href="/productDetails?id=<%= products[i]._id %>" class="text-dark">
+                                            <%= products[i].productName.split('|')[0] %>
+                                        </a>
+                                    </h6>
+                                    <div class="price">
+                                        <h6 class="text-danger mb-0">
+                                            ₹ <%= products[i].salePrice.toLocaleString('en-IN') %>
+                                        </h6>
+                                        <h6 class="text-muted l-through">
+                                            ₹ <%= products[i].regularPrice.toLocaleString('en-IN') %>
+                                        </h6>
+                                    </div>
+									
+                                    <div class="product-actions mt-3">
+                                        <!-- <a href="#" onclick="addToCart('<%= products[i]._id %>')" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-shopping-bag"></i> Add to Cart
+                                        </a> -->
+										<button class="btn btn-primary flex-grow-1 me-2 addToCartBtn similar" data-id="<%= products[i]._id %>">
+											<i class="fas fa-shopping-cart me-2"></i> Add to cart
+										</button>
+                                        <a href="#" onclick="addToWishlist('<%= products[i]._id %>')" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-heart"></i> Wishlist
+                                        </a>
+                                        <a href="/productDetails?id=<%= products[i]._id %>" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-eye"></i> View More
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            
+		</div>
+	</section>
+	<!-- End related-product Area -->
+
+	
+
+    <script>
+		
+
+		document.querySelectorAll(".addToCartBtn.similar").forEach(button => {
+    button.addEventListener("click", async function () {
+        const productId = button.getAttribute("data-id");
+
+        try {
+            const response = await fetch(`/cart/${productId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ quantity: 1 }) // Always 1 for similar products
+            });
+
+            const result = await response.json();
+
+            Swal.fire({
+                icon: result.success ? "success" : "error",
+                title: result.success ? "Product added to Cart" : "Failed to add to cart",
+                text: result.message || "",
+                showConfirmButton: false,
+                timer: 1000
+            });
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const decreaseBtn = document.querySelector(".decrease");
+    const increaseBtn = document.querySelector(".increase");
+    const quantityInput = document.getElementById("quantity");
+    const addToCartBtn = document.querySelector(".addToCartBtn.main");
+
+    // Increase & Decrease Quantity
+    if (decreaseBtn && increaseBtn && quantityInput) {
+        increaseBtn.addEventListener("click", function () {
+            let currentQty = parseInt(quantityInput.value);
+            if (currentQty < parseInt(quantityInput.max)) {
+                quantityInput.value = currentQty + 1;
+            }
+        });
+
+        decreaseBtn.addEventListener("click", function () {
+            let currentQty = parseInt(quantityInput.value);
+            if (currentQty > parseInt(quantityInput.min)) {
+                quantityInput.value = currentQty - 1;
+            }
+        });
+    }
+
+    // Add to Cart (Main Product)
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener("click", async function () {
+            const productId = addToCartBtn.getAttribute("data-id");
+            const quantity = parseInt(quantityInput.value) || 1; // Default to 1 if empty
+
+            try {
+                const response = await fetch(`/cart/${productId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ quantity: quantity })
+                });
+
+                const result = await response.json();
+
+                Swal.fire({
+                    icon: result.success ? "success" : "error",
+                    title: result.success ? "Product added to Cart" : "Failed to add to cart",
+                    text: result.message || "",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+});
+        document.querySelectorAll('.zoom-container').forEach(function(container) {
+  container.addEventListener('mousemove', function(e) {
+    const zoomImage = container.querySelector('.zoom-image');
+    const x = e.offsetX;
+    const y = e.offsetY;
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
+
+    const xPercent = x / width * 100;
+    const yPercent = y / height * 100;
+
+    zoomImage.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+    zoomImage.style.transform = `scale(1.8)`;
+  });
+
+  container.addEventListener('mouseleave', function() {
+    const zoomImage = container.querySelector('.zoom-image');
+    zoomImage.style.transform = `scale(1)`;
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth" });
+            }
+        });
+    });
+});
+
+function handleAuthError(title, message) {
+  return Swal.fire({
+    title: title,
+    text: message,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Login",
+    cancelButtonText: "Cancel",
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = "/login";
+    }
+  });
+}
+
+function addToWishlist(productId){
+			$.ajax({
+				url:'/wishlist',
+				method:'POST',
+				data :{productId :productId},
+				success :(response)=>{
+					if(response.status){
+						Swal.fire({
+							title : "Added to wishlist",
+							text : "The product has been added to you wishlist",
+							icon : "success",
+							timer : 2000,
+						})
+					} else {
+						Swal.fire({
+							title:response.message,
+							icon:"warning",
+							timer:2000,
+
+						})
+					}
+				},
+				error:(error)=>{
+					Swal.fire({
+						title : "Error",
+						text:"Product already in your Cart",
+						icon:"error",
+						timer :2000,
+					})
+					}
+
+			})
+		}
+    </script>
+
+<!-- <script src="/js/comments.js"></script>
+<script>
+	const currentUserId = '<%= locals.user ? user._id : null %>';
+  </script>
+  <script src="/js/comments.js"></script>
+  <script>
+	document.addEventListener('DOMContentLoaded', function() {
+	  loadComments('<%= product._id %>');
+	});
+  </script> -->
+
+
+	<%- include('../partials/user/footer') %>

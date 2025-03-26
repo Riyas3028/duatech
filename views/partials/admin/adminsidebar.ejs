@@ -1,0 +1,33 @@
+<aside class="sidebar">
+    <ul>
+        <li class="<%= currentPage === 'dashboard' ? 'disabled active' : '' %>">
+            <a href="/admin/dashboard" <%= currentPage === 'dashboard' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🏠 Dashboard</a>
+        </li>
+        <li class="<%= currentPage === 'customers' ? 'disabled active' : '' %>">
+            <a href="/admin/customers" <%= currentPage === 'customers' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>👤 Customers</a>
+        </li>
+        <li class="<%= currentPage === 'category' ? 'disabled active' : '' %>">
+            <a href="/admin/category" <%= currentPage === 'category' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>📂 Category</a>
+        </li>
+        <li class="<%= currentPage === 'brands' ? 'disabled active' : '' %>">
+            <a href="/admin/brands" <%= currentPage === 'brands' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🛍️ Brands</a>
+        </li>
+        <li class="<%= currentPage === 'add-products' ? 'disabled active' : '' %>">
+            <a href="/admin/add-products" <%= currentPage === 'add-products' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>➕ Add Products</a>
+        </li>
+        <li class="<%= currentPage === 'products' ? 'disabled active' : '' %>">
+            <a href="/admin/products" <%= currentPage === 'products' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>📦 Products</a>
+        </li>
+        <li class="<%= currentPage === 'coupons' ? 'disabled active' : '' %>">
+            <a href="/admin/coupons" <%= currentPage === 'coupons' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🎟️ Coupons</a>
+        </li>
+        <li class="<%= currentPage === 'banners' ? 'disabled active' : '' %>">
+            <a href="/admin/banners" <%= currentPage === 'banners' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🖼️ Banners</a>
+        </li>
+        <li class="<%= currentPage === 'orders' ? 'disabled active' : '' %>">
+            <a href="/admin/orders" <%= currentPage === 'orders' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🛒 Orders</a>
+        </li>
+    </ul>   
+    <button type="submit" class="logout-btn" href="" onclick="logout()">Logout</button>
+</aside>
+
