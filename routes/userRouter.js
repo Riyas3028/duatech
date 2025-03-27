@@ -88,6 +88,7 @@ router.post("/addAddressCheckout",userAuth,checkoutController.postAddAddressChec
 router.post('/placeOrder',userAuth,orderController.placeOrder)
 router.get('/confirmation',userAuth,orderController.loadConfirmation)
 router.get('/orders',userAuth,orderController.viewOrders)
-
-
+router.get("/orderDetails", userAuth, orderController.loadOrderDetails);
+router.put('/cancelOrder',userAuth,orderController.cancelOrder)
+router.get('/downloadInvoice',userAuth,orderController.downloadInvoice)
 module.exports=router

@@ -39,15 +39,28 @@ const placeOrder =async (req,res) => {
             address:addressId,
             invoiceDate:invoiceDate,
             status:status,
+            userId:userId,
+            paymentMethod:paymentMethod
         });
 
         await orderSchema.save();
 
         await User.findByIdAndUpdate(userId, { $push: { orderHistory: orderSchema._id } }, { new: true });
 
+        await Cart.findOneAndUpdate({userId},{$set:{items:[]}})
+
+        const orderedItems = cart.items.map(item => ({
+            product: item.productId, 
+            quantity: item.quantity,
+ 
+        }));
+        for(let i=0;i<orderedItems.length;i++){
+            await Product.findByIdAndUpdate(orderedItems[i].product,{$inc:{quantity:-orderedItems[i].quantity}});
+        }
 
 
-        return res.status(200).json({success:true,message:'hgvjhgv'})
+
+        return res.status(200).json({success:true,message:'Order Placed Successfully'})
     } catch (error) {
         
     }
@@ -76,16 +89,119 @@ const loadConfirmation = async (req,res) => {
 
 const viewOrders=async(req,res)=>{
     try {
-        res.render('view-orders',{order:{},user:{},orders:{}})
-    } catch (error) {
+
         
-    }
+        const userId = req.session.user;
+       const user = await User.findById(userId);
+
+       const orders = await Order.find({userId:userId}).populate('orderedItems.product');
+       
+
+
+       res.render('view-orders',{order:{},user:user,orders:orders});
+   } catch (error) {
+       console.error(error);
+       res.redirect('/pageNotFound')
+   }
 }
 
+
+const loadOrderDetails = async (req, res) => {
+    try {
+
+        const userId = req.session.user;
+        const user = await User.findById(userId);
+        const orderId=req.query.orderId;
+
+        let orders = await Order.findOne({orderId:orderId}).populate('orderedItems.product').lean();
+        
+        const addressDoc = await Address.findOne({ userId:userId }).lean();
+
+
+        const userAddress = addressDoc.address.find(addr => addr._id.toString() === orders.address.toString());
+        
+
+        orders.address= userAddress;
+        console.log(orders)
+
+
+
+        res.render("order-details", {
+            order:orders,
+            user:user,
+          })
+    } catch (error) {
+        console.error(error);
+        res.redirect('/pageNotFound')
+    }
+  }
+
+const cancelOrder=async(req,res)=>{
+    try {
+        const user= req.session.user;
+        const { orderId, reason } = req.body;
+        console.log(orderId, reason);
+    
+       const order= await Order.findById(orderId)
+    
+            await Order.findOneAndUpdate(
+          { _id: orderId },
+          {$set: {status: "cancelled",cancelReason: reason,},},{ new: true });
+    
+    
+        const orderedItems = order.orderedItems.map((item) => ({
+            product: item.product,
+            quantity: item.quantity,
+          }));
+    
+    
+          console.log(orderedItems);
+          for (let i = 0; i < orderedItems.length; i++) {
+            await Product.findByIdAndUpdate(orderedItems[i].product, {
+              $inc: { quantity: orderedItems[i].quantity },
+            });
+          }
+    
+    
+        return res
+          .status(200)
+          .json({ success: true, message: "Order cancelled successfully" });
+      } catch (error) {
+        console.error(error);
+        res.redirect('/pageNotFound')
+      }
+}
+const downloadInvoice=async(req,res)=>{
+    try {
+        const userId = req.session.user;
+        const user = await User.findById(userId)
+        const orderId=req.query.orderId;
+        
+        let order = await Order.findOne({orderId:orderId}).populate('orderedItems.product').lean();
+        
+        const addressDoc = await Address.findOne({ userId: userId }).lean();
+        
+        const userAddress = addressDoc.address.find((addr) => addr._id.toString() === order.address.toString());
+        console.log(userAddress)
+        order.address = userAddress
+
+        console.log(order);
+    
+
+        res.render('invoice',{order:order,user:user});
+
+    } catch (error) {
+        console.error(error);
+        res.redirect('/pageNotFound')
+    }
+}
 
 
 module.exports={
     loadConfirmation,
     placeOrder,
-    viewOrders
+    viewOrders,
+    loadOrderDetails,
+    cancelOrder,
+    downloadInvoice,
 }
