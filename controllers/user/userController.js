@@ -72,7 +72,7 @@ const loadHomepage = async (req, res) => {
         })
             .populate({ path: "category", select: "name" })
             .populate({ path: "brand", select: "brandName" })
-            .limit(9); // Show max 9 products
+            .limit(8); // Show max 9 products
 
 
         let productData=await Product.find(
@@ -80,9 +80,9 @@ const loadHomepage = async (req, res) => {
         .populate({ path: "category", select: "name" })
         .populate({ path: "brand", select: "brandName" })
         .sort({createdAt:-1})
-        .limit(16)
+        .limit(8)
         // productData.sort((a,b)=>new Date(b.createdAt)- new Date(a.createdAt))
-        productData=productData.slice(0,16)
+        productData=productData.slice(0,8)
          const userId = req.session.user;
         if (userId) {
             const userData = await User.findOne({ _id: userId });
@@ -301,7 +301,7 @@ const loadShoppingPage = async (req, res) => {
 
         
         const page = parseInt(req.query.page) || 1;
-        const limit = 20;
+        const limit = 9;
         const skip = (page - 1) * limit;
 
         

@@ -94,6 +94,48 @@
            </div>
        </div>
    </section>
+
+   <div class=" d-flex justify-content-center">
+					
+    <div class="pagination">
+        <% if (currentPage > 1) { %>
+            <a href="/wishlist?page=<%= currentPage - 1 %>" class="prev-arrow">
+                <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+            </a>
+        <% } %>
+    
+        <% if (totalPages > 5 && currentPage > 3) { %>
+            <a href="/wishlist?page=1">1</a>
+            <% if (currentPage > 4) { %>
+                <a href="#" class="dot-dot">
+                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                </a>
+            <% } %>
+        <% } %>
+    
+        <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
+            <a href="/wishlist?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+    
+        <% if (totalPages > 5 && currentPage < totalPages - 2) { %>
+            <% if (currentPage < totalPages - 3) { %>
+                <a href="#" class="dot-dot">
+                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                </a>
+            <% } %>
+            <a href="/wishlist?page=<%= totalPages %>"><%= totalPages %></a>
+        <% } %>
+    
+        <% if (currentPage < totalPages) { %>
+            <a href="/wishlist?page=<%= currentPage + 1 %>" class="next-arrow">
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </a>
+        <% } %>
+    </div>
+</div>
+
+
+
 </main>
 <%- include("../../views/partials/user/footer") %>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

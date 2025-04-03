@@ -82,6 +82,25 @@ const getForgotPassPage = async (req,res) => {
         
     }
 }
+const uploadProfile = async (req, res, next) => {
+    try {
+      if (!req.file) {
+        return res.status(400).send("No file uploaded.");
+      }
+  
+      const updatedUser = await User.findByIdAndUpdate(
+        req.session.user,
+        { profileImage: req.file.filename },
+        { new: true }
+      );
+      if (!updatedUser) {
+        return next(new Error("User not found."));
+      }
+      res.redirect("/userProfile");
+    } catch (error) {
+      next(error);
+    }
+  };
 
 const forgotEmailValid = async (req,res) => {
     try {
@@ -224,6 +243,7 @@ const changeEmail = async (req,res) => {
     try {
         const userId = req.session.user;
         const userData = await User.findById(userId);
+        // console.log(userData)
         res.render("change-email",{
             user:userData
         })
@@ -270,7 +290,7 @@ const verifyEmailOtp = async (req,res) => {
 
         const enteredOtp = req.body.otp;
         if(enteredOtp === req.session.userOtp){
-            req.session.userData = req.body.userData;
+            req.session.userData = req.body.email;
             res.render("new-email",{
                 userData: req.session.userData,
             })
@@ -293,9 +313,17 @@ const updateEmail = async (req,res) => {
         
         const newEmail = req.body.newEmail;
         const userId = req.session.user;
+
+
+        console.log("New Email:", newEmail);
+        console.log("User ID:", userId);
+        if (!newEmail) {
+            return res.status(400).send("Email is required");
+        }
         await User.findByIdAndUpdate(userId,{
-            email:newEmail,
+            email:newEmail
         })
+
         res.redirect("/userProfile")
 
     } catch (error) {
@@ -631,6 +659,7 @@ module.exports = {
     verifyEmailOtp,
     updateEmail,
     changePassword,
+    uploadProfile
 
 
 

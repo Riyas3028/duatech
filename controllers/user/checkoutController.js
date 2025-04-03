@@ -35,7 +35,6 @@ const loadCheckoutPage = async (req, res) => {
             ],
           });
       
-      console.log(user)
     // const wallet = await Wallet.findOne({ userId: userId });
         
     //   let transactions = [];
@@ -78,7 +77,7 @@ const loadCheckoutPage = async (req, res) => {
       const subtotal = cartItems.reduce((total, item) => total + item.totalPrice, 0);
       const shippingCharge = 0; // Free shipping
       const grandTotal = subtotal + shippingCharge;
-
+        if(cartItems.length>0){
       res.render("checkout", {
           user,
           cartItems,
@@ -88,7 +87,9 @@ const loadCheckoutPage = async (req, res) => {
           userAddress: addressData,
          wallet:null,
         //  wallet || { balance: 0, refundAmount: 0, totalDebited: 0 },
-      });
+      });}else{
+        res.redirect('/cart')
+      }
   } catch (error) {
       console.error("Error in loadCheckoutPage:", error);
       res.redirect("/pageNotFound");

@@ -21,7 +21,7 @@ const userSchema = new Schema({
     googleId: { 
         type: String,
         // unique: true, 
-        sparse: true // ✅ This ensures MongoDB allows multiple null values
+        sparse: true 
     },
     password: {
         type: String,
@@ -77,11 +77,12 @@ const userSchema = new Schema({
             type: Date,
             default: Date.now
         }
-    }]
+    }],
+  profileImage: { 
+    type: String, 
+    
+    }
 });
-
-// ✅ Ensure `googleId` uniqueness is properly handled
-// userSchema.index({ googleId: 1 }, { unique: true, sparse: true });
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

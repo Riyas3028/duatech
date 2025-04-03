@@ -1,432 +1,691 @@
 <%- include('../partials/user/header') %>
 
-
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
-
-.row{
-    width:100vh;
-}
-	.single-product {
-    overflow: hidden;
-    transition: transform 0.3s ease-in-out;
+/* Global Responsive Styles */
+* {
+  box-sizing: border-box;
 }
 
-.single-product:hover img {
-    transform: scale(1.1);
+body {
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #212529;
 }
 
-.single-product img {
-    transition: transform 0.3s ease-in-out;
-    width: 100%;
+img {
+  max-width: 100%;
+  height: auto;
 }
 
-.single-product .product-details h6,
-.single-product .social-info p {
-    transition: color 0.3s ease-in-out;
+.container {
+  padding: 15px;
 }
 
-.single-product:hover .product-details h6,
-.single-product:hover .social-info p {
-    color: #ffbb00;
+/* Color Theme */
+:root {
+  --primary-color: #212529;
+  --secondary-color: #495057;
+  --accent-color: #343a40;
+  --light-color: #f8f9fa;
+  --medium-light: #e9ecef;
+  --medium-color: #dee2e6;
+  --dark-medium: #adb5bd;
+  --dark-color: #212529;
+  --hover-color: #6c757d;
 }
+
+/* Banner Area */
+.banner-area {
+  background-image:url('/img/banner/laptop-with-a-red-adhesive-note-with-big-sale-on-it-discounts-online-shopping-desktop-view-with-copy-space-photo.jpg');
+  color: var(--light-color);
+  padding: 40px 0;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.banner-area h1 {
+  color: white;
+  font-weight: 600;
+}
+
+.banner-area a {
+  color: var(--medium-light);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.banner-area a:hover {
+  color: white;
+}
+
 /* Product Card Styling */
 .product-card {
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  margin-bottom: 20px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  border: none;
 }
 
 .product-card .card-img-top {
-    height: 200px;
-    object-fit: cover;
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+  border-bottom: 1px solid var(--medium-light);
+}
+
+.product-card .card-body {
+  padding: 15px;
+}
+
+.product-card .card-title {
+  margin-bottom: 12px;
 }
 
 .product-card .card-title a {
-    font-weight: 500;
-    color: #333;
-    text-decoration: none;
-    transition: color 0.3s ease;
+  font-weight: 500;
+  color: var(--dark-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .product-card .card-title a:hover {
-    color: #007bff;
+  color: var(--hover-color);
 }
 
 .product-card .price {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--medium-light);
 }
 
 .product-card .l-through {
-    text-decoration: line-through;
-    color: #999;
+  text-decoration: line-through;
+  color: var(--dark-medium);
+  font-size: 0.9rem;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Button Styling and Alignment */
+.product-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 8px;
+  width: 100%;
 }
 
 .product-actions .btn {
-    font-size:8px;
-    transition: background-color 0.3s ease;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
 }
 
-.product-actions .btn-outline-primary:hover {
-    background-color: #007bff;
-    color: #fff;
+.product-actions .btn i, 
+.product-actions .btn .lnr {
+  margin-right: 5px;
 }
 
-.product-actions .btn-outline-danger:hover {
-    background-color: #dc3545;
-    color: #fff;
+.product-actions .btn-primary {
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
+  color: white;
+  grid-column: span 2;
+}
+
+.product-actions .btn-primary:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
+}
+
+.product-actions .btn-outline-secondary,
+.product-actions .btn-outline-danger {
+  color: var(--dark-color);
+  border-color: var(--dark-color);
 }
 
 .product-actions .btn-outline-secondary:hover {
-    background-color: #6c757d;
-    color: #fff;
+  background-color: var(--dark-color);
+  color: white;
 }
-.container1{
-    background-color: #dc3545;
-    display:flexbox;
-    align-items: center;
-    justify-content: center;
+
+.product-actions .btn-outline-danger:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
+
+/* Related Products Area */
+.related-product-area {
+  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+  padding: 50px 0;
+  margin-top: 40px;
+}
+
+.section-title h1 {
+  color: var(--dark-color);
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.section-title p {
+  color: var(--secondary-color);
+  max-width: 700px;
+  margin: 0 auto 30px;
 }
 
 .related-product-area .single-related-product {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
 }
 
-.product-img {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
+.related-product-area .single-related-product:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
 }
 
-.imagelast .category-img {
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
-    display: block;
+.related-product-area .single-related-product img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--medium-light);
 }
 
+.related-product-area .desc {
+  padding-left: 15px;
+  flex: 1;
+}
 
+.related-product-area .title {
+  font-size: 14px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  color: var(--dark-color);
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.related-product-area .title:hover {
+  color: var(--hover-color);
+}
+
+.related-product-area .price {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.related-product-area .price h6 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.related-product-area .l-through {
+  text-decoration: line-through;
+  color: var(--dark-medium);
+  font-size: 13px;
+}
+
+/* Pagination Styling */
+.pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 30px 0;
+}
+
+.pagination a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 6px;
+  background-color: white;
+  color: var(--dark-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid var(--medium-light);
+}
+
+.pagination a.active {
+  background-color: var(--dark-color);
+  color: white;
+  border-color: var(--dark-color);
+}
+
+.pagination a:hover:not(.active) {
+  background-color: var(--medium-light);
+}
+
+/* Advanced Search and Sort */
+.advanced-search-sort {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+.advanced-search-sort form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto auto;
+  grid-gap: 10px;
+}
+
+.advanced-search-sort .form-control {
+  border: 1px solid var(--medium-color);
+  border-radius: 6px;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.advanced-search-sort .form-control:focus {
+  border-color: var(--dark-color);
+  box-shadow: 0 0 0 0.2rem rgba(33, 37, 41, 0.25);
+}
+
+.advanced-search-sort .btn {
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.advanced-search-sort .btn-primary {
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
+}
+
+.advanced-search-sort .btn-primary:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
+}
+
+.advanced-search-sort .btn-danger {
+  background-color: white;
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.advanced-search-sort .btn-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Sidebar Categories */
+.sidebar-categories {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.sidebar-categories .head {
+  background: linear-gradient(to right, #212529, #495057);
+  color: white;
+  padding: 15px 20px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.main-categories {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.main-nav-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--dark-color);
+  text-decoration: none;
+  border-bottom: 1px solid var(--medium-light);
+  transition: all 0.3s ease;
+}
+
+.main-nav-list a:hover {
+  background-color: var(--medium-light);
+  padding-left: 25px;
+}
+
+.main-nav-list .number {
+  color: var(--hover-color);
+  font-size: 0.9em;
+  background: var(--medium-light);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 1199px) {
+  .advanced-search-sort form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 991px) {
+  .sidebar-categories {
+    margin-bottom: 20px;
+  }
+  
+  .product-actions {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-actions .btn-primary {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .advanced-search-sort form {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-card .card-img-top {
+    height: 180px;
+  }
+  
+  .related-product-area .row {
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+  
+  .related-product-area [class*="col-"] {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+@media (max-width: 575px) {
+  .product-card .card-img-top {
+    height: 160px;
+  }
+  
+  .pagination a {
+    min-width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+  
+  .advanced-search-sort {
+    padding: 15px;
+  }
+  
+  .banner-area {
+    padding: 30px 0;
+  }
+  
+  .banner-area h1 {
+    font-size: 24px;
+  }
+  
+  .section-title h1 {
+    font-size: 24px;
+  }
+}
 </style>
 
-	<!-- Start Banner Area -->
-	<section class="banner-area organic-breadcrumb">
-		<div class="container">
-			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-				<div class="col-first">
-					<h1>Shoping page</h1>
-					<nav class="d-flex align-items-center">
-						<a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
-						<a href="#">Shop Category</a>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End Banner Area -->
-
-
-	<!-- Start Advanced Search and Sort -->
-<div class="container mt-4">
-	<div class="row">
-	  <div class="col-md-12">
-		<div class="advanced-search-sort">
-		  <form action="/shop" method="GET" class="form-inline">
-			<div class="form-group mr-2">
-			  <input type="text" id="advanced-search-glow" name="search" class="form-control" placeholder="Search products...">
-			</div>
-			<div class="form-group mr-2">
-			  <select name="sort" class="form-control">
-				<option value="">Sort by...</option>
-				<option value="popularity">Popularity</option>
-				<option value="price_asc">Price: Low to High</option>
-				<option value="price_desc">Price: High to Low</option>
-				<option value="rating">Average Ratings</option>
-				<option value="featured">Featured</option>
-				<option value="new">New Arrivals</option>
-				<option value="name_asc">Name: A to Z</option>
-				<option value="name_desc">Name: Z to A</option>
-			  </select>
-			</div>
-			<button type="submit" class="btn btn-primary">Apply</button>
-			<a href="/shop"><button class="btn btn-danger">Clear All</button></a>
-		  </form>
-		  
-		</div>
-	  </div>
-	</div>
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+      <div class="col-first">
+        <h1>Shopping page</h1>
+        <nav class="d-flex align-items-center">
+          <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+          <a href="#">Shop Category</a>
+        </nav>
+      </div>
+    </div>
   </div>
-  <!-- End Advanced Search and Sort -->
-   <br>
+</section>
+<!-- End Banner Area -->
 
-	
+<!-- Start Advanced Search and Sort -->
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="advanced-search-sort">
+        <form action="/shop" method="GET">
+          <div class="form-group">
+            <input type="text" id="advanced-search-glow" name="search" class="form-control" placeholder="Search products...">
+          </div>
+          <div class="form-group">
+            <select name="sort" class="form-control">
+              <option value="">Sort by...</option>
+              <option value="popularity">Popularity</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="rating">Average Ratings</option>
+              <option value="featured">Featured</option>
+              <option value="new">New Arrivals</option>
+              <option value="name_asc">Name: A to Z</option>
+              <option value="name_desc">Name: Z to A</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Apply</button>
+          <a href="/shop" class="btn btn-danger">Clear All</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Advanced Search and Sort -->
 
-	<div class="container">
-		<div class="row">
-			<div class="col-xl-3 col-lg-4 col-md-5">
-				<div class="sidebar-categories">
-					<div class="head">Browse Categories</div>
-					<ul class="main-categories">
-                        
-                        <% for(let i=0;i< category.length;i++){%>
-						<li class="main-nav-list"><a href="/filter?category=<%=category[i]._id%>" aria-expanded="false" ><span
-								 class="lnr lnr-arrow-right"></span><%=category[i].name%><span class="number">(<%= category[i].productCount %>)</span></a>
-						</li>
-                        <%}%>
-
-					</ul>
-				</div>
-				<div class="sidebar-filter mt-50">
-				</div>
-			</div>
-			<div class="col-xl-9 col-lg-8 col-md-7">
-				<!-- Start Filter Bar -->
-				<div class="filter-bar d-flex flex-wrap align-items-center">
-					<div class="sorting">
-						<select>
-							<option value="1">Default sorting</option>
-							<!-- <option value="1">Default sorting</option>
-							<option value="1">Default sorting</option> -->
-						</select>
-					</div>
-					<div class="sorting mr-auto">
-						<select>
-							<option value="1">Show 9</option>
-							<!-- <option value="1">Show 12</option>
-							<option value="1">Show 12</option> -->
-						</select>
-					</div>
-					<div class="pagination">
-                        <% if (currentPage > 1) { %>
-                            <a href="/shop?page=<%= currentPage - 1 %>" class="prev-arrow">
-                                <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
-                            </a>
-                        <% } %>
-                    
-                        <% if (totalPages > 5 && currentPage > 3) { %>
-                            <a href="/shop?page=1">1</a>
-                            <% if (currentPage > 4) { %>
-                                <a href="#" class="dot-dot">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                </a>
-                            <% } %>
-                        <% } %>
-                    
-                        <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
-                            <a href="/shop?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
-                        <% } %>
-                    
-                        <% if (totalPages > 5 && currentPage < totalPages - 2) { %>
-                            <% if (currentPage < totalPages - 3) { %>
-                                <a href="#" class="dot-dot">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                </a>
-                            <% } %>
-                            <a href="/shop?page=<%= totalPages %>"><%= totalPages %></a>
-                        <% } %>
-                    
-                        <% if (currentPage < totalPages) { %>
-                            <a href="/shop?page=<%= currentPage + 1 %>" class="next-arrow">
-                                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                            </a>
-                        <% } %>
-                    </div>
-                    
-                    
-				</div>
-				<!-- End Filter Bar -->
-				<!-- Start Best Seller -->
-				<section class="lattest-product-area pb-40 category-list">
-					<div class="row">
-                        <% for (let i = 0; i < products.length; i++) { %>
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-6 mb-4">
-                                <div class="card product-card shadow-sm border-0">
-                                    <a href="/productDetails?id=<%= products[i]._id %>">
-                                        <img src="/uploads/re-image/<%= products[i].productImage[0] %>" 
-                                             alt="<%= products[i].productName %>" 
-                                             class="card-img-top">
-                                    </a>
-                                    <div class="card-body">
-                                        <h6 class="card-title">
-                                            <a href="/productDetails?id=<%= products[i]._id %>" class="text-dark">
-                                                <%= products[i].productName %>
-                                            </a>
-                                        </h6>
-                                        <div class="price">
-                                            <h6 class="text-primary">₹ <%= Math.round(products[i].salePrice) %>.00</h6>
-                                            <h6 class="text-muted l-through">₹ <%= Math.round(products[i].regularPrice) %>.00</h6>
-                                        </div>
-                                        <div class="product-actions mt-3 d-flex justify-content-between">
-                                            <!-- <a href="#" onclick="addToCart('<%= products[i]._id %>')" class="btn btn-outline-primary btn-sm">
-                                                <i class="ti-bag"></i> Add to Cart
-                                            </a> -->
-                                            <button class="btn btn-primary flex-grow-1 me-2 addToCartBtn" data-id="<%= products[i]._id %>">
-                                              <i class="fas fa-shopping-cart me-2"></i>Add to cart
-                                            </button>
-                                            <a href="#" onclick="addToWishlist('<%=products[i]._id%>')" class="social-info">
-                                                <span class="lnr lnr-heart">Wishlist</span>
-                                                </a>
-                                            <a href="/productDetails?id=<%= products[i]._id %>" class="btn btn-outline-secondary btn-sm">
-                                                <i class="lnr lnr-move"></i> View More
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <% } %>
-                    </div>
-                    
+<div class="container">
+  <div class="row">
+    <!-- Sidebar Categories -->
+    <div class="col-lg-3 col-md-4">
+      <div class="sidebar-categories">
+        <div class="head">Categories</div>
+        <ul class="main-categories">
+          <% for(let i=0; i < category.length; i++) { %>
+            <li class="main-nav-list">
+              <a href="/filter?category=<%=category[i]._id%>">
+                <span class="lnr lnr-arrow-right"></span>
+                <%=category[i].name%>
+                <span class="number">(<%= category[i].productCount %>)</span>
+              </a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Products Grid -->
+    <div class="col-lg-9 col-md-8">
+      <section class="lattest-product-area pb-40 category-list">
+        <div class="row">
+          <% for (let i = 0; i < products.length; i++) { %>
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+              <div class="card product-card">
+                <a href="/productDetails?id=<%= products[i]._id %>">
+                  <img src="/uploads/re-image/<%= products[i].productImage[0] %>" 
+                       alt="<%= products[i].productName %>" 
+                       class="card-img-top">
+                </a>
+                <div class="card-body">
+                  <h6 class="card-title">
+                    <a href="/productDetails?id=<%= products[i]._id %>" class="text-dark">
+                      <%= products[i].productName %>
+                    </a>
+                  </h6>
+                  <div class="price">
+                    <h6 class="text-primary">₹ <%= Math.round(products[i].salePrice) %>.00</h6>
+                    <h6 class="text-muted l-through">₹ <%= Math.round(products[i].regularPrice) %>.00</h6>
+                  </div>
+                  <div class="product-actions">
+                    <button class="btn btn-primary addToCartBtn" data-id="<%= products[i]._id %>">
+                      <i class="fas fa-shopping-cart"></i> Add to cart
+                    </button>
+                    <a href="#" onclick="addToWishlist('<%=products[i]._id%>')" class="btn btn-outline-danger">
+                      <i class="lnr lnr-heart"></i> Wishlist
+                    </a>
+                    <a href="/productDetails?id=<%= products[i]._id %>" class="btn btn-outline-secondary">
+                      <i class="lnr lnr-move"></i> View
+                    </a>
+                  </div>
                 </div>
-				</section>
-				<!-- End Best Seller -->
-				<!-- Start Filter Bar -->
-				<div class="filter-bar d-flex flex-wrap align-items-center">
-					<div class="sorting mr-auto">
-						<select>
-							<option value="1">Show 9</option>
-							<!-- <option value="1">Show 12</option>
-							<option value="1">Show 12</option> -->
-						</select>
-					</div>
-					<div class="pagination">
-                        <% if (currentPage > 1) { %>
-                            <a href="/shop?page=<%= currentPage - 1 %>" class="prev-arrow">
-                                <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
-                            </a>
-                        <% } %>
-                    
-                        <% if (totalPages > 5 && currentPage > 3) { %>
-                            <a href="/shop?page=1">1</a>
-                            <% if (currentPage > 4) { %>
-                                <a href="#" class="dot-dot">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                </a>
-                            <% } %>
-                        <% } %>
-                    
-                        <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
-                            <a href="/shop?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
-                        <% } %>
-                    
-                        <% if (totalPages > 5 && currentPage < totalPages - 2) { %>
-                            <% if (currentPage < totalPages - 3) { %>
-                                <a href="#" class="dot-dot">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                </a>
-                            <% } %>
-                            <a href="/shop?page=<%= totalPages %>"><%= totalPages %></a>
-                        <% } %>
-                    
-                        <% if (currentPage < totalPages) { %>
-                            <a href="/shop?page=<%= currentPage + 1 %>" class="next-arrow">
-                                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                            </a>
-                        <% } %>
-                    </div>
-				</div>
-				<!-- End Filter Bar -->
-			</div>
-		</div>
-	</div>
+              </div>
+            </div>
+          <% } %>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+          <div class="pagination">
+            <% if (currentPage > 1) { %>
+              <a href="/shop?page=<%= currentPage - 1 %>" class="prev-arrow">
+                <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+              </a>
+            <% } %>
+            
+            <% if (totalPages > 5 && currentPage > 3) { %>
+              <a href="/shop?page=1">1</a>
+              <% if (currentPage > 4) { %>
+                <a href="#" class="dot-dot">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                </a>
+              <% } %>
+            <% } %>
+            
+            <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
+              <a href="/shop?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+            
+            <% if (totalPages > 5 && currentPage < totalPages - 2) { %>
+              <% if (currentPage < totalPages - 3) { %>
+                <a href="#" class="dot-dot">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                </a>
+              <% } %>
+              <a href="/shop?page=<%= totalPages %>"><%= totalPages %></a>
+            <% } %>
+            
+            <% if (currentPage < totalPages) { %>
+              <a href="/shop?page=<%= currentPage + 1 %>" class="next-arrow">
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </a>
+            <% } %>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
 <!-- Start related-product Area -->
 <section class="related-product-area section_gap">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-6 text-center">
-                <div class="section-title">
-                    <h1>Related Products</h1>
-                    <p>Explore our range of related products that complement your purchase. Each item is carefully selected to ensure the highest quality and satisfaction.</p>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 text-center">
+        <div class="section-title">
+          <h1>Related Products</h1>
+          <p>Explore our range of related products that complement your purchase. Each item is carefully selected to ensure the highest quality and satisfaction.</p>
         </div>
-        <div class="row">
-            <!-- Product List -->
-            <div class="col-lg-9">
-                <div class="row">
-                    <% for(let i = 0; i < products.length; i++) { %>
-                        <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
-                            <div class="single-related-product d-flex align-items-center">
-                                <a href="/productDetails?id=<%= products[i]._id %>">
-                                    <img src="/uploads/re-image/<%= products[i].productImage[0] %>" alt="Product Image" class="img-fluid" style="width: 60px; height: auto;">
-                                </a>
-                                <div class="desc ml-3">
-                                    <a href="#" class="title"><%= products[i].productName.split('|')[0] %></a>
-                                    <div class="price">
-                                        <h6>₹ <%= products[i].salePrice.toLocaleString('en-IN') %></h6>
-                                        <h6 class="l-through">₹ <%= products[i].regularPrice.toLocaleString('en-IN') %></h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-            <!-- Image Section (Fixed Alignment) -->
-            <!-- <div class="col-lg-3 d-flex align-items-center justify-content-center">
-                <div class="ctg-right text-center">
-                    <a href="#" target="_blank">
-                        <img class="img-fluid d-block mx-auto" src="img/category/c5.jpg" alt="Category Image" style="max-width: 100%;">
-                    </a>
-                </div>
-            </div> -->
-        </div>
+      </div>
     </div>
+    <div class="row">
+      <!-- Product List -->
+      <div class="col-lg-12">
+        <div class="row">
+          <% for(let i = 0; i < Math.min(6, products.length); i++) { %>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div class="single-related-product">
+                <a href="/productDetails?id=<%= products[i]._id %>">
+                  <img src="/uploads/re-image/<%= products[i].productImage[0] %>" alt="Product Image">
+                </a>
+                <div class="desc">
+                  <a href="/productDetails?id=<%= products[i]._id %>" class="title"><%= products[i].productName.split('|')[0] %></a>
+                  <div class="price">
+                    <h6>₹ <%= products[i].salePrice.toLocaleString('en-IN') %></h6>
+                    <h6 class="l-through">₹ <%= products[i].regularPrice.toLocaleString('en-IN') %></h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- End related-product Area -->
 
-	<script>
-
+<script>
 document.querySelectorAll(".addToCartBtn").forEach(button => {
-    button.addEventListener("click", async () => {
-        const productId = button.getAttribute("data-id");
+  button.addEventListener("click", async () => {
+    const productId = button.getAttribute("data-id");
 
-        try {
-            const response = await fetch(`/cart/${productId}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ quantity: 1 }) // Example quantity
-            });
+    try {
+      const response = await fetch(`/cart/${productId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity: 1 })
+      });
 
-            const result = await response.json();
+      const result = await response.json();
 
-            if (result.success) {
-                Swal.fire({
-                    icon: "success",
-                    title: "Product added to Cart",
-                    showConfirmButton: false,
-                    timer:1000
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Failed to add to cart",
-                    text: result.message,
-                    showConfirmButton: false,
-                    timer:1000
-                });
-            }
-        } catch (error) {
-            console.error("Error:", error);
-           
-        }
-    });
+      if (result.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Product added to Cart",
+          showConfirmButton: false,
+          timer: 1000
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to add to cart",
+          text: result.message,
+          showConfirmButton: false,
+          timer: 1000
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
 });
 
-
-
-		// Common function to handle authentication errors
+// Common function to handle authentication errors
 function handleAuthError(title, message) {
   return Swal.fire({
     title: title,
@@ -443,45 +702,37 @@ function handleAuthError(title, message) {
   });
 }
 
-function addToWishlist(productId){
-			$.ajax({
-				url:'/wishlist',
-				method:'POST',
-				data :{productId :productId},
-				success :(response)=>{
-					if(response.status){
-						Swal.fire({
-							title : "Added to wishlist",
-							text : "The product has been added to you wishlist",
-							icon : "success",
-							timer : 2000,
-						})
-					} else {
-						Swal.fire({
-							title:response.message,
-							icon:"warning",
-							timer:2000,
-
-						})
-					}
-				},
-				error:(error)=>{
-					Swal.fire({
-						title : "Error",
-						text:"Product already in your Cart",
-						icon:"error",
-						timer :2000,
-					})
-					}
-
-			})
-		}
-        
-        
-        </script>
-
-
-
-
+function addToWishlist(productId) {
+  $.ajax({
+    url: '/wishlist',
+    method: 'POST',
+    data: { productId: productId },
+    success: (response) => {
+      if (response.status) {
+        Swal.fire({
+          title: "Added to wishlist",
+          text: "The product has been added to your wishlist",
+          icon: "success",
+          timer: 2000,
+        });
+      } else {
+        Swal.fire({
+          title: response.message,
+          icon: "warning",
+          timer: 2000,
+        });
+      }
+    },
+    error: (error) => {
+      Swal.fire({
+        title: "Error",
+        text: "Product already in your Cart",
+        icon: "error",
+        timer: 2000,
+      });
+    }
+  });
+}
+</script>
 
 <%- include('../partials/user/footer') %>

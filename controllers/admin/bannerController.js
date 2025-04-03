@@ -5,7 +5,7 @@ const fs=require('fs')
 
 const getBannerPage=async(req,res)=>{
     try {
-        console.log(req.session.admin)
+        
         const findBanner= await Banner.find({})
         res.render("banners",{currentPage: 'banners',data:findBanner});
 
@@ -26,11 +26,11 @@ const getAddBannerPage=async (req,res)=>{
 const addBanner=async(req,res)=>{
     try {
 
-        console.log("addB",req.session.admin)
+        
 
         const data=req.body;
         const images=req.file;
-        console.log(images)
+        
         const newBanner=new Banner({
             image:images.filename,
             title:data.banner_name,

@@ -10,6 +10,9 @@ const loadWishlist = async (req,res) => {
         const userId = req.session.user;
         const user = await User.findById(userId);
 
+        const page = parseInt(req.query.page) || 1;
+        const limit = 9;
+        const skip = (page - 1) * limit;
 
         const cart = await Cart.findOne({ userId })
     
@@ -17,13 +20,21 @@ const loadWishlist = async (req,res) => {
 
     const products = await Product.find({ _id: { $in: user.wishlist, $nin: cartProductIds },isBlocked:false})
     .populate('category')
-    .populate('brand');
+    .populate('brand')
+    .skip(skip)
+    .limit(limit);
+    const totalProducts = await Product.countDocuments({_id:{$in:user.wishlist,$nin: cartProductIds },isBlocked:false});
+        const totalPages = Math.ceil(totalProducts/limit);
         res.render("wishlist",{
             user,
             wishlist:products,
+            currentPage:page,
+            totalPages:totalPages,
 
         })
 
+
+        
         
 
     } catch (error) {

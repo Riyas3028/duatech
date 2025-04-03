@@ -131,16 +131,16 @@
                     </div>
                 <% } %>
 
-                <% if (order.requestStatus === 'rejected') { %>
+                <!-- <% if (order.requestStatus === 'rejected') { %>
                     <div class="alert alert-danger mt-3">
                         <h6 class="alert-heading">Return Request Rejected</h6>
                         <p><strong>Category:</strong> <%= order.rejectionCategory %></p>
                         <p><strong>Reason:</strong> <%= order.rejectionReason %></p>
                         
                     </div>
-                <% } %>
+                <% } %> -->
                 
-                <% if (['return_requested', 'returning', 'returned'].includes(order.status)) { %>
+                <% if (['Return Requested', 'returning', 'returned'].includes(order.status)) { %>
                     <div class="card mt-4">
                         <div class="card-header <%= 
                             order.status === 'returned' ? 'bg-success' :
@@ -152,15 +152,15 @@
                         <div class="card-body">
                             <p><strong>Return Reason:</strong> <%= order.returnReason %></p>
                             <% if (order.status === "returned") { %>
-                            <p><strong>Returned On:</strong> <%=new Date(order.updatedOn).toLocaleDateString()%></p>
+                            <p><strong>Returned On:</strong> <%=new Date(order.updatedAt).toLocaleDateString()%></p>
                             <% } %>
                             
-                            <% if (order.returnImages && order.returnImages.length > 0) { %>
+                            <% if (order.returnImage && order.returnImage.length > 0) { %>
                                 <div class="mt-3">
                                     <h6>Uploaded Images:</h6>
                                     <div class="d-flex gap-2">
-                                        <% order.returnImages.forEach(image => { %>
-                                            <img src="/<%= image %>" alt="Return image" class="img-thumbnail" style="width: 100px;">
+                                        <% order.returnImage.forEach(image => { %>
+                                            <img src="uploads/re-image/<%= image %>" alt="Return image" class="img-thumbnail" style="width: 100px;">
                                         <% }); %>
                                     </div>
                                 </div>
@@ -179,6 +179,7 @@
                                 <div class="alert alert-danger mt-3">
                                     <strong>Return Request Rejected</strong><br>
                                     Reason: <%= order.rejectionReason %>
+                                    <p><strong>Category:</strong> <%= order.rejectionCategory %></p>
                                 </div>
                             <% } else { %>
                                 <div class="alert alert-info mt-3">
@@ -279,14 +280,14 @@
                         <!-- Order Actions -->
                         <div class="order-actions mt-4">
                             <% if (order.status === 'delivered' && !order.returnReason && order.requestStatus !== "rejected") { %>
-                                <button class="btn btn-warning" onclick="initiateReturn('<%= order._id %>')">
+                                <!-- <button class="btn btn-warning" onclick="initiateReturn('<%= order._id %>')">
                                     Request Return
-                                </button>
-                            <% } else if (order.status === 'return_requested' && order.requestStatus === 'pending') { %>
+                                </button> -->
+                            <% } else if (order.status === 'Return Requested' && order.requestStatus === 'pending') { %>
                                 <button class="btn btn-danger" onclick="cancelReturn('<%= order._id %>')">
                                     Cancel Return Request
                                 </button>
-                            <% } else if (!['delivered', 'cancelled', 'return_requested', 'returning', 'returned'].includes(order.status)) { %>
+                            <% } else if (!['delivered', 'cancelled', 'Return Requested', 'returning', 'returned'].includes(order.status)) { %>
                                 <button onclick="cancelOrder('<%= order._id %>')" class="btn btn-danger">
                                     Cancel Order
                                 </button>
@@ -473,7 +474,7 @@ async function submitReturn() {
             formData.append('images', files[i]);
         }
 
-        const response = await fetch('/orders/return', {
+        const response = await fetch('/returnOrder', {
             method: 'POST',
             body: formData
         });
@@ -515,8 +516,8 @@ async function cancelReturn(orderId) {
         });
 
         if (result.isConfirmed) {
-            const response = await fetch('/orders/cancel-return', {
-                method: 'POST',
+            const response = await fetch('/cancelReturnRequest', {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },

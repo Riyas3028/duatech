@@ -4,17 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/admin.css"> 
 </head>
 <body>
-    <%- include("../partials/admin/adminheader") %>
+    <!-- Sidebar -->
     <%- include("../partials/admin/adminsidebar") %>
 
+    <!-- Main Content -->
     <main class="content">
-        <h1>Dashboard</h1>
-        <p>Welcome to the Admin Panel</p>
+        <div class="container">
+            <h1>Dashboard</h1>
+            <p>Welcome to the Admin Panel</p>
+        </div>
     </main>
 
-    <%- include("../partials/admin/adminfooter") %>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            margin-left: 250px; /* Matches sidebar width */
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+            }
+        }
+    </style>
 </body>
 </html>

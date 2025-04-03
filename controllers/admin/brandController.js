@@ -134,7 +134,7 @@ const editBrand = async (req, res) => {
         if (images.length > 0) {
             updateFields.brandImage=images ;
         }
-        console.log(updateFields)
+        
         // Update brand document
         await Brand.findByIdAndUpdate(brandId, updateFields, { new: true });
         

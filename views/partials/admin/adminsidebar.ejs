@@ -1,33 +1,413 @@
 <aside class="sidebar">
-    <ul>
-        <li class="<%= currentPage === 'dashboard' ? 'disabled active' : '' %>">
-            <a href="/admin/dashboard" <%= currentPage === 'dashboard' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🏠 Dashboard</a>
-        </li>
-        <li class="<%= currentPage === 'customers' ? 'disabled active' : '' %>">
-            <a href="/admin/customers" <%= currentPage === 'customers' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>👤 Customers</a>
-        </li>
-        <li class="<%= currentPage === 'category' ? 'disabled active' : '' %>">
-            <a href="/admin/category" <%= currentPage === 'category' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>📂 Category</a>
-        </li>
-        <li class="<%= currentPage === 'brands' ? 'disabled active' : '' %>">
-            <a href="/admin/brands" <%= currentPage === 'brands' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🛍️ Brands</a>
-        </li>
-        <li class="<%= currentPage === 'add-products' ? 'disabled active' : '' %>">
-            <a href="/admin/add-products" <%= currentPage === 'add-products' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>➕ Add Products</a>
-        </li>
-        <li class="<%= currentPage === 'products' ? 'disabled active' : '' %>">
-            <a href="/admin/products" <%= currentPage === 'products' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>📦 Products</a>
-        </li>
-        <li class="<%= currentPage === 'coupons' ? 'disabled active' : '' %>">
-            <a href="/admin/coupons" <%= currentPage === 'coupons' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🎟️ Coupons</a>
-        </li>
-        <li class="<%= currentPage === 'banners' ? 'disabled active' : '' %>">
-            <a href="/admin/banners" <%= currentPage === 'banners' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🖼️ Banners</a>
-        </li>
-        <li class="<%= currentPage === 'orders' ? 'disabled active' : '' %>">
-            <a href="/admin/orders" <%= currentPage === 'orders' ? 'style="pointer-events: none; opacity: 0.5;"' : '' %>>🛒 Orders</a>
-        </li>
-    </ul>   
-    <button type="submit" class="logout-btn" href="" onclick="logout()">Logout</button>
+    <div class="sidebar-header">
+        <img src="/img/logo mine.PNG" alt="Admin Logo" class="logo">
+        <button class="menu-toggle" id="sidebarToggle" aria-label="Toggle Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+    <div class="sidebar-content">
+        <ul class="sidebar-menu">
+            <li class="<%= currentPage === 'dashboard' ? 'active' : '' %>">
+                <a href="/admin/dashboard">
+                    <span class="menu-icon">🏠</span>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="<%= currentPage === 'customers' ? 'active' : '' %>">
+                <a href="/admin/customers">
+                    <span class="menu-icon">👤</span>
+                    <span class="menu-text">Customers</span>
+                </a>
+            </li>
+            <li class="<%= currentPage === 'category' ? 'active' : '' %>">
+                <a href="/admin/category">
+                    <span class="menu-icon">📂</span>
+                    <span class="menu-text">Category</span>
+                </a>
+            </li>
+            <li class="<%= currentPage === 'brands' ? 'active' : '' %>">
+                <a href="/admin/brands">
+                    <span class="menu-icon">🛍️</span>
+                    <span class="menu-text">Brands</span>
+                </a>
+            </li>
+            <li class="<%= currentPage === 'add-products' ? 'active' : '' %>">
+                <a href="/admin/add-products">
+                    <span class="menu-icon">➕</span>
+                    <span class="menu-text">Add Products</span>
+                </a>
+            </li>
+            <li class="<%= currentPage === 'products' ? 'active' : '' %>">
+                <a href="/admin/products">
+                    <span class="menu-icon">📦</span>
+                    <span class="menu-text">Products</span>
+                </a>
+            </li>
+            <li class="<%= currentPage === 'coupons' ? 'active' : '' %>">
+                <a href="/admin/coupons">
+                    <span class="menu-icon">🎟️</span>
+                    <span class="menu-text">Coupons</span>
+                </a>
+            </li>
+            <li class="<%= currentPage === 'banners' ? 'active' : '' %>">
+                <a href="/admin/banners">
+                    <span class="menu-icon">🖼️</span>
+                    <span class="menu-text">Banners</span>
+                </a>
+            </li>
+            <li class="<%= currentPage === 'orders' ? 'active' : '' %>">
+                <a href="/admin/orders">
+                    <span class="menu-icon">🛒</span>
+                    <span class="menu-text">Orders</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="sidebar-footer">
+        <form action="/admin/logout" method="POST">
+            <button type="submit" class="logout-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logout-icon">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Logout</span>
+            </button>
+        </form>
+    </div>
 </aside>
 
+<div class="overlay" id="sidebarOverlay"></div>
+
+<style>
+    /* Sidebar Styling */
+    :root {
+        --sidebar-width: 260px;
+        --sidebar-bg: #1e293b;
+        --sidebar-hover: #334155;
+        --sidebar-active: #3b82f6;
+        --sidebar-text: #f8fafc;
+        --logout-btn-bg: #ef4444;
+        --logout-btn-hover: #dc2626;
+        --transition-speed: 0.3s;
+    }
+
+    /* Reset and base styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    /* Sidebar Container */
+    .sidebar {
+        width: var(--sidebar-width);
+        height: 100vh;
+        background: var(--sidebar-bg);
+        color: var(--sidebar-text);
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        z-index: 1000;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform var(--transition-speed) ease-in-out;
+    }
+
+    /* Sidebar Header */
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+        width: 160px;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--sidebar-text);
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 4px;
+        transition: background-color var(--transition-speed);
+    }
+
+    .menu-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Sidebar Content */
+    .sidebar-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    /* Sidebar Menu */
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        margin: 5px 0;
+    }
+
+    .sidebar-menu a {
+        color: var(--sidebar-text);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        border-radius: 8px;
+        transition: all var(--transition-speed);
+        font-weight: 500;
+    }
+
+    .menu-icon {
+        margin-right: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+    }
+
+    .sidebar-menu a:hover {
+        background: var(--sidebar-hover);
+        transform: translateX(5px);
+    }
+
+    .sidebar-menu li.active a {
+        background: var(--sidebar-active);
+        color: white;
+        box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Sidebar Footer */
+    .sidebar-footer {
+        padding: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+        background: var(--logout-btn-bg);
+        color: white;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all var(--transition-speed);
+    }
+
+    .logout-icon {
+        margin-right: 8px;
+    }
+
+    .logout-btn:hover {
+        background: var(--logout-btn-hover);
+        transform: translateY(-2px);
+    }
+
+    /* Overlay for mobile */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+        transition: opacity var(--transition-speed);
+        opacity: 0;
+    }
+
+    /* Content adjustment */
+    .content-wrapper {
+        margin-left: var(--sidebar-width);
+        transition: margin var(--transition-speed);
+    }
+
+    /* Scrollbar styling */
+    .sidebar-content::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .sidebar-content::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar-content::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+    }
+
+    .sidebar-content::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Responsive Sidebar */
+    @media (max-width: 992px) {
+        .sidebar {
+            transform: translateX(-100%);
+            box-shadow: none;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-toggle {
+            display: block;
+        }
+
+        .content-wrapper {
+            margin-left: 0;
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+    }
+
+    /* Mini sidebar for tablets */
+    @media (min-width: 768px) and (max-width: 992px) {
+        body.mini-sidebar .sidebar {
+            transform: translateX(0);
+            width: 70px;
+        }
+
+        body.mini-sidebar .menu-text,
+        body.mini-sidebar .sidebar-header .logo {
+            display: none;
+        }
+
+        body.mini-sidebar .sidebar-header {
+            justify-content: center;
+        }
+
+        body.mini-sidebar .content-wrapper {
+            margin-left: 70px;
+        }
+
+        body.mini-sidebar .logout-btn span {
+            display: none;
+        }
+
+        body.mini-sidebar .logout-btn {
+            padding: 10px;
+        }
+
+        body.mini-sidebar .logout-icon {
+            margin-right: 0;
+        }
+
+        body.mini-sidebar .menu-icon {
+            margin-right: 0;
+            font-size: 1.3rem;
+        }
+
+        body.mini-sidebar .sidebar-menu a {
+            justify-content: center;
+            padding: 15px;
+        }
+
+        body.mini-sidebar .sidebar-menu a:hover {
+            transform: translateX(0);
+        }
+    }
+
+    /* Small screens */
+    @media (max-width: 576px) {
+        .sidebar {
+            width: 240px;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const body = document.body;
+        
+        // Function to check window width
+        function checkWidth() {
+            if (window.innerWidth >= 768 && window.innerWidth < 992) {
+                body.classList.add('mini-sidebar');
+            } else {
+                body.classList.remove('mini-sidebar');
+            }
+        }
+        
+        // Toggle sidebar on button click
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            
+            // Prevent scrolling when sidebar is open on mobile
+            if (sidebar.classList.contains('open') && window.innerWidth < 992) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
+        });
+        
+        // Close sidebar when clicking overlay
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            body.style.overflow = '';
+        });
+        
+        // Check width on load and resize
+        window.addEventListener('resize', checkWidth);
+        checkWidth();
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth < 992 && 
+                !sidebar.contains(event.target) && 
+                event.target !== toggleBtn &&
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                body.style.overflow = '';
+            }
+        });
+        
+        // Enable mini-sidebar on double click of menu items on tablets
+        if (window.innerWidth >= 768 && window.innerWidth < 992) {
+            sidebar.addEventListener('dblclick', function() {
+                body.classList.toggle('mini-sidebar');
+            });
+        }
+    });
+</script>

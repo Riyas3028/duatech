@@ -29,8 +29,7 @@ const getProductAddPage = async (req, res) => {
 const addProducts = async (req, res) => {
     try {
         const { productName, description, regularPrice, category, brand, quantity, size, color, salePrice } = req.body;
-        console.log(req.body)
-        console.log(req.files)
+        
         // if (!productName || !description || !regularPrice || !category || !brand) {
         //     return res.redirect("/admin/add-products");
         // }
@@ -104,7 +103,7 @@ const getAllProducts = async (req, res) => {
     try {
         const search = req.query.search || "";
         const page = parseInt(req.query.page) || 1;
-        const limit = 8;
+        const limit = 6;
         const skip = (page - 1) * limit;
 
         // 🔍 Find brand IDs that match the search query
@@ -166,7 +165,7 @@ const addProductOffer = async (req, res) => {
         }
 
         product.salePrice = product.regularPrice -Math.floor(product.regularPrice * (percentage / 100));
-        console.log(product.salePrice)
+        
         product.productOffer = percentage;
 
         await product.save();
@@ -227,7 +226,7 @@ const getEditProduct = async (req, res) => {
     try {
         const { id } = req.query;
         const product = await Product.findById(id);
-        console.log(product)
+        
 
         if (!product) return res.redirect("/pageError");
 

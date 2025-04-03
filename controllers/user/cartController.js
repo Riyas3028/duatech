@@ -28,7 +28,7 @@ const addToCart = async (req, res) => {
           return res.status(400).json({success:false,message:"You have reached maximum product in your cart"})
         }
         else if(cart.items[itemIndex].quantity+quantity>product.quantity){
-          return res.status(400).json({success:false,message:`we have only ${product.quantity}`})
+          return res.status(400).json({success:false,message:`${cart.items[itemIndex].quantity} item already in cart , we have only ${product.quantity} in Stock`})
         }else{
         cart.items[itemIndex].quantity += quantity;
         cart.items[itemIndex].totalPrice =

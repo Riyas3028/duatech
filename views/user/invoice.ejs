@@ -4,109 +4,7 @@
     <meta charset="utf-8">
     <title>Invoice #<%= order.orderId %></title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-        .invoice-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .invoice-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-        }
-        .company-details {
-            text-align: right;
-        }
-        .invoice-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        .invoice-details {
-            margin-bottom: 20px;
-        }
-        .invoice-details-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .customer-details, .shipping-details {
-            width: 48%;
-        }
-        .section-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #ddd;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f8f8f8;
-        }
-        .product-image {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-        }
-        .total-section {
-            margin-top: 20px;
-            text-align: right;
-        }
-        .total-row {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 5px;
-        }
-        .total-label {
-            width: 150px;
-            text-align: right;
-            margin-right: 20px;
-        }
-        .total-value {
-            width: 100px;
-            text-align: right;
-        }
-        .grand-total {
-            font-weight: bold;
-            font-size: 16px;
-            border-top: 2px solid #333;
-            padding-top: 5px;
-        }
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 12px;
-            color: #777;
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-            background-color: #28a745;
-            color: white;
-        }
+        /* Your existing styles here */
     </style>
 </head>
 <body>
@@ -130,20 +28,19 @@
             <div class="invoice-details-row">
                 <div class="customer-details">
                     <div class="section-title">Bill To</div>
-                    <div><strong><%= order.address.name %></strong></div>
-                    <div><%= order.address.landMark %>,<%= order.address.city %></div>
-                    <div><%= order.address.state %> <%= order.address.zip %></div>
-                    <div><%= user.email %></div>
-                    <div><%= order.address.phone %></div>
+                    <div><strong><%= order.address.name || 'Customer' %></strong></div>
+                    <div><%= order.address.landMark || '' %>, <%= order.address.city || '' %></div>
+                    <div><%= order.address.state || '' %> <%= order.address.zip || order.address.pincode || '' %></div>
+                    <div><%= user.email || '' %></div>
+                    <div><%= order.address.phone || '' %></div>
                 </div>
                 <div class="shipping-details">
                     <div class="section-title">Ship To</div>
-                    <div><strong><%= order.address.name %></strong></div>
-                    
-                    <div><%= order.address.landMark %>,<%= order.address.city %></div>
-                    <div><%= order.address.state %> <%= order.address.zip %></div>
-                    <div><%= user.email %></div>
-                    <div><%= order.address.phone %></div>
+                    <div><strong><%= order.address.name || 'Customer' %></strong></div>
+                    <div><%= order.address.landMark || '' %>, <%= order.address.city || '' %></div>
+                    <div><%= order.address.state || '' %> <%= order.address.zip || order.address.pincode || '' %></div>
+                    <div><%= user.email || '' %></div>
+                    <div><%= order.address.phone || '' %></div>
                 </div>
             </div>
             <div class="invoice-details-row">
@@ -156,13 +53,17 @@
                             Online Payment
                         <% } else if (order.paymentMethod === 'wallet') { %>
                             Wallet Payment
+                        <% } else { %>
+                            Payment Method Not Specified
                         <% } %>
                     </div>
                 </div>
                 <div>
                     <div class="section-title">Order Status</div>
                     <div class="status-badge">DELIVERED</div>
-                    <div class="status-badge"><%= new Date(order.deliveredAt).toLocaleDateString() %></div>
+                    <div>
+                        <%= new Date(order.deliveredAt || order.createdAt).toLocaleDateString() %>
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,7 +72,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>Image</th>
                     <th>Product</th>
                     <th>Quantity</th>
                     <th>Price</th>
@@ -179,16 +79,17 @@
                 </tr>
             </thead>
             <tbody>
-                <% order.orderedItems.forEach(item => { %>
+                <% order.orderedItems.forEach(item => { 
+                    const price = typeof item.price === 'number' ? item.price : 0;
+                    const quantity = typeof item.quantity === 'number' ? item.quantity : 0;
+                %>
                     <tr>
                         <td>
-                            
-                            <img src="uploads/re-image/<%= item.product.productImage[0] %>" alt="<%= item.product.productName %>" class="product-image">
+                            <%- item.product.productName || 'Product' %>
                         </td>
-                        <td><%= item.product.productName %></td>
-                        <td><%= item.quantity %></td>
-                        <td>₹<%= item.price.toFixed(2) %></td>
-                        <td>₹<%= (item.price * item.quantity).toFixed(2) %></td>
+                        <td><%= quantity %></td>
+                        <td>₹<%= formatNumber(price) %></td>
+                        <td>₹<%= formatNumber(price * quantity) %></td>
                     </tr>
                 <% }); %>
             </tbody>
@@ -197,21 +98,21 @@
         <div class="total-section">
             <div class="total-row">
                 <div class="total-label">Subtotal:</div>
-                <div class="total-value">₹<%= order.totalPrice.toFixed(2) %></div>
+                <div class="total-value">₹<%= formatNumber(order.totalPrice) %></div>
             </div>
             <% if (order.discount > 0) { %>
                 <div class="total-row">
                     <div class="total-label">Discount:</div>
-                    <div class="total-value">-₹<%= order.discount.toFixed(2) %></div>
+                    <div class="total-value">-₹<%= formatNumber(order.discount) %></div>
                 </div>
             <% } %>
             <div class="total-row">
                 <div class="total-label">Delivery Charge:</div>
-                <div class="total-value">₹50</div>
+                <div class="total-value">₹50.00</div>
             </div>
             <div class="total-row grand-total">
                 <div class="total-label">Grand Total:</div>
-                <div class="total-value">₹<%= order.finalAmount.toFixed(2) %></div>
+                <div class="total-value">₹<%= formatNumber(order.finalAmount) %></div>
             </div>
         </div>
 

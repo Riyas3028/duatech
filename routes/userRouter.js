@@ -8,8 +8,12 @@ const cartController=require('../controllers/user/cartController')
 const wishlistController=require('../controllers/user/wishlistController')
 const checkoutController=require('../controllers/user/checkoutController')
 const orderController=require('../controllers/user/orderController')
+const walletController=require('../controllers/user/walletController')
 const { userAuth } = require("../middlewares/auth");
 
+const multer=require('multer')
+const storage=require("../helpers/multer")
+const uploads=multer({storage:storage});
 
 
 router.get("/",userController.loadHomepage)
@@ -76,6 +80,7 @@ router.get("/change-email",userAuth,profileController.changeEmail)
 router.post("/change-email",userAuth,profileController.changeEmailValid)
 router.post("/verify-email-otp",userAuth,profileController.verifyEmailOtp)
 router.post("/update-email",userAuth,profileController.updateEmail)
+router.post('/uploadProfile',userAuth,uploads.single('profileImage'),profileController.uploadProfile);
 
 router.post("/change-password", userAuth, profileController.changePassword)
 
@@ -91,4 +96,13 @@ router.get('/orders',userAuth,orderController.viewOrders)
 router.get("/orderDetails", userAuth, orderController.loadOrderDetails);
 router.put('/cancelOrder',userAuth,orderController.cancelOrder)
 router.get('/downloadInvoice',userAuth,orderController.downloadInvoice)
+router.post("/returnOrder", userAuth, uploads.array('images', 3), orderController.requestReturn);
+router.post("/ordersearch", userAuth, orderController.orderSearch);
+router.put('/cancelReturnRequest',userAuth,orderController.cancelReturnRequest)
+
+// wallet
+router.get('/wallet',userAuth,walletController.loadWallet)
+router.post("/wallet/create-order", walletController.createOrder);
+router.post("/wallet/verify-payment", walletController.verifyPayment);
+router.put("/wallet/withdrawMoney",userAuth,walletController.withdrawMoney);
 module.exports=router
