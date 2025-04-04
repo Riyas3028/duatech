@@ -35,7 +35,7 @@ const loadDashboard = async (req, res) => {
         return res.redirect('/admin/login');
     }
     try {
-        res.render('dashboard', { currentPage: "dashboard" });
+        res.render('dashboard');
     } catch (error) {
         console.error("Dashboard Error:", error);
         res.redirect('/admin/pageError');

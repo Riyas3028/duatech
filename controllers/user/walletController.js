@@ -30,8 +30,8 @@ const loadWallet = async (req, res, next) => {
 
       
       const paginatedTransactions = wallet.transactions
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
           .slice(skip, skip + limit)
-          .reverse(); 
       res.render("wallet", {
           user: userData,
           wallet: wallet,

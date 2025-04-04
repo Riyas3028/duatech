@@ -2,6 +2,7 @@ const Order = require("../../models/orderSchema");
 const User = require("../../models/userSchema");
 const Product = require("../../models/productSchema");
 const Address = require("../../models/addressSchema");
+const Wallet=require("../../models/walletSchema")
 
 const loadOrderDetails = async (req, res) => {
   try {
@@ -222,6 +223,23 @@ const updateReturnStatus=async(req,res)=>{
         },
         { new: true }
       );
+      const orderData = await Order.findById(orderId);
+      const userId = orderData.userId;
+
+      let wallet = await Wallet.findOne({ userId: userId });
+      if (!wallet) {
+        wallet = new Wallet({ userId, balance: 0, transactions: [] });
+      }
+
+      wallet.balance += parseInt(orderData.finalAmount);
+
+      wallet.transactions.push({
+        amount:orderData.finalAmount,
+        type: "credit",
+        description: "Order return Refund",
+      });
+
+      await wallet.save();
       if (order) {
         return res
           .status(200)

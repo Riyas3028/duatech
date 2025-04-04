@@ -11,58 +11,64 @@
     </div>
     <div class="sidebar-content">
         <ul class="sidebar-menu">
-            <li class="<%= currentPage === 'dashboard' ? 'active' : '' %>">
+            <li class="">
                 <a href="/admin/dashboard">
                     <span class="menu-icon">🏠</span>
                     <span class="menu-text">Dashboard</span>
                 </a>
             </li>
-            <li class="<%= currentPage === 'customers' ? 'active' : '' %>">
+            <li class="">
                 <a href="/admin/customers">
                     <span class="menu-icon">👤</span>
                     <span class="menu-text">Customers</span>
                 </a>
             </li>
-            <li class="<%= currentPage === 'category' ? 'active' : '' %>">
+            <li class="">
                 <a href="/admin/category">
                     <span class="menu-icon">📂</span>
                     <span class="menu-text">Category</span>
                 </a>
             </li>
-            <li class="<%= currentPage === 'brands' ? 'active' : '' %>">
+            <li class="">
                 <a href="/admin/brands">
                     <span class="menu-icon">🛍️</span>
                     <span class="menu-text">Brands</span>
                 </a>
             </li>
-            <li class="<%= currentPage === 'add-products' ? 'active' : '' %>">
+            <li class="">
                 <a href="/admin/add-products">
                     <span class="menu-icon">➕</span>
                     <span class="menu-text">Add Products</span>
                 </a>
             </li>
-            <li class="<%= currentPage === 'products' ? 'active' : '' %>">
+            <li class="">
                 <a href="/admin/products">
                     <span class="menu-icon">📦</span>
                     <span class="menu-text">Products</span>
                 </a>
             </li>
-            <li class="<%= currentPage === 'coupons' ? 'active' : '' %>">
-                <a href="/admin/coupons">
+            <li class="">
+                <a href="/admin/coupon">
                     <span class="menu-icon">🎟️</span>
                     <span class="menu-text">Coupons</span>
                 </a>
             </li>
-            <li class="<%= currentPage === 'banners' ? 'active' : '' %>">
+            <li class="">
                 <a href="/admin/banners">
                     <span class="menu-icon">🖼️</span>
                     <span class="menu-text">Banners</span>
                 </a>
             </li>
-            <li class="<%= currentPage === 'orders' ? 'active' : '' %>">
+            <li class="">
                 <a href="/admin/orders">
                     <span class="menu-icon">🛒</span>
                     <span class="menu-text">Orders</span>
+                </a>
+            </li>
+            <li class=''>
+                <a href="/admin/inventory">
+                    <span class="menu-icon">📦</span>
+                    <span class="menu-text">Inventory</span>
                 </a>
             </li>
         </ul>
@@ -86,10 +92,10 @@
 <style>
     /* Sidebar Styling */
     :root {
-        --sidebar-width: 260px;
+        --sidebar-width: 200px;
         --sidebar-bg: #1e293b;
         --sidebar-hover: #334155;
-        --sidebar-active: #3b82f6;
+        /* --sidebar-active: #3b82f6; */
         --sidebar-text: #f8fafc;
         --logout-btn-bg: #ef4444;
         --logout-btn-hover: #dc2626;

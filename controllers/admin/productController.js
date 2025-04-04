@@ -353,7 +353,72 @@ const deleteSingleImage = async (req, res) => {
     }
   };
   
-
+  const loadInventory = async (req,res) => {
+    try {
+      const search = req.query.search || "";
+      const page = parseInt(req.query.page) || 1;
+      const limit = 7;
+      
+      const brand = await Brand.findOne({ brandName: { $regex: search, $options: "i" } });
+      const category = await Category.findOne({ name: { $regex: search, $options: "i" } });
+      
+      const productData = await Product.find({
+        $or: [
+          { productName: { $regex: search, $options: "i" } },
+          { brand: brand ? brand._id : null },
+          { category: category ? category._id : null },
+        ],
+      })
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .populate("brand")
+        .populate("category")
+        .exec();
+      
+      const count = await Product.find({
+        $or: [
+          { productName: { $regex: search, $options: "i" } },
+          { brandId: brand ? brand._id : null },
+          { categoryId: category ? category._id : null },
+        ],
+      }).countDocuments();
+      
+      const totalPages = Math.ceil(count / limit);
+      
+      res.render("inventory", {
+        product: productData,
+        currentPage: page,
+        totalPages: totalPages,
+        searched:search
+      });
+      
+    } catch (error) {
+      console.error(error);
+    }
+    
+  }
+  
+  const updateInventory=async (req,res) => {
+    try {
+      
+   
+    const productId = req.query.id;
+    const stock = req.body.quantity;
+    
+   const newQuantity= await Product.findByIdAndUpdate(productId,{$set:{quantity:stock}},{new:true});
+  if(newQuantity){
+    return res.status(200).json({success:true,message:"Stock updated successfully"})
+  }
+  else{
+    return res.status(400).json({success:false,message:"Stock updation failed"})
+  }
+   } catch (error) {
+      
+    }
+  
+    
+    
+  }
 module.exports = { 
     getProductAddPage,
      addProducts,
@@ -364,5 +429,7 @@ module.exports = {
           unblockProduct, 
           getEditProduct ,
           editProducts,
-          deleteSingleImage
+          deleteSingleImage,
+          loadInventory,
+          updateInventory
         };

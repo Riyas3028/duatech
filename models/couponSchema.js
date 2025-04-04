@@ -1,7 +1,7 @@
-const mongoose=require('mongoose')
-const {Schema}=mongoose
+const mongoose = require('mongoose');
+const {Schema} = mongoose;
 
-const couponSchema=new Schema({   
+const couponSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -24,18 +24,17 @@ const couponSchema=new Schema({
         type:Number,
         required:true
     },
-    isList:{
+    isListed:{
         type:Boolean,
         default:true
     },
-    userId:[{
-        type:mongoose.Schema.Types.ObjectId,
+    userId:{
+        type:Schema.Types.ObjectId,
         ref:'User'
-    }]
+    }
 
 })
 
+const Coupon = mongoose.model("Coupon",couponSchema);
 
-
-const Coupon=mongoose.model("Coupon",couponSchema)
-module.exports=Coupon
+module.exports = Coupon;

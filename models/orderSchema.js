@@ -73,7 +73,7 @@ const orderSchema=new Schema({
     },
     paymentMethod:{
         type:String,
-        enum:['cod']
+        enum:['cod','wallet','online payment']
     },
     deliveredAt:{
         type:Date,

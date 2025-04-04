@@ -105,4 +105,8 @@ router.get('/wallet',userAuth,walletController.loadWallet)
 router.post("/wallet/create-order", walletController.createOrder);
 router.post("/wallet/verify-payment", walletController.verifyPayment);
 router.put("/wallet/withdrawMoney",userAuth,walletController.withdrawMoney);
+router.post('/placeWalletOrder',userAuth,orderController.placeWalletOrder)
+
+router.post("/order/createOrder",userAuth,orderController.createOrder)
+router.post("/order/verifyPayment",userAuth,orderController.verifyPayment);
 module.exports=router

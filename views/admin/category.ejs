@@ -1,4 +1,4 @@
-<%- include("../../views/partials/admin/adminheader") %>
+
 <%- include("../../views/partials/admin/adminsidebar") %>
 
 <link rel="stylesheet" href="/css/admin.css">
@@ -7,7 +7,7 @@
 
 <style>
     /* Base styles and variables */
-    :root {
+    /* :root { 
         --primary-color: #0d6efd;
         --danger-color: #dc3545;
         --success-color: #198754;
@@ -17,16 +17,15 @@
         --card-border-radius: 8px;
         --button-border-radius: 4px;
         --transition-speed: 0.3s;
-    }
-    
+    }*/
     /* Responsive sidebar and content */
-    .content-wrapper {
+    /* .content-wrapper {
         margin-left: var(--sidebar-width);
         padding: 25px;
         transition: margin-left var(--transition-speed);
         overflow-x: hidden;
     }
-    
+     */
     .content-header {
         margin-bottom: 25px;
         border-bottom: 1px solid #eee;
@@ -256,11 +255,11 @@
 </style>
 
 <!-- Mobile Sidebar Toggle Button -->
-<button id="toggleSidebar" class="d-lg-none">
+<!-- <button id="toggleSidebar" class="d-lg-none">
     <i class="fas fa-bars"></i> Menu
-</button>
+</button> -->
 
-<div class="content-wrapper">
+<div class="main content-wrapper">
     <header class="content-header">
         <h2 class="content-title">Category Management</h2>
     </header>

@@ -156,10 +156,10 @@ const changeQuantity = async (req, res) => {
             return res.status(404).json({ message: "Product not found in cart" });
         }
 
-        // Update the quantity
+        
         specificItem.quantity += count;
-
-        // Ensure the quantity is at least 1
+        specificItem.totalPrice=specificItem.quantity*specificItem.price
+        
         if (specificItem.quantity < 1) {
             specificItem.quantity = 1;
         }

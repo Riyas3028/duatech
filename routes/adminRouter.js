@@ -5,6 +5,7 @@ const customerController = require("../controllers/admin/customerController");
 const categoryController = require("../controllers/admin/categoryController");
 const bannerController= require("../controllers/admin/bannerController");
 const orderController=require("../controllers/admin/orderController");
+const couponController=require("../controllers/admin/couponController")
 const multer=require('multer')
 const { adminAuth } = require("../middlewares/auth");
 
@@ -73,4 +74,14 @@ router.put('/updateStatus',orderController.updateStatus);
 router.put('/orderCancel',orderController.orderCancel)
 router.put('/handleReturn',orderController.handleReturn)
 router.put('/updateReturnStatus',orderController.updateReturnStatus)
+
+//Coupon Management
+router.get('/coupon',adminAuth,couponController.loadCoupon);
+router.post ('/coupon',adminAuth,couponController.addCoupon);
+router.put('/coupon',adminAuth,couponController.editCoupon);
+router.delete('/coupon',adminAuth,couponController.deleteCoupon);
+
+// Inventory management
+router.get('/inventory',adminAuth,productController.loadInventory);
+router.patch('/inventory',adminAuth,productController.updateInventory)
 module.exports = router;

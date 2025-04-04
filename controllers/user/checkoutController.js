@@ -5,7 +5,7 @@ const Address = require("../../models/addressSchema");
 const Cart=require("../../models/cartSchema")
 const mongoose=require('mongoose')
 // const Coupon = require("../../models/couponSchema");
-// const Wallet = require("../../models/walletSchema");
+const Wallet = require("../../models/walletSchema");
 
 const loadCheckoutPage = async (req, res) => {
   try {
@@ -35,7 +35,7 @@ const loadCheckoutPage = async (req, res) => {
             ],
           });
       
-    // const wallet = await Wallet.findOne({ userId: userId });
+    const wallet = await Wallet.findOne({ userId: userId });
         
     //   let transactions = [];
     //   if (wallet) {
@@ -85,8 +85,8 @@ const loadCheckoutPage = async (req, res) => {
           shippingCharge,
           grandTotal,
           userAddress: addressData,
-         wallet:null,
-        //  wallet || { balance: 0, refundAmount: 0, totalDebited: 0 },
+         wallet:wallet || { balance: 0, }
+            // refundAmount: 0, totalDebited: 0 ,
       });}else{
         res.redirect('/cart')
       }
