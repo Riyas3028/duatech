@@ -25,7 +25,6 @@ const getProductAddPage = async (req, res) => {
     }
 };
 
-// Add Product
 const addProducts = async (req, res) => {
     try {
         const { productName, description, regularPrice, category, brand, quantity, size, color, salePrice } = req.body;
@@ -98,7 +97,6 @@ console.log("Brand ID:", brand1 ? brand1._id : "Not Found");
     }
 };
 
-// Get All Products
 const getAllProducts = async (req, res) => {
     try {
         const search = req.query.search || "";
@@ -150,7 +148,6 @@ const getAllProducts = async (req, res) => {
     }
 };
 
-// Add Product Offer
 const addProductOffer = async (req, res) => {
     try {
         const { productId, percentage } = req.body;
@@ -178,7 +175,6 @@ const addProductOffer = async (req, res) => {
     }
 };
 
-// Remove Product Offer
 const removeProductOffer = async (req, res) => {
     try {
         const { productId } = req.body;
@@ -197,7 +193,6 @@ const removeProductOffer = async (req, res) => {
     }
 };
 
-// Block Product
 const blockProduct = async (req, res) => {
     try {
         const id = req.query.id;
@@ -209,7 +204,6 @@ const blockProduct = async (req, res) => {
     }
 };
 
-// Unblock Product
 const unblockProduct = async (req, res) => {
     try {
         const id = req.query.id;
@@ -221,7 +215,6 @@ const unblockProduct = async (req, res) => {
     }
 };
 
-// Get Edit Product
 const getEditProduct = async (req, res) => {
     try {
         const { id } = req.query;
@@ -241,20 +234,16 @@ const getEditProduct = async (req, res) => {
     }
 };
 
-
-
 const editProducts = async (req, res) => {
     try {
         const id = req.params.id;
         const data = req.body;
 
-        // Check if the product exists
         const product = await Product.findById(id);
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
         }
 
-        // Check if another product already has the same name
         const existingProduct = await Product.findOne({
             productName: data.productName,
             _id: { $ne: id }
@@ -264,10 +253,17 @@ const editProducts = async (req, res) => {
             return res.status(400).json({ error: "Product with this name already exists, please try another name" });
         }
 
-        // Handle new images
-        const images = req.files ? req.files.map(file => file.filename) : [];
+        // Handle image validation
+        const images = [];
+        if (req.files && req.files.length > 0) {
+            for (const file of req.files) {
+                if (!file.mimetype.startsWith('image/')) {
+                    return res.status(400).json({ error: "Only image files are allowed." });
+                }
+                images.push(file.filename);
+            }
+        }
 
-        // Fields to update
         const updateFields = {
             productName: data.productName,
             description: data.description,
@@ -280,20 +276,20 @@ const editProducts = async (req, res) => {
             color: data.color,
         };
 
-        // Only update images if new ones are uploaded
         if (images.length > 0) {
             updateFields.$push = { productImage: { $each: images } };
         }
 
         await Product.findByIdAndUpdate(id, updateFields, { new: true });
 
-        console.log("Product update completed");
-        res.redirect('/admin/products');
+        return res.json({ message: "Product updated successfully" });
+
     } catch (error) {
         console.error("Error updating product:", error);
-        res.status(500).json({ error: "Internal Server Error" }); 
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
 
 // const deleteSingleImage = async (req, res) => {
 //     try {

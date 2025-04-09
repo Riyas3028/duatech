@@ -1,0 +1,178 @@
+ <%- include("../partials/admin/adminsidebar") %>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <style>
+    .search-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .search-container {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+
+    .search-form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .search-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    th:nth-child(5), td:nth-child(5) {
+      width: 200px;
+    }
+    
+  </style>
+</head>
+<body>
+
+<div class="content-wrapper mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h2>Wallet Transactions</h2>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <form class="search-form mt-3" method="GET" action="/admin/wallet">
+            <div class="input-group border border-1 rounded-pill overflow-hidden">
+              <input
+                type="text"
+                class="form-control border-0"
+                placeholder="Search by user or transaction ID"
+                name="search"
+                value="<%= search %>"
+              />
+              <button class="btn border-0 bg-white" type="submit">
+                <i class="fas fa-search text-primary"></i>
+              </button>
+            </div>
+          </form>
+          
+      <div class="search-actions mt-3">
+        <a href="/admin/wallet" class="btn btn-secondary rounded-pill d-none" id="clearSearch" >
+          <i class="fas fa-times me-1"></i> Clear
+        </a>
+      </div>
+    </div>
+
+
+<div class="card-body">
+    <div class="table-responsive">
+
+      <% 
+        const allTransactions = [];
+        wallets.forEach(wallet => {
+          wallet.transactions.forEach(transaction => {
+            allTransactions.push({
+              transaction,
+              user: wallet.userId
+            });
+          });
+        });
+
+        const limit = 10;
+        const page = parseInt(currentPage) || 1;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const paginatedTransactions = allTransactions.slice(startIndex, endIndex);
+        const totalTransactions = allTransactions.length;
+        const totalPagesCalc = Math.ceil(totalTransactions / limit);
+      %>
+
+      <table class="table table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Transaction ID</th>
+            <th>Date</th>
+            <th>User</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Action</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <% paginatedTransactions.forEach(({ transaction, user }) => { %>
+            <tr>
+              <td><%= transaction.transactionId %></td>
+              <td><%= new Date(transaction.date).toLocaleDateString() %></td>
+              <td><%= user?.name || "N/A" %></td>
+              <td>
+                <span class="badge <%= transaction.type === 'credit' ? 'bg-success text-dark' : 'bg-danger text-white' %>">
+                  <%= transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1) %>
+                </span>
+              </td>
+              <td>₹<%= transaction.amount.toFixed(2) %></td>
+              <td>
+                <a href="/admin/wallet/transaction/<%= transaction.transactionId %>" class="btn btn-sm btn-info">
+                  <i class="fas fa-eye"></i> View
+                </a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+    
+    <div class="pagination-container d-flex justify-content-center mt-4 mb-4">
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-sm flex-wrap">
+            <% if (page > 1) { %>
+            <li class="page-item">
+              <a href="?page=<%= page - 1 %>&search=<%= search %>" class="page-link">&laquo; Previous</a>
+            </li>
+            <% } %>
+            <% for (let i = 1; i <= totalPagesCalc; i++) { %>
+              <% if (i === page) { %>
+                <li class="page-item active">
+                  <span class="page-link"><%= i %></span>
+                </li>
+              <% } else { %>
+                <li class="page-item">
+                  <a href="?page=<%= i %>&search=<%= search %>" class="page-link"><%= i %></a>
+                </li>
+              <% } %>
+            <% } %>
+            <% if (page < totalPagesCalc) { %>
+            <li class="page-item">
+              <a href="?page=<%= page + 1 %>&search=<%= search %>" class="page-link">Next &raquo;</a>
+            </li>
+            <% } %>
+          </ul>
+        </nav>
+      </div>
+      
+  </div>
+</div>
+
+<script src="https://kit.fontawesome.com/c4265f3711.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+ integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+ crossorigin="anonymous"></script>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("search")) {
+      document.getElementById("clearSearch").classList.remove("d-none");
+    }
+  });
+</script>

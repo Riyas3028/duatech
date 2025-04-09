@@ -79,9 +79,9 @@ const addToCart = async (req, res) => {
 
 const loadCart = async (req, res) => {
   try {
-    const userId = req.session.user; // Get logged-in user ID
+    const userId = req.session.user; 
     const userData = await User.findById(userId);
-    // Fetch the cart for the user & populate product details
+    
     const cart = await Cart.findOne({ userId }).populate({
       path: "items.productId",
       populate: [

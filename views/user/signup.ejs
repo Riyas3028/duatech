@@ -92,6 +92,11 @@
                         <input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="Confirm your password">
                         <div id="error5" class="error-message"></div>
                     </div>
+                    <div class="mb-3">
+                        <label for="referral" class="form-label">Referral Code</label>
+                        <input type="text" class="form-control" id="referral" name="referral" placeholder="Referral Code(Optional)">
+                        <div id="error2" class="error-message"></div>
+                    </div>
                     <%if(locals.message&&message.length>0){%>
                         <div class="alert alert-danger  text-center">
                             <%=message%>

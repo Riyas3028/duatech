@@ -89,6 +89,8 @@ router.post("/change-password", userAuth, profileController.changePassword)
 router.get('/checkout',userAuth,checkoutController.loadCheckoutPage)
 router.get("/addAddressCheckout",userAuth,checkoutController.addAddressCheckout)
 router.post("/addAddressCheckout",userAuth,checkoutController.postAddAddressCheckout)
+router.post('/applyCoupon',userAuth,checkoutController.applyCoupon);
+router.delete('/removeCoupon',userAuth,checkoutController.removeCoupon)
 
 router.post('/placeOrder',userAuth,orderController.placeOrder)
 router.get('/confirmation',userAuth,orderController.loadConfirmation)
@@ -102,8 +104,8 @@ router.put('/cancelReturnRequest',userAuth,orderController.cancelReturnRequest)
 
 // wallet
 router.get('/wallet',userAuth,walletController.loadWallet)
-router.post("/wallet/create-order", walletController.createOrder);
-router.post("/wallet/verify-payment", walletController.verifyPayment);
+router.post("/wallet/create-order",userAuth, walletController.createOrder);
+router.post("/wallet/verify-payment",userAuth, walletController.verifyPayment);
 router.put("/wallet/withdrawMoney",userAuth,walletController.withdrawMoney);
 router.post('/placeWalletOrder',userAuth,orderController.placeWalletOrder)
 

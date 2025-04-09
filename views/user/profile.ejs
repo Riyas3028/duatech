@@ -3,400 +3,509 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
 <style>
- .card-green {
-   background-color: #ADD8E6;
- }
- .main {
-   padding: 30px 0;
- }
-
-
- .dashboard-menu {
-   background-color: #cce3e6;
-   border-radius: 10px;
-   padding: 15px;
-   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
- }
-
-
- .dashboard-menu .nav-link {
- font-weight: bold;
- color: #30683c;
- box-shadow: 0 4px 10px rgba(123, 131, 112, 0.3), 0 4px 20px rgba(0, 191, 255, 0.2);
- transition: box-shadow 0.3s ease;
-}
-
-
-.dashboard-menu .nav-link:hover {
- color: #00bfff;
- box-shadow: 0 4px 15px rgba(173, 255, 47, 0.5), 0 6px 25px rgba(0, 191, 255, 0.4);
-}
-
-
- .card {
-   border-radius: 10px;
-   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-   margin-bottom: 20px;
- }
-
-
- .card-header {
-   background-color: #487379;
-   color: white;
-   border-radius: 10px 10px 0 0;
- }
-
-
- .btn-success {
-   background-color: #577194;
-   border-color: #6bb87d;
- }
-
-
- .btn-success:hover {
-   background-color: #506955;
- }
-
-
- .form-group {
-   margin-bottom: 15px;
- }
-
-
- .required {
-   color: red;
- }
-
-
-  @media (max-width: 768px) {
-   .dashboard-menu {
-     padding: 10px;
-   }
-
-
-   .card {
-     margin-bottom: 15px;
-   }
- }
- .page-header.breadcrumb-wrap {
- background-color: #eee2e9;
- padding: 15px 0;
-}
-
-
-.breadcrumb {
- display: flex;
- align-items: center;
- font-family: 'Arial', sans-serif;
- font-size: 16px;
- color: #121311;
-}
-
-
-.breadcrumb a {
- color: #007bff;
- text-decoration: none;
- position: relative;
- margin: 0 5px;
-}
-
-
-.breadcrumb a:hover {
- color: #0056b3;
-}
-
-
-.breadcrumb span {
- margin: 0 5px;
- color: #999;
-}
-
-
-.breadcrumb a::after {
- content: '';
- position: absolute;
- width: 100%;
- height: 2px;
- background: #6e6e3a;
- left: 0;
- bottom: -2px;
- transform: scaleX(0);
- transition: transform 0.3s ease;
-}
-
-
-.breadcrumb a:hover::after {
- transform: scaleX(1);
-}
-
-.profile-image-container {
-        display: flex;
-        align-items: center;
+  /* Base styles */
+  body {
+    background-color: #f7f7f7;
+    font-family: 'Arial', sans-serif;
+    padding-top: 0; /* Remove any default padding */
+    position: relative;
+  }
+  
+  /* Header and breadcrumb styles - Improved positioning */
+  .banner-area {
+    /* background-color: #eee2e9; */
+    padding: 15px 0;
+    margin-bottom: 30px;
+    position: relative;
+    height: 400px;
+    /* No fixed margin-top - will be set by JavaScript */
+  }
+  
+  .breadcrumb-banner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    margin-top: 200px;
+  }
+  
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #121311;
+    background-color: unset;
+  }
+  
+  .breadcrumb a {
+    color: #007bff;
+    text-decoration: none;
+    position: relative;
+    margin: 0 5px;
+    transition: color 0.3s ease;
+  }
+  
+  .breadcrumb a:hover {
+    color: #0056b3;
+  }
+  
+  .breadcrumb a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #6e6e3a;
+    left: 0;
+    bottom: -2px;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .breadcrumb a:hover::after {
+    transform: scaleX(1);
+  }
+  
+  /* Profile section styles */
+  .profile-image-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .rounded-circle {
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+  }
+  
+  .ml-3 {
+    margin-left: 15px;
+  }
+  
+  /* Sidebar styles */
+  .sidebar {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    height: fit-content;
+  }
+  
+  .sidebar a {
+    color: #333;
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .sidebar a.active {
+    color: #ff6600;
+    background-color: rgba(255, 102, 0, 0.1);
+  }
+  
+  .sidebar a:hover {
+    color: #ff6600;
+    background-color: rgba(255, 102, 0, 0.05);
+  }
+  
+  .sidebar a i {
+    margin-right: 10px;
+  }
+  
+  /* Main content styles */
+  .main-content {
+    background-color: white;
+    padding: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .main-content h2 {
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+  }
+  
+  .main-content h3 {
+    margin: 25px 0 15px;
+    color: #333;
+  }
+  
+  /* Form styles */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .form-control {
+    border-radius: 5px;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s;
+  }
+  
+  .form-control:focus {
+    border-color: #4d90fe;
+    box-shadow: 0 0 0 0.2rem rgba(77, 144, 254, 0.25);
+  }
+  
+  .text-danger {
+    color: #dc3545;
+  }
+  
+  .text-muted {
+    font-size: 0.85rem;
+  }
+  
+  /* Button styles */
+  .btn {
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+  
+  /* Password field styles */
+  .password-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+    color: #6c757d;
+  }
+  
+  .toggle-password:hover {
+    color: #343a40;
+  }
+  
+  /* Spacing utilities */
+  .mt-3 {
+    margin-top: 1rem;
+  }
+  
+  .mt-4 {
+    margin-top: 1.5rem;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 991px) {
+    .container {
+      max-width: 100%;
+      padding: 0 15px;
     }
-
-    .rounded-circle {
-        border-radius: 50%;
-        border: 2px solid #fff; /* Optional: Add a border to the image */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow effect */
+    
+    .breadcrumb-banner {
+      flex-direction: column;
+      align-items: flex-start;
     }
-
-    .ml-3 {
-        margin-left: 15px; /* Space between image and text */
+    
+    .col-first {
+      margin-top: 15px;
     }
+  }
+  
+  @media (max-width: 767px) {
+    .sidebar {
+      margin-bottom: 20px;
+    }
+    
+    .main-content {
+      padding: 20px 15px;
+    }
+    
+    .form-row {
+      display: block;
+    }
+    
+    .form-group {
+      width: 100%;
+      padding: 0;
+    }
+    
+    .input-group {
+      flex-direction: column;
+    }
+    
+    .input-group-prepend {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    
+    .button-group {
+      flex-direction: column;
+    }
+    
+    .button-group .btn {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
 </style>
 
-<section class="banner-area organic-breadcrumb">
-    <div class="container">
-        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-between">
-            <div class="col-left d-flex align-items-center">
-                
-                <div class="ml-3">
-                    <h5 id="fullName" style="color: #121311;"><%= user.name || 'John Doe' %></h5>
-                    <p id="email" style="color: #121311;"><%= user.email || 'johndoe@example.com' %></p>
-                    
-                </div>
-            </div>
-            <div class="col-first">
-                <h1>User Profile</h1>
-                <nav class="d-flex align-items-center">
-                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="#">Profile</a>
-                </nav>
-            </div>
-        </div>
+<!-- The banner area with proper spacing from the header -->
+<section class="banner-area">
+  <div class="container">
+    <div class="breadcrumb-banner">
+      <div class="col-first">
+        <h1>User Profile</h1>
+        <nav class="breadcrumb">
+          <a href="/">Home</a>
+          <span class="mx-2">></span>
+          <a href="#">Profile</a>
+        </nav>
+      </div>
     </div>
-    <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="previewImage(event)">
+  </div>
+  <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="previewImage(event)">
 </section>
 
-
-
-
-    <style>
-        body {
-            background-color: #f7f7f7;
-        }
-        .sidebar {
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar a {
-            color: #333;
-            display: block;
-            padding: 10px 0;
-            text-decoration: none;
-        }
-        .sidebar a.active {
-            color: #ff6600;
-        }
-        .sidebar a:hover {
-            color: #ff6600;
-        }
-        .sidebar a i {
-            margin-right: 10px;
-        }
-        .main-content {
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .main-content h2 {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            font-weight: bold;
-        }
-        .form-group span {
-            color: red;
-        }
-        .btn-orange {
-            background-color: #ff6600;
-            color: white;
-        }
-        .btn-orange:hover {
-            background-color: #e65c00;
-        }
-        .btn-blue {
-            background-color: #0000ff;
-            color: white;
-        }
-        .btn-blue:hover {
-            background-color: #0000cc;
-        }
-        .photo img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        .password-wrapper {
-            position: relative;
-            display: inline-block; /* Changed from block to inline-block */
-            width: 55%; /* Match your input width */
-        }
-
-        .password-wrapper input {
-            width: 100%; /* Make input fill the wrapper */
-            padding-right: 40px; /* Add padding to prevent text overlap with icon */
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            z-index: 1; /* Ensure icon stays above input */
-        }
-    </style>
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="row">
-            <!-- Sidebar -->
-            <%- include('../partials/user/profileSidebar') %>
-            <!-- Main Content -->
-            <div class="col-md-9 main-content">
-                <h2>Personal Information</h2>
-                <form id="profileForm">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>Full Name <span class="text-danger">*</span></label>
-                            <input name="name" type="text" value="<%= user.name %>" class="form-control" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Username <span class="text-danger">*</span></label>
-                            <input name="username" type="text" value="<%= user.username %>" placeholder="Set your Username" class="form-control" required>
-                            <small class="text-muted">Choose a unique username</small>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Email address</label>
-                            <input type="email" value="<%= user.email %>" class="form-control" disabled>
-                            <small class="text-muted">Email cannot be changed here</small>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Phone Number <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <select class="form-control" id="countryCode" disabled>
-                                        <option value="+91">+91</option>
-                                    </select>
-                                </div>
-                                <input type="text" name="phone" class="form-control" value="<%= user.phone %>" 
-                                       pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number"
-                                       placeholder="Enter phone number" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group col-md-6">
-                            <a class="btn btn-primary" href="/change-email">Change Your Email</a>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-success">Save Changes</button>
-                </form>
-                <hr class="mt-4 mb-4">
-                <h3>Change Password</h3>
-                <form id="changePasswordForm">
-                    <div class="form-group">
-                        <label for="currentPassword">Current Password</label><br>
-                        <div class="password-wrapper">
-                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
-                            <i onclick="togglePassword('currentPassword', this)" class="bi bi-eye-fill toggle-password"></i>
-                        </div><br>
-                        <small id="currentPasswordError" class="text-danger"></small>
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="newPassword">New Password</label><br>
-                        <div class="password-wrapper">
-                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
-                            <i onclick="togglePassword('newPassword', this)" class="bi bi-eye-fill toggle-password"></i>
-                        </div><br>
-                        <small id="newPasswordError" class="text-danger"></small>
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="confirmPassword">Confirm New Password</label><br>
-                        <div class="password-wrapper">
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                            <i onclick="togglePassword('confirmPassword', this)" class="bi bi-eye-fill toggle-password"></i>
-                        </div><br>
-                        <small id="confirmPasswordError" class="text-danger"></small>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-3">Change Password</button>
-                </form>
-                <div id="forgotpasschange" class="mt-3">
-                    <a href="#forgotpasschange" onclick="confirmForgotPassword()">Forgot Password..?</a>
-                </div>
-            </div>
-        </div>
+<div class="container mb-5">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <%- include('../partials/user/profileSidebar') %>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    
+    <!-- Main Content -->
+    <div class="col-lg-9 col-md-8">
+      <div class="main-content">
+        <h2>Personal Information</h2>
+        
+        <% if(user.referralCode) { %>
+        <div class="alert alert-success mb-4">
+          <h5 class="mb-0">Referral Code: <strong><%= user.referralCode %></strong></h5>
+        </div>
+        <% } %>
+        
+        <form id="profileForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label>Full Name <span class="text-danger">*</span></label>
+              <input name="name" type="text" value="<%= user.name %>" class="form-control" required>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label>Username <span class="text-danger">*</span></label>
+              <input name="username" type="text" value="<%= user.username %>" placeholder="Set your Username" class="form-control" required>
+              <small class="text-muted">Choose a unique username</small>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label>Email address</label>
+              <input type="email" value="<%= user.email %>" class="form-control" disabled>
+              <small class="text-muted">Email cannot be changed here</small>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label>Phone Number <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text">+91</span>
+                <input type="text" name="phone" class="form-control" value="<%= user.phone %>" 
+                    pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number"
+                    placeholder="Enter phone number" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <a href="/change-email" class="btn btn-primary">Change Your Email</a>
+            </div>
+            <div class="col-md-6 mb-3 text-md-end">
+              <button type="submit" class="btn btn-success">Save Changes</button>
+            </div>
+          </div>
+        </form>
+        
+        <hr class="mt-4 mb-4">
+        
+        <h3>Change Password</h3>
+        <form id="changePasswordForm">
+          <div class="mb-3">
+            <label for="currentPassword">Current Password</label>
+            <div class="password-wrapper">
+              <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+              <i onclick="togglePassword('currentPassword', this)" class="bi bi-eye-fill toggle-password"></i>
+            </div>
+            <small id="currentPasswordError" class="text-danger"></small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="newPassword">New Password</label>
+            <div class="password-wrapper">
+              <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+              <i onclick="togglePassword('newPassword', this)" class="bi bi-eye-fill toggle-password"></i>
+            </div>
+            <small id="newPasswordError" class="text-danger"></small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="confirmPassword">Confirm New Password</label>
+            <div class="password-wrapper">
+              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+              <i onclick="togglePassword('confirmPassword', this)" class="bi bi-eye-fill toggle-password"></i>
+            </div>
+            <small id="confirmPasswordError" class="text-danger"></small>
+          </div>
+          
+          <div class="row mt-3">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary me-2">Change Password</button>
+              <a href="#forgotpasschange" onclick="confirmForgotPassword()" class="btn btn-link">Forgot Password?</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
+<script>
+  // Improved function to adjust banner position based on header height
+  function adjustBannerPosition() {
+    const header = document.querySelector('header');
+    const bannerArea = document.querySelector('.banner-area');
+    
+    if (header && bannerArea) {
+      const headerHeight = header.offsetHeight;
+      const headerStyles = window.getComputedStyle(header);
+      const isHeaderFixed = headerStyles.position === 'fixed' || headerStyles.position === 'sticky';
+      
+      // If header is fixed or sticky, add its height as margin-top to banner
+      if (isHeaderFixed) {
+        bannerArea.style.marginTop = headerHeight + 'px';
+      } else {
+        // If header is not fixed, calculate appropriate spacing
+        bannerArea.style.marginTop = '0px';
+      }
+    }
+  }
+  
+  // Run on page load, after small delay to ensure all elements are rendered
+  window.addEventListener('DOMContentLoaded', function() {
+    // Initial adjustment
+    setTimeout(adjustBannerPosition, 100);
+  });
+  
+  // Also adjust on resize
+  window.addEventListener('resize', adjustBannerPosition);
+  
+  // Add adjustment on page load complete for good measure
+  window.addEventListener('load', adjustBannerPosition);
 
-function togglePassword(inputId, icon) {
+  function togglePassword(inputId, icon) {
     const input = document.getElementById(inputId);
     if (input.type === "password") {
-        input.type = "text";
-        icon.classList.add('bi-eye-slash-fill');
-        icon.classList.remove('bi-eye-fill');
+      input.type = "text";
+      icon.classList.add('bi-eye-slash-fill');
+      icon.classList.remove('bi-eye-fill');
     } else {
-        input.type = "password";
-        icon.classList.add('bi-eye-fill');
-        icon.classList.remove('bi-eye-slash-fill');
+      input.type = "password";
+      icon.classList.add('bi-eye-fill');
+      icon.classList.remove('bi-eye-slash-fill');
     }
-}
+  }
 
+  document.getElementById('profileForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
 
-    document.getElementById('profileForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
-    
-        try {
-            const response = await fetch('/update-profile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-    
-            const result = await response.json();
-    
-            if (result.success) {
-                await Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Profile updated successfully',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-                window.location.href = '/userProfile';
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: result.message,
-                });
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'An unexpected error occurred. Please try again.',
-            });
-        }
-    });
+    try {
+      const response = await fetch('/update-profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+      const result = await response.json();
+
+      if (result.success) {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Profile updated successfully',
+          timer: 2000,
+          showConfirmButton: false
+        });
+        window.location.href = '/userProfile';
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: result.message,
+        });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An unexpected error occurred. Please try again.',
+      });
+    }
+  });
+
+  document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
     // Reset error messages
@@ -412,104 +521,92 @@ function togglePassword(inputId, icon) {
     let isValid = true;
 
     if (newPassword.length < 8 || !/[a-zA-Z]/.test(newPassword) || !/\d/.test(newPassword)) {
-        document.getElementById('newPasswordError').textContent = 'Password must be at least 8 characters long and contain both letters and numbers.';
-        isValid = false;
+      document.getElementById('newPasswordError').textContent = 'Password must be at least 8 characters long and contain both letters and numbers.';
+      isValid = false;
     }
 
     if (newPassword !== confirmPassword) {
-        document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
-        isValid = false;
+      document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+      isValid = false;
     }
 
     if (!isValid) return;
 
     try {
-        const response = await fetch('/change-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+      const response = await fetch('/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Password changed successfully',
+          timer: 2000,
+          showConfirmButton: false
         });
-
-        const result = await response.json();
-
-        if (result.success) {
-            await Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Password changed successfully',
-                timer: 2000,
-                showConfirmButton: false
-            });
-            window.location.href = '/userProfile';
+        window.location.href = '/userProfile';
+      } else {
+        if (result.error === 'current_password_incorrect') {
+          document.getElementById('currentPasswordError').textContent = 'Current password is incorrect.';
         } else {
-            if (result.error === 'current_password_incorrect') {
-                document.getElementById('currentPasswordError').textContent = 'Current password is incorrect.';
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: result.message,
-                });
-            }
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        Swal.fire({
+          Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'An unexpected error occurred. Please try again.',
-        });
-    }
-});
-
-function confirmLogout(event) {
-        event.preventDefault(); // Prevent default link behavior
-
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You will be logged out!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Logout"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = "/logout"; // Redirect only if confirmed
-            }
-        });
-    }
-
-    function confirmForgotPassword() {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You'll be logged out to reset your password.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, proceed",
-                cancelButtonText: "Cancel",
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "/forgot-password-logout"; 
-                }
-            });
+            text: result.message,
+          });
         }
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An unexpected error occurred. Please try again.',
+      });
+    }
+  });
 
-    </script>
+  function confirmLogout(event) {
+    event.preventDefault(); // Prevent default link behavior
 
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/logout"; // Redirect only if confirmed
+      }
+    });
+  }
 
-
-<br><br>
+  function confirmForgotPassword() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You'll be logged out to reset your password.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, proceed",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/forgot-password-logout"; 
+      }
+    });
+  }
+</script>
 
 <%- include("../../views/partials/user/footer") %>
-
-
-
-

@@ -6,6 +6,8 @@ const categoryController = require("../controllers/admin/categoryController");
 const bannerController= require("../controllers/admin/bannerController");
 const orderController=require("../controllers/admin/orderController");
 const couponController=require("../controllers/admin/couponController")
+const salesController=require("../controllers/admin/salesController")
+const walletController=require("../controllers/admin/walletController")
 const multer=require('multer')
 const { adminAuth } = require("../middlewares/auth");
 
@@ -84,4 +86,10 @@ router.delete('/coupon',adminAuth,couponController.deleteCoupon);
 // Inventory management
 router.get('/inventory',adminAuth,productController.loadInventory);
 router.patch('/inventory',adminAuth,productController.updateInventory)
+
+router.get('/sales',adminAuth,salesController.loadSales);
+router.get('/salesReport',adminAuth,salesController.loadSalesReport);
+
+
+router.get('/wallet',adminAuth,walletController.loadWallet)
 module.exports = router;

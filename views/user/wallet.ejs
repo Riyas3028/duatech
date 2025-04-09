@@ -240,9 +240,13 @@
           <div class="col-md-4 mb-3">
             <div id="add-money-button" class="unique-balance-card available">
               <p class="amount">
-                ₹<span id="availableBalance"
-                  ><%= wallet.balance.toFixed(2) %></span
-                >
+                ₹<%if(wallet.balance){%>
+                  <span id="availableBalance">
+                    <%= wallet.balance.toFixed(2) %></span>
+                  <%}else{%>
+                      <span id="availableBalance"
+                    >0</span>
+                      <%}%>
               </p>
               <p>Available Balance</p>
             </div>

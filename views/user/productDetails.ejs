@@ -48,7 +48,33 @@
     text-decoration: line-through;
 }
 
+.single-img img {
+  max-height: 60px;
+  filter: grayscale(100%);
+  transition: all var(--transition-speed) ease;
+  opacity: 0.7;
+}
 
+.single-img:hover img {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+.product-card .btn {
+  width: 36px;
+  height: 36px;
+  padding: 10;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.product-card .btn i {
+  font-size: 0.9rem;
+}
+
+.product-card .btn:hover {
+  transform: scale(1.1);
+}
 </style>
 
 	<!-- Start Banner Area -->
@@ -168,62 +194,7 @@
 										<h5>1 Year Brand Warranty</h5>
 									</td>
 								</tr>
-								<!-- <tr> -->
-									<!-- <td>
-										<h5>Processor</h5>
-									</td>
-									<td>
-										<h5><%=product.processor%></h5>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<h5>Graphics Card</h5>
-									</td>
-									<td>
-										<h5><%=product.graphicsCard%></h5>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<h5>Storages</h5>
-									</td>
-									<td>
-										<h5><%=product.storages%></h5>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<h5>Display</h5>
-									</td>
-									<td>
-										<h5><%=product.display%></h5>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<h5>Colour</h5>
-									</td>
-									<td>
-										<h5><%=product.color%></h5>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<h5>Operating System</h5>
-									</td>
-									<td>
-										<h5><%=product.operatingSystem%></h5>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<h5>Box Contains</h5>
-									</td>
-									<td>
-										<h5><%=product.boxContains%></h5>
-									</td>
-								</tr> -->
+								
 							</tbody>
 						</table>
 					</div>
@@ -279,51 +250,36 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
-                <div class="col-lg-9">
-                    <div class="row">
-                        <% for (let i = 0; i < products.length; i++) { %>
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-6 mb-4">
-                            <div class="card product-card shadow-sm border-0">
-                                <a href="/productDetails?id=<%= products[i]._id %>">
-                                    <img src="/uploads/re-image/<%= products[i].productImage[0] %>" class="card-img-top" alt="<%= products[i].productName.split('|')[0] %>">
-                                </a>
-                                <div class="card-body text-center">
-                                    <h6 class="card-title">
-                                        <a href="/productDetails?id=<%= products[i]._id %>" class="text-dark">
-                                            <%= products[i].productName.split('|')[0] %>
-                                        </a>
-                                    </h6>
-                                    <div class="price">
-                                        <h6 class="text-danger mb-0">
-                                            ₹ <%= products[i].salePrice.toLocaleString('en-IN') %>
-                                        </h6>
-                                        <h6 class="text-muted l-through">
-                                            ₹ <%= products[i].regularPrice.toLocaleString('en-IN') %>
-                                        </h6>
-                                    </div>
-									
-                                    <div class="product-actions mt-3">
-                                        <!-- <a href="#" onclick="addToCart('<%= products[i]._id %>')" class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-shopping-bag"></i> Add to Cart
-                                        </a> -->
-										<button class="btn btn-primary flex-grow-1 me-2 addToCartBtn similar" data-id="<%= products[i]._id %>">
-											<i class="fas fa-shopping-cart me-2"></i> Add to cart
-										</button>
-                                        <a href="#" onclick="addToWishlist('<%= products[i]._id %>')" class="btn btn-outline-danger btn-sm">
-                                            <i class="fas fa-heart"></i> Wishlist
-                                        </a>
-                                        <a href="/productDetails?id=<%= products[i]._id %>" class="btn btn-outline-secondary btn-sm">
-                                            <i class="fas fa-eye"></i> View More
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <% } %>
-                    </div>
-                </div>
-            </div>
+			<div class="row g-4">
+				<% for (let i = 0; i < products.length; i++) { %>
+				  <div class="col-lg-3 col-md-4 col-sm-6">
+					<div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden product-card position-relative">
+					  <a href="/productDetails?id=<%= products[i]._id %>">
+						<img src="/uploads/re-image/<%= products[i].productImage[0] %>" class="card-img-top img-fluid" alt="<%= products[i].productName %>" style="object-fit: cover; height: 220px;">
+					  </a>
+					  <div class="card-body text-center">
+						<h6 class="card-title mb-2 fw-semibold"><%= products[i].productName %></h6>
+						<div class="price d-flex justify-content-center align-items-center gap-2 mb-2">
+						  <span class="text-danger fw-bold">₹<%= products[i].salePrice %></span>
+						  <del class="text-muted small">₹<%= products[i].regularPrice %></del>
+						</div>
+						<div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+							<button class="btn btn-sm btn-outline-primary addToCartBtn d-flex align-items-center gap-1" data-id="<%= products[i]._id %>">
+							  <i class="fas fa-cart-plus"></i>
+							</button>
+							<button onclick="addToWishlist('<%=products[i]._id%>')" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1">
+							  <i class="fas fa-heart"></i>
+							</button>
+							<a href="/productDetails?id=<%= products[i]._id %>" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1">
+							  <i class="fas fa-eye"></i>
+							</a>
+						  </div>
+						  
+					  </div>
+					</div>
+				  </div>
+				<% } %>
+			  </div>
             
 		</div>
 	</section>

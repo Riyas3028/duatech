@@ -33,9 +33,9 @@ const placeOrder =async (req,res) => {
 
         let finalAmount=0;
     if(totalPrice<50000){
-    finalAmount = totalPrice + 200;
+    finalAmount = totalPrice + 200-cart.discount;
     }else{
-      finalAmount = totalPrice 
+      finalAmount = totalPrice-cart.discount
     }
         const invoiceDate = new Date();
         const status = 'Processing';
@@ -48,7 +48,8 @@ const placeOrder =async (req,res) => {
             invoiceDate:invoiceDate,
             status:status,
             userId:userId,
-            paymentMethod:paymentMethod
+            paymentMethod:paymentMethod,
+            discount:cart.discount,
         });
 
         await orderSchema.save();
@@ -206,153 +207,31 @@ const cancelOrder=async(req,res)=>{
         res.redirect('/pageNotFound')
       }
 }
-// const downloadInvoice=async(req,res)=>{
-//     try {
-//         const userId = req.session.user;
-//         const user = await User.findById(userId)
-//         const orderId=req.query.orderId;
+const downloadInvoice=async(req,res)=>{
+    try {
+        const userId = req.session.user;
+        const user = await User.findById(userId)
+        const orderId=req.query.orderId;
         
-//         let order = await Order.findOne({orderId:orderId}).populate('orderedItems.product').lean();
+        let order = await Order.findOne({orderId:orderId}).populate('orderedItems.product').lean();
         
-//         const addressDoc = await Address.findOne({ userId: userId }).lean();
+        const addressDoc = await Address.findOne({ userId: userId }).lean();
         
-//         const userAddress = addressDoc.address.find((addr) => addr._id.toString() === order.address.toString());
+        const userAddress = addressDoc.address.find((addr) => addr._id.toString() === order.address.toString());
         
-//         order.address = userAddress
+        order.address = userAddress
 
         
     
 
-//         res.render('invoice',{order:order,user:user});
-
-//     } catch (error) {
-//         console.error(error);
-//         res.redirect('/pageNotFound')
-//     }
-// }
-
-const puppeteer = require('puppeteer');
-const path = require('path');
-
-const downloadInvoice = async (req, res) => {
-    try {
-        const userId = req.session.user;
-        const user = await User.findById(userId);
-        const orderId = req.query.orderId;
-
-        let order = await Order.findOne({ orderId }).populate('orderedItems.product').lean();
-        if (!order) {
-            return res.status(404).send("Order not found");
-        }
-
-        const addressDoc = await Address.findOne({ userId }).lean();
-        if (!addressDoc || !addressDoc.address) {
-            return res.status(404).send("Address not found");
-        }
-
-        const userAddress = addressDoc.address.find((addr) => addr._id.toString() === order.address.toString());
-        if (!userAddress) {
-            return res.status(404).send("Shipping address not found");
-        }
-
-        order.address = userAddress;
-        
-        // Process the order data to ensure all properties needed by template exist
-        order.deliveredAt = order.deliveredAt || order.deliveredOn || order.createdAt;
-        order.finalAmount = order.finalAmount || 0;
-        order.totalPrice = order.totalPrice || 0;
-        order.discount = order.discount || 0;
-        
-        // Process each ordered item
-        order.orderedItems = order.orderedItems.map(item => {
-            return {
-                ...item,
-                price: item.price || (item.product ? item.product.salePrice : 0),
-                quantity: item.quantity || 1,
-                product: {
-                    ...item.product,
-                    // Ensure product image is available
-                    productImage: item.product && item.product.productImage && item.product.productImage.length > 0 
-                        ? item.product.productImage 
-                        : ['placeholder.jpg']
-                }
-            };
-        });
-
-        // Get server base URL for absolute image paths
-        const serverBaseUrl = `${req.protocol}://${req.get('host')}`;
-        
-        // Render invoice as HTML
-        const htmlContent = await new Promise((resolve, reject) => {
-            res.render('invoice', { 
-                order, 
-                user,
-                serverBaseUrl,
-                formatNumber: (num) => (typeof num === 'number' ? num.toFixed(2) : '0.00')
-            }, (err, html) => {
-                if (err) reject(err);
-                else resolve(html);
-            });
-        });
-
-        // Launch Puppeteer
-        const browser = await puppeteer.launch({ 
-            headless: 'new',
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
-        
-        const page = await browser.newPage();
-        
-        // Handle console logs from the page for debugging
-        page.on('console', msg => console.log('PDF Page Log:', msg.text()));
-        
-        // Add error tracking
-        page.on('error', err => {
-            console.error('Puppeteer error:', err);
-        });
-        
-        page.on('pageerror', err => {
-            console.error('Page error:', err);
-        });
-
-        // Set content with longer timeout
-        await page.setContent(htmlContent, { 
-            waitUntil: 'networkidle0',
-            timeout: 30000
-        });
-
-        // Use evaluate for a delay instead of waitForTimeout
-        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 1000)));
-
-        // Generate PDF
-        const pdfBuffer = await page.pdf({
-            format: 'A4',
-            printBackground: true,
-            margin: {
-                top: '20px',
-                right: '20px',
-                bottom: '20px',
-                left: '20px'
-            }
-        });
-
-        await browser.close();
-
-        // Set appropriate headers
-        res.set({
-            'Content-Type': 'application/pdf',
-            'Content-Length': pdfBuffer.length,
-            'Content-Disposition': `attachment; filename=invoice_${orderId}.pdf`
-        });
-        
-        res.send(pdfBuffer);
+        res.render('invoice',{order:order,user:user});
 
     } catch (error) {
-        console.error("PDF Download Error:", error);
-        // Send specific error message
-        res.status(500).send(`Error generating PDF: ${error.message}`);
+        console.error(error);
+        res.redirect('/pageNotFound')
     }
-};
+}
+
 const requestReturn=async(req,res)=>{
     try {
         const userId = req.session.user;
@@ -453,11 +332,11 @@ const placeWalletOrder = async (req, res, next) => {
 
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
 
-    let finalAmount
+    let finalAmount=0;
     if(totalPrice<50000){
-    finalAmount = totalPrice + 200;
+    finalAmount = totalPrice + 200-cart.discount;
     }else{
-      finalAmount = totalPrice 
+      finalAmount = totalPrice-cart.discount
     }
 
     const invoiceDate = new Date();
@@ -497,6 +376,7 @@ const placeWalletOrder = async (req, res, next) => {
       invoiceDate: invoiceDate,
       status: status,
       paymentMethod: paymentMethod,
+      discount:cart.discount,
     });
     await orderSchema.save();
 
@@ -562,7 +442,6 @@ const createOrder = async (req, res, next) => {
   }
 };
 
-
 const verifyPayment = async (req, res, next) => {
   try {
    
@@ -594,9 +473,9 @@ const verifyPayment = async (req, res, next) => {
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
     let finalAmount=0;
     if(totalPrice<50000){
-    finalAmount = totalPrice + 200;
+    finalAmount = totalPrice + 200-cart.discount;
     }else{
-      finalAmount = totalPrice 
+      finalAmount = totalPrice-cart.discount
     }
 
     
@@ -613,6 +492,7 @@ const verifyPayment = async (req, res, next) => {
       invoiceDate: invoiceDate,
       status: status,
       paymentMethod: paymentMethod,
+      discount:cart.discount,
     });
     await orderSchema.save();
 

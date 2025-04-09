@@ -34,7 +34,11 @@ const cartSchema=new Schema({
             type:String,
             default:"none"
         }
-    }]
+    }],
+    discount:{
+        type:Number,
+        default:0,
+    }
 
 })
 

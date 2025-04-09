@@ -78,6 +78,14 @@ const userSchema = new Schema({
             default: Date.now
         }
     }],
+    referralCode: {
+        type: String,
+        unique: true
+      },
+      referredBy: {
+        type: String,
+        default: null
+      },
   profileImage: { 
     type: String, 
     

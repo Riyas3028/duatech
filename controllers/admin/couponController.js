@@ -2,8 +2,27 @@ const Coupon = require("../../models/couponSchema");
 
 const loadCoupon = async (req, res) => {
     try {
-        const coupons = await Coupon.find({ isListed: true });
-        return res.render('coupon', { coupons });
+        
+        let coupons = await Coupon.find();
+
+    for (let coupon of coupons) {
+      if (coupon.expireOn < new Date()||coupon.createdOn>new Date()) {
+        await Coupon.findByIdAndUpdate(
+          coupon._id,
+          { $set: { isListed: false } },
+          { new: true }
+        );
+      } else {
+        await Coupon.findByIdAndUpdate(
+          coupon._id,
+          { $set: { isListed: true } },
+          { new: true }
+        );
+      }
+    }
+
+    const updatedCoupons = await Coupon.find();
+        return res.render('coupon', { coupons:updatedCoupons });
     } catch (error) {
         console.error(error);
         return res.status(500).send("Internal Server Error");
@@ -37,7 +56,7 @@ const addCoupon = async (req, res) => {
     }
 };
 
-// Edit an existing coupon
+
 const editCoupon = async (req, res) => {
     try {
         const couponId = req.query.id;
@@ -73,7 +92,7 @@ const editCoupon = async (req, res) => {
     }
 };
 
-// Delete a coupon
+
 const deleteCoupon = async (req, res) => {
     try {
         const couponId = req.query.id;

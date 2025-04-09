@@ -11,17 +11,17 @@ const loadOrderDetails = async (req, res) => {
     const limit = 6;
     const skip = (page - 1) * limit;
 
-    // Sorting
+    
     let sortField = req.query.sortField || "createdAt";
     let sortOrder = req.query.sortOrder === "asc" ? 1 : -1;
 
-    // Filtering
+    
     let filter = {};
     if (req.query.status && req.query.status !== "all") {
       filter.status = req.query.status;
     }
 
-    // Search (Order ID or User Name)
+    
     if (search) {
       filter.$or = [
         { orderId: { $regex: search, $options: "i" } },
@@ -29,7 +29,7 @@ const loadOrderDetails = async (req, res) => {
       ];
     }
 
-    // Fetch Orders
+  
     const orders = await Order.find(filter)
       .populate("userId")
       .sort({ [sortField]: sortOrder })

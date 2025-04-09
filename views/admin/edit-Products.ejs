@@ -198,6 +198,7 @@
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
 <script>
     // Display success message if redirected from server with success flag
     document.addEventListener('DOMContentLoaded', function() {
@@ -296,7 +297,7 @@
     }
 
     // Delete existing image with SweetAlert
-    function deleteExistingImage(productId, fileName, index) {
+    function deleteExistingImage(productId, fileName, index) {  
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -445,10 +446,57 @@
     
     // Clear all error messages
     function clearErrorMessages() {
+
         const errorElements = document.getElementsByClassName('error-message');
         Array.from(errorElements).forEach(element => {
             element.innerText = '';
             element.style.display = "none";
         });
     }
+
+    
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("editProductForm");
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json(); // Convert response to JSON
+
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: result.message || 'Product updated successfully',
+                    }).then(() => {
+                        window.location.href = "/admin/products"; // Redirect on success
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: result.error || 'Something went wrong!',
+                    });
+                }
+
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Internal Server Error. Please try again later.',
+                });
+            }
+        });
+    });
+
+
 </script>

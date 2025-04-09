@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
 
 const walletSchema = new mongoose.Schema(
   {
@@ -12,6 +13,11 @@ const walletSchema = new mongoose.Schema(
     transactions: [
       {
         amount: Number,
+        transactionId: {
+          type: String,
+          default: () => uuidv4(),
+          unique: true,
+        },
         type: { 
             type: String, 
             enum: ["credit", "debit"], 

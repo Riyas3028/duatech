@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const Category=require('../../models/categorySchema')
 const Product=require('../../models/productSchema')
 const Banner=require('../../models/bannerSchema')
-
+const Wallet=require('../../models/walletSchema')
 // 404 Page Not Found
 const pageNotFound = async (req, res) => {
     try {
@@ -146,7 +146,7 @@ const securePassword = async (password) => {
 // Signup Route
 const signup = async (req, res) => {
     try {
-        const { name, phone, email, password, cpassword } = req.body;
+        const { name, phone, email, password, cpassword ,referral} = req.body;
         // console.log(req.body);
         
 
@@ -158,21 +158,25 @@ const signup = async (req, res) => {
         if (existingUser) {
             return res.render("signup", { message: "User with this email already exists" });
         }
-
-        // Hash Password Before Storing in Session
         const hashedPassword = await securePassword(password);
         if (!hashedPassword) {
             return res.render("signup", { message: "Error processing password" });
         }
-
+        if(referral &&referral.trim()){
+        const referralCode = referral.toUpperCase();
+        const referredUser = await User.findOne({referralCode:referralCode})
+        if(!referredUser){
+         return res.json({success:false, message:"Not a Valid Refferal Code"});
+        }
+        }
         const otp = generateOtp();
         const emailSent = await sendVerificationEmail(email, otp);
         if (!emailSent) {
             return res.json({ success: false, message: "Error sending email" });
         }
-
+        
         req.session.userOtp = otp;
-        req.session.userData = { email, password: hashedPassword, name, phone };
+        req.session.userData = { email, password: hashedPassword, name, phone,referral };
 
         res.render("verify-otp");
         console.log("OTP Sent for login:", otp);
@@ -181,6 +185,19 @@ const signup = async (req, res) => {
         res.redirect("/pageNotFound");
     }
 };
+
+function generateReferralCode(input) {
+
+    if (!input || typeof input !== 'string') return null;
+  
+  
+    const base = input.substring(0, 4).toUpperCase();
+  
+  
+    const randomNumber = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+  
+    return `${base}${randomNumber}`;
+  }
 
 // OTP Verification
 const verifyOtp = async (req, res) => {
@@ -196,12 +213,34 @@ const verifyOtp = async (req, res) => {
         }
 
         const user = req.session.userData;
+        let referral=req.session.userData.referral
+      referral = referral.toUpperCase();
+      let referredUser;
+      if(referral && referral.trim()){
+      referredUser = await User.findOne({referralCode:referral});
+      
+      let wallet = await Wallet.findOne({ userId:referredUser._id});
+            if (!wallet) {
+              wallet = new Wallet({ userId:referredUser._id, balance: 0, transactions: [] });
+            }
+        
+            wallet.balance += 1000;
+      
+            wallet.transactions.push({ amount:1000, type: "credit", description: "Refferal Reward" });
+        
+            await wallet.save();
+          }
 
+
+      const referralCode =  generateReferralCode(user.name);
+      console.log(referralCode)
         const saveUserData = new User({
             name: user.name,
             email: user.email,
             phone: user.phone,
-            password: user.password  // Already hashed in signup
+            password: user.password ,
+            referralCode,
+            referredBy:referredUser?.name
         });
 
         await saveUserData.save();
@@ -213,6 +252,7 @@ const verifyOtp = async (req, res) => {
         return res.status(500).json({ success: false, message: "An error occurred" });
     }
 };
+
 
 // Resend OTP
 const resendOtp = async (req, res) => {

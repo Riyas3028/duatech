@@ -148,47 +148,6 @@ const editBrand = async (req, res) => {
 
 
 
-// const editBrand = async (req, res) => {
-//     try {
-//         const { brandName } = req.body;
-//         const brandId = req.params.id;
-//         console.log(req.body)
-//         console.log(brandId,brandName)
-    
-//         const existingBrand = await Brand.findById(brandId);
-//         if (!existingBrand) {
-//             return res.status(404).json({ error: "Brand not found" });
-//         }
-
-    
-//         const duplicateBrand = await Brand.findOne({
-//             brandName,
-//             _id: { $ne: brandId }
-//         });
-//         if (duplicateBrand) {
-//             return res.status(400).json({ error: "Brand already exists" });
-//         }
-
-//  let updateFields={brandName}
-
-//         const image = req.files ? req.files.map(file => file.filename) : [];
-
-// console.log(image)
-
-//         if (image.length > 0) {
-//             updateFields.$push = { BrandImage: { $each: image } };
-//         }
-
-//         await Brand.findByIdAndUpdate(brandId, updateFields, { new: true });
-        
-//         res.status(200).json({ message: "Brand updated successfully" });
-//     } catch (error) {
-//         console.error("Error updating brand:", error);
-//         res.status(500).json({ error: "Failed to update brand" });
-//     }
-// };
-
-
 module.exports = { 
     getBrandPage,
     addBrand,

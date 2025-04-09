@@ -3,7 +3,7 @@
 <div class="col-md-2 sidebar">
     <h2>My Account</h2>
     <div class="sidebar-profileImage">
-        <img src="/uploads/re-image/<%= user.profileImage? user.profileImage : 'images/single_2_thumb.jpg' %>" alt="" class="profile-img" style="width: 100px; height: 100px; border-radius: 50px;">
+        <img src="/uploads/re-image/<%= user.profileImage? user.profileImage : 'images/single_2_thumb.jpg' %>" alt="" class="profile-img" style="width: 100px; height: 100px; border-radius: 5px;">
 
         <form action="/uploadProfile" method="POST" enctype="multipart/form-data">
             <input type="file" class="inputFile" name="profileImage" required>

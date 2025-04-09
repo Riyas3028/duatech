@@ -1,4 +1,12 @@
 <%- include("../../views/partials/user/header") %>
+<!-- Bootstrap 5 -->
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <!-- Start Banner Area -->
 <section class="banner-area organic-breadcrumb">
@@ -262,13 +270,20 @@
                    <div class="coupon-section mb-4">
                        <h3 class="h5 mb-3">Apply Coupon</h3>
                        <div class="input-group">
-                           <input type="text" id="couponCode" class="form-control" placeholder="Enter coupon code">
-                           <div class="input-group-append">
-                               <button class="btn btn-primary" onclick="applyCoupon()">Apply</button>
-                           </div>
-                       </div>
+                        <input
+                          type="text"
+                          id="couponCode"
+                          class="form-control"
+                          placeholder="Enter coupon code"
+                        />
+                        <button class="btn btn-primary" onclick="applyCoupon()">
+                          Apply
+                        </button>
+                      </div>
                        <p id="couponMessage" class="mt-2" style="display: none;"></p>
-                       <a href="/mycoupons" class="d-inline-block mt-2">View All Coupons</a>
+                       <a href="#" class="text-primary fw-bold" data-bs-toggle="modal" data-bs-target="#couponModal">
+                        View Coupons
+                      </a>
                    </div>
                
                    <div id="appliedCoupon" style="display: none;">
@@ -327,6 +342,63 @@
    </div>
 </div>
 
+<!-- Coupon Modal -->
+<div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="couponModalLabel">Select a Coupon</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body ">
+          <div class="coupon-cards">
+            <% if (coupons && coupons.length > 0) { %>
+              <div class="row">
+                <% coupons.forEach((coupon) => { %>
+                  <div class="col-12 mb-3"> 
+                    <div class="card h-100 shadow-sm border-primary w-100">
+                      <div class="card-body d-flex align-items-center ms-2">
+                        <input
+                          class="form-check-input me-3"
+                          type="radio"
+                          name="selectedCoupon"
+                          id="coupon_<%= coupon._id %>"
+                          value="<%= coupon._id %>"
+                          <%if(coupon.minimumPrice>subtotal){%>
+                          disabled
+                          <%}%>
+                        />
+                        <label class="form-check-label w-100" for="coupon_<%= coupon._id %>">
+                          <h6 class="text-primary fw-bold mb-1"><%= coupon.name %></h6>
+                          <p class="text-muted mb-1 small">
+                           <span class="text-success"> <strong><%= coupon.offerPrice %> Off</strong></span> On Orders Above <%= coupon.minimumPrice %>
+                            <br>Expires on <span class="text-warning"><%= new Date(coupon.expireOn).toDateString() %></span><br>
+                            <%if(coupon.minimumPrice>subtotal){%>
+                              <span>Add Items worth <strong class="text-danger"><%=coupon.minimumPrice-subtotal%></strong> to avail this Offer</span>
+                            <%}%>
+                          </p>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                <% }); %>
+              </div>
+            <% } else { %>
+              <div class="text-center py-4">
+                <p class="mb-3">No coupons available</p>
+              </div>
+            <% } %>
+          </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary mt-2" onclick="clearCouponSelection()">Clear Selection</button>
+  
+          <button type="button" class="btn btn-primary" id="applyCouponBtn">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <!-- Wallet Payment Modal -->
 <div class="modal fade" id="walletPaymentModal" tabindex="-1" aria-labelledby="walletPaymentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -359,74 +431,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- Bootstrap 5 CDN (JS + Popper bundled) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-
-
-    // let appliedCoupon = null;
-
-    // function applyCoupon() {
-    //    const couponCode = document.getElementById('couponCode').value;
-    //    const subtotal = parseFloat(document.getElementById('subtotal').textContent);
-
-    //    fetch('/apply-coupon', {
-    //        method: 'POST',
-    //        headers: {
-    //            'Content-Type': 'application/json',
-    //        },
-    //        body: JSON.stringify({ couponCode, subtotal }),
-    //    })
-    //    .then(response => response.json())
-    //    .then(data => {
-    //        const messageElement = document.getElementById('couponMessage');
-    //        if (data.success) {
-    //            appliedCoupon = data.coupon;
-    //            updateOrderSummary();
-    //            messageElement.textContent = 'Coupon applied successfully!';
-    //            messageElement.style.color = 'green';
-    //            document.getElementById('appliedCoupon').style.display = 'block';
-    //            document.getElementById('appliedCouponName').textContent = data.coupon.name;
-    //            document.querySelector('.coupon-section').style.display = 'none';
-    //        } else {
-    //            messageElement.textContent = data.message;
-    //            messageElement.style.color = 'red';
-    //        }
-    //        messageElement.style.display = 'block';
-    //    })
-    //    .catch(error => {
-    //        console.error('Error:', error);
-    //        Swal.fire('Error', 'An error occurred while applying the coupon', 'error');
-    //    });
-    // }
-
-    // function removeCoupon() {
-    //    appliedCoupon = null;
-    //    updateOrderSummary();
-    //    document.getElementById('appliedCoupon').style.display = 'none';
-    //    document.querySelector('.coupon-section').style.display = 'block';
-    //    document.getElementById('couponMessage').style.display = 'none';
-    //    document.getElementById('couponCode').value = '';
-    // }
-
-    // function updateOrderSummary() {
-    //    const subtotalElement = document.getElementById('subtotal');
-    //    const couponDiscountElement = document.getElementById('couponDiscount');
-    //    const grandTotalElement = document.getElementById('grandTotal');
-
-    //    const subtotal = parseFloat(subtotalElement.textContent);
-    //    let discount = 0;
-
-    //    if (appliedCoupon) {
-    //        discount = appliedCoupon.offerPrice;
-    //    }
-
-    //    const grandTotal = subtotal - discount + 50;
-
-    //    couponDiscountElement.textContent = discount.toFixed(2);
-    //    grandTotalElement.textContent = grandTotal.toFixed(2);
-    // }
-
-
     function checkStockAvailability() {
        return fetch('/check-stock')
            .then(response => response.json())
@@ -453,52 +461,7 @@
                return;
            }
 
-        //    // Check stock availability before proceeding
-        //    const stockStatus = await checkStockAvailability();
-
-        //    if (stockStatus.length === 0) {
-        //        Swal.fire({
-        //            title: 'Cart Empty',
-        //            text: 'No items available in stock. Your cart will be cleared.',
-        //            icon: 'error',
-        //            confirmButtonText: 'Go to Shop'
-        //        }).then((result) => {
-        //            if (result.isConfirmed) {
-        //                window.location.href = '/shop';
-        //            }
-        //        });
-        //        return;
-        //    }
-
-           // Check for blocked products
-        //    const blockedProducts = stockStatus.filter(item => item.isBlocked);
-        //    if (blockedProducts.length > 0) {
-        //        Swal.fire({
-        //            title: 'Products Blocked',
-        //            text: 'Some products in your cart have been blocked by admin. The page will reload to update your cart.',
-        //            icon: 'warning',
-        //            confirmButtonText: 'OK'
-        //        }).then(() => {
-        //            window.location.reload();
-        //        });
-        //        return;
-        //    }
-
-        //    if (stockStatus.some(item => item.stockChanged)) {
-        //        Swal.fire({
-        //            title: 'Stock Changed',
-        //            text: 'Some items in your cart have limited stock. The quantities have been adjusted.',
-        //            icon: 'warning',
-        //            confirmButtonText: 'Continue with Available Stock'
-        //        }).then((result) => {
-        //            if (result.isConfirmed) {
-        //                window.location.reload();
-        //                proceedWithOrder();
-        //            }
-        //        });
-        //        return;
-        //    }
-
+       
            proceedWithOrder();
        } catch (error) {
            console.error('Error:', error);
@@ -560,75 +523,6 @@
            Swal.fire('Error', 'An error occurred while placing the order', 'error');
        });
     }
-
-
-    // function verifyPayment(paymentResponse, orderData) {
-    //    fetch('/verify-payment', {
-    //        method: 'POST',
-    //        headers: {
-    //            'Content-Type': 'application/json',
-    //        },
-    //        body: JSON.stringify({
-    //            paymentResponse,
-    //            orderData
-    //        })
-    //    })
-    //    .then(response => response.json())
-    //    .then(data => {
-    //        if (data.success) {
-    //            Swal.fire({
-    //                title: 'Payment Successful!',
-    //                text: Order IDs: ${data.orderIds.join(", ")},
-    //                icon: 'success',
-    //                confirmButtonText: 'View Orders'
-    //            }).then((result) => {
-    //                if (result.isConfirmed) {
-    //                    window.location.href = '/orders';
-    //                }
-    //            });
-    //        } else {
-    //            Swal.fire('Error', data.message || 'Payment verification failed', 'error');
-    //        }
-    //    })
-    //    .catch(error => {
-    //        console.error('Error:', error);
-    //        Swal.fire('Error', 'An error occurred while verifying the payment', 'error');
-    //    });
-    // }
-
-    //    function showShippingCharge() {
-    //        Swal.fire({
-    //            title: 'Shipping Charge',
-    //            text: 'Shipping charge is ₹ 500.00 For All Orders below ₹15,000. ',
-    //            icon: 'info',
-    //            confirmButtonText: 'OK'
-    //        });
-    //    }
-
-
-
-
-    //    function checkWalletBalance() {
-    //    const walletBalance = parseFloat(document.getElementById('walletBalance').textContent);
-    //    const payableAmount = parseFloat(document.getElementById('grandTotal').textContent);
-
-    //    document.getElementById('payableAmount').textContent = payableAmount.toFixed(2);
-
-    //    const walletPaymentModal = new bootstrap.Modal(document.getElementById('walletPaymentModal'));
-    //    const insufficientFunds = document.getElementById('insufficientFunds');
-    //    const confirmWalletPayment = document.getElementById('confirmWalletPayment');
-
-    //    if (walletBalance < payableAmount) {
-    //        insufficientFunds.style.display = 'block';
-    //        confirmWalletPayment.style.display = 'none';
-    //    } else {
-    //        insufficientFunds.style.display = 'none';
-    //        confirmWalletPayment.style.display = 'block';
-    //    }
-
-    //    walletPaymentModal.show();
-    // }
-
 
 
     function processWalletOrder(orderData) {
@@ -747,14 +641,6 @@
     paymentObject.open();
     }
 
-
-
-
-
-    
-
-
-
     document.getElementById('confirmWalletPayment').addEventListener('click', async () => {
        const selectedAddress = document.getElementById('existingAddress');
        if (!selectedAddress || selectedAddress.value === 'Select an address') {
@@ -796,19 +682,19 @@
        }
     });
 
-       // Update the place order button onclick handler
+      
        document.querySelector('.place-order-btn').onclick = placeOrder;
   </script>
   <script>
-    // Update the hidden select when a card is selected
+   
     document
       .querySelectorAll('input[name="selectedAddress"]')
       .forEach((radio) => {
         radio.addEventListener("change", function () {
-          // Update the hidden select
+         
           document.getElementById("existingAddress").value = this.value;
 
-          // Update card styling
+          
           document.querySelectorAll(".address-cards .card").forEach((card) => {
             card.classList.remove("selected");
           });
@@ -818,12 +704,227 @@
   </script>
 
   <script>
-    // JavaScript to handle the "Add New Address" button click
+   
     document
       .getElementById("addNewAddressBtn")
       .addEventListener("click", function () {
         document.getElementById("newAddressForm").style.display = "block";
       });
   </script>
+  <script>
+    function clearCouponSelection() {
+    const selectedRadio = document.querySelector('input[name="selectedCoupon"]:checked');
+    if (selectedRadio) {
+        selectedRadio.checked = false;
+    }
+}
+document.getElementById("applyCouponBtn").addEventListener("click", function () {
+    const selectedCoupon = document.querySelector('input[name="selectedCoupon"]:checked');
+    const couponModal = document.getElementById("couponModal");
+    const modalInstance = bootstrap.Modal.getInstance(couponModal);
 
-<%- include("../../views/partials/user/footer") %>
+    if (selectedCoupon) {
+        const couponLabel = document.querySelector(`label[for="${selectedCoupon.id}"] h6`).textContent;
+        document.getElementById("couponCode").value = couponLabel;
+    }
+
+    // Add event listener before hiding modal
+    couponModal.addEventListener('hidden.bs.modal', () => {
+        // Only do this if necessary
+        document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+        document.body.classList.remove("modal-open");
+        document.body.style.overflow = "";
+    }, { once: true });
+
+    if (modalInstance) {
+        modalInstance.hide();
+    }
+});
+
+
+    let appliedCoupon = null;
+
+    function applyCoupon() {
+       const couponCode = document.getElementById('couponCode').value;
+       const subtotal = parseFloat(document.getElementById('subtotal').textContent);
+
+       fetch('/applyCoupon', {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({ couponCode, subtotal }),
+       })
+       .then(response => response.json())
+       .then(data => {
+           const messageElement = document.getElementById('couponMessage');
+           if (data.success) {
+               appliedCoupon = data.coupon;
+               updateOrderSummary();
+               messageElement.textContent = 'Coupon applied successfully!';
+               messageElement.style.color = 'green';
+               document.getElementById('appliedCoupon').style.display = 'block';
+               document.getElementById('appliedCouponName').textContent = data.coupon.name;
+               document.querySelector('.coupon-section').style.display = 'none';
+               Swal.fire('success', `coupon ${data.coupon.name} applied successfully`, 'success');
+           } else {
+               messageElement.textContent = data.message;
+               messageElement.style.color = 'red';
+           }
+           messageElement.style.display = 'block';
+       })
+       .catch(error => {
+           console.error('Error:', error);
+           Swal.fire('Error', 'An error occurred while applying the coupon', 'error');
+       });
+    }
+
+    function removeCoupon() {
+    fetch('/removeCoupon', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            appliedCoupon = null;
+            updateOrderSummary();
+            document.getElementById('appliedCoupon').style.display = 'none';
+            document.querySelector('.coupon-section').style.display = 'block';
+            document.getElementById('couponMessage').style.display = 'none';
+            document.getElementById('couponCode').value = '';
+            Swal.Fire('waring',"Coupon removed",'warning');
+        } else {
+          Swal.Fire('error',"Failed to remove coupon",'error');
+        }
+    })
+    .catch(error => {
+      Swal.Fire('error',"error occured while removing coupon",'error');
+    });
+}
+
+
+    function updateOrderSummary() {
+       const subtotalElement = document.getElementById('subtotal');
+       const couponDiscountElement = document.getElementById('couponDiscount');
+       const grandTotalElement = document.getElementById('grandTotal');
+
+       const subtotal = parseFloat(subtotalElement.textContent);
+       let discount = 0;
+
+       if (appliedCoupon) {
+           discount = appliedCoupon.offerPrice;
+       }
+       let grandTotal
+        if(subtotal<50000){
+          grandTotal = subtotal - discount+200;
+        }else{
+          grandTotal = subtotal - discount
+        }
+       
+
+       couponDiscountElement.textContent = discount.toFixed(2);
+       grandTotalElement.textContent = grandTotal.toFixed(2);
+    }
+  </script>
+
+<!-- start footer Area -->
+<footer class="footer-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>About Us</h6>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore
+                        magna aliqua.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Newsletter</h6>
+                    <p>Stay update with our latest</p>
+                    <div class="" id="mc_embed_signup">
+
+                        <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                         method="get" class="form-inline">
+
+                            <div class="d-flex flex-row">
+
+                                <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+                                 required="" type="email">
+
+
+                                <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                                <div style="position: absolute; left: -5000px;">
+                                    <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
+                                </div>
+
+                                <!-- <div class="col-lg-4 col-md-4">
+                                            <button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+                                        </div>  -->
+                            </div>
+                            <div class="info"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget mail-chimp">
+                    <h6 class="mb-20">Instragram Feed</h6>
+                    <ul class="instafeed d-flex flex-wrap">
+                        <li><img src="img/i1.jpg" alt=""></li>
+                        <li><img src="img/i2.jpg" alt=""></li>
+                        <li><img src="img/i3.jpg" alt=""></li>
+                        <li><img src="img/i4.jpg" alt=""></li>
+                        <li><img src="img/i5.jpg" alt=""></li>
+                        <li><img src="img/i6.jpg" alt=""></li>
+                        <li><img src="img/i7.jpg" alt=""></li>
+                        <li><img src="img/i8.jpg" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Follow Us</h6>
+                    <p>Let us be social</p>
+                    <div class="footer-social d-flex align-items-center">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-dribbble"></i></a>
+                        <a href="#"><i class="fa fa-behance"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+            <p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+</p>
+        </div>
+    </div>
+</footer>
+<!-- End footer Area -->
+
+<script src="js/vendor/jquery-2.2.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+ crossorigin="anonymous"></script>
+<!-- <script src="js/vendor/bootstrap.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/countdown.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<!--gmaps Js-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+<script src="js/gmaps.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+
+</html>
