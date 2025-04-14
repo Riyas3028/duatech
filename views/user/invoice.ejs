@@ -222,7 +222,11 @@
         <div class="total-section">
             <div class="total-row">
                 <div class="total-label">Subtotal:</div>
-                <div class="total-value">₹<%= order.totalPrice.toFixed(2) %></div>
+                <div class="total-value">₹<%= (order.totalPrice-(order.totalPrice*.18)).toFixed(2) %></div>
+            </div>
+            <div class="total-row">
+                <div class="total-label">GST:</div>
+                <div class="total-value">₹<%= (order.totalPrice*.18).toFixed(2) %></div>
             </div>
             <% if (order.discount > 0) { %>
                 <div class="total-row">
@@ -231,8 +235,12 @@
                 </div>
             <% } %>
             <div class="total-row">
-                <div class="total-label">Delivery Charge:</div>
-                <div class="total-value">₹50</div>
+                <div class="total-label">Shipping Charge:</div>
+                <%if(order.totalPrice<50000){%>
+                    <div class="total-value">₹200.00</div>
+                    <%}else{%>
+                     <div class="total-value" class="text-success">Free shipping</div>
+                     <%}%>
             </div>
             <div class="total-row grand-total">
                 <div class="total-label">Grand Total:</div>

@@ -6,6 +6,7 @@ const Order = require('../../models/orderSchema');
 const Wallet=require('../../models/walletSchema')
 const razorpay=require('../../config/razorpay')
 const crypto=require('crypto')
+const Coupon=require('../../models/couponSchema')
 
 
 
@@ -13,19 +14,31 @@ const placeOrder =async (req,res) => {
     try {
         
        const  userId = req.session.user;
-       const {addressId,paymentMethod} = req.body;
-
-
+       const {addressId,paymentMethod,couponCode} = req.body;
+       const addressData = await Address.findOne(
+        { userId: userId, "address._id": addressId },
+        { "address.$": 1 } 
+      ).lean();
+      
+      if (!addressData || !addressData.address || addressData.address.length === 0) {
+        throw new Error("Address not found");
+      }
+      
+      const selectedAddress = addressData.address[0];
+      
        const userData = await User.findById(userId);
         
        const cart = await Cart.findOne({ userId });
 
 
-        const cartItems = cart.items.map(item => ({
-            product: item.productId, 
-            quantity: item.quantity,
-            price: item.totalPrice  
-        }));
+       const cartItems = await Promise.all(cart.items.map(async (item) => {
+        const product = await Product.findById(item.productId).lean(); 
+        return {
+          product: product, 
+          quantity: item.quantity,
+          price: item.totalPrice,
+        };
+      }));
         
 
         const totalPrice=cartItems.reduce((sum,item)=>sum+item.price,0);
@@ -37,6 +50,9 @@ const placeOrder =async (req,res) => {
     }else{
       finalAmount = totalPrice-cart.discount
     }
+    if(finalAmount>35000){
+      return res.status(400).json({success:false,message:'COD not applicable for above 35000'})
+    }
         const invoiceDate = new Date();
         const status = 'Processing';
 
@@ -44,7 +60,7 @@ const placeOrder =async (req,res) => {
             orderedItems:cartItems,
             totalPrice:totalPrice,
             finalAmount:finalAmount,
-            address:addressId,
+            address:selectedAddress,
             invoiceDate:invoiceDate,
             status:status,
             userId:userId,
@@ -53,7 +69,12 @@ const placeOrder =async (req,res) => {
         });
 
         await orderSchema.save();
-
+        if(couponCode){
+          await Coupon.findOneAndUpdate(
+            { name: couponCode },
+            { $addToSet: { usedBy: userId } }
+          );
+        }
         await User.findByIdAndUpdate(userId, { $push: { orderHistory: orderSchema._id } }, { new: true });
 
         await Cart.findOneAndUpdate({userId},{$set:{items:[]}})
@@ -71,7 +92,7 @@ const placeOrder =async (req,res) => {
 
         return res.status(200).json({success:true,message:'Order Placed Successfully'})
     } catch (error) {
-        
+        console.error(error)
     }
     
 }
@@ -108,7 +129,7 @@ const viewOrders=async(req,res)=>{
         const skip = (page - 1) * limit;
 
 
-       const orders = await Order.find({userId:userId}).populate('orderedItems.product').sort({createdAt:-1}).skip(skip).limit(limit);
+       const orders = await Order.find({userId:userId}).sort({createdAt:-1}).skip(skip).limit(limit);
 
        
        const totalOrders = await Order.countDocuments({userId:userId});
@@ -131,7 +152,7 @@ const loadOrderDetails = async (req, res) => {
         const user = await User.findById(userId);
         const orderId=req.query.orderId;
 
-        let orders = await Order.findOne({orderId:orderId}).populate('orderedItems.product').lean();
+        let orders = await Order.findOne({orderId:orderId}).lean();
         
         const addressDoc = await Address.findOne({ userId:userId }).lean();
 
@@ -172,12 +193,12 @@ const cancelOrder=async(req,res)=>{
          }
    
          wallet.balance += parseInt(order.finalAmount);
-       wallet.transactions.push({
-         amount:order.finalAmount,
-         type: "credit",
-         description: "Order cancellation Refund",
-       });
-       await wallet.save();
+         wallet.transactions.push({
+          amount:order.finalAmount,
+          type: "credit",
+          description: "Order cancellation Refund",orderId:order._id
+        });
+        await wallet.save();
    
        }
             await Order.findOneAndUpdate(
@@ -213,17 +234,8 @@ const downloadInvoice=async(req,res)=>{
         const user = await User.findById(userId)
         const orderId=req.query.orderId;
         
-        let order = await Order.findOne({orderId:orderId}).populate('orderedItems.product').lean();
-        
-        const addressDoc = await Address.findOne({ userId: userId }).lean();
-        
-        const userAddress = addressDoc.address.find((addr) => addr._id.toString() === order.address.toString());
-        
-        order.address = userAddress
-
-        
-    
-
+        let order = await Order.findOne({orderId:orderId}).lean();
+           
         res.render('invoice',{order:order,user:user});
 
     } catch (error) {
@@ -318,18 +330,33 @@ const cancelReturnRequest=async(req,res)=>{
 const placeWalletOrder = async (req, res, next) => {
   try {
     const userId = req.session.user;
-    const { addressId, paymentMethod } = req.body;
+    const { addressId, paymentMethod,couponCode } = req.body;
 
-    const userData = await User.findById(userId);
+    const addressData = await Address.findOne(
+      { userId: userId, "address._id": addressId },
+      { "address.$": 1 } 
+    ).lean();
+    
+    if (!addressData || !addressData.address || addressData.address.length === 0) {
+      throw new Error("Address not found");
+    }
+    
+    const selectedAddress = addressData.address[0];
+    
+     const userData = await User.findById(userId);
+      
+     const cart = await Cart.findOne({ userId });
 
-    const cart = await Cart.findOne({ userId });
 
-    const cartItems = cart.items.map((item) => ({
-      product: item.productId,
-      quantity: item.quantity,
-      price: item.totalPrice,
+     const cartItems = await Promise.all(cart.items.map(async (item) => {
+      const product = await Product.findById(item.productId).lean(); 
+      return {
+        product: product, 
+        quantity: item.quantity,
+        price: item.totalPrice,
+      };
     }));
-
+     
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
 
     let finalAmount=0;
@@ -360,25 +387,32 @@ const placeWalletOrder = async (req, res, next) => {
     }
 
     wallet.balance -= parseInt(finalAmount);
-    wallet.transactions.push({
-      amount:finalAmount,
-      type: "debit",
-      description: "Deducted for purchase",
-    });
-    await wallet.save();
+    
 
     const orderSchema = new Order({
       userId: userId,
       orderedItems: cartItems,
       totalPrice: totalPrice,
       finalAmount: finalAmount,
-      address: addressId,
+      address: selectedAddress,
       invoiceDate: invoiceDate,
       status: status,
       paymentMethod: paymentMethod,
       discount:cart.discount,
     });
-    await orderSchema.save();
+    const savedOrder=await orderSchema.save();
+    if(couponCode){
+      await Coupon.findOneAndUpdate(
+        { name: couponCode },
+        { $addToSet: { usedBy: userId } }
+      );
+    }
+    wallet.transactions.push({
+      amount:finalAmount,
+      type: "debit",
+      description: "Deducted for purchase",orderId:savedOrder._id
+    });
+    await wallet.save();
 
     await User.findByIdAndUpdate(
       userId,
@@ -446,7 +480,7 @@ const verifyPayment = async (req, res, next) => {
   try {
    
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature, amount } = req.body;
-    const { addressId, paymentMethod } = req.body;
+    const { addressId, paymentMethod,couponCode } = req.body;
     console.log(addressId,paymentMethod);
     const userId = req.session.user;
      
@@ -460,15 +494,31 @@ const verifyPayment = async (req, res, next) => {
       return res.status(400).json({ success: false, error: "Invalid payment signature" });
     }
 
-    const userData = await User.findById(userId);
+    const addressData = await Address.findOne(
+      { userId: userId, "address._id": addressId },
+      { "address.$": 1 } 
+    ).lean();
+    
+    if (!addressData || !addressData.address || addressData.address.length === 0) {
+      throw new Error("Address not found");
+    }
+    
+    const selectedAddress = addressData.address[0];
+    
+     const userData = await User.findById(userId);
+      
+     const cart = await Cart.findOne({ userId });
 
-    const cart = await Cart.findOne({ userId });
 
-    const cartItems = cart.items.map((item) => ({
-      product: item.productId,
-      quantity: item.quantity,
-      price: item.totalPrice,
+     const cartItems = await Promise.all(cart.items.map(async (item) => {
+      const product = await Product.findById(item.productId).lean(); 
+      return {
+        product: product, 
+        quantity: item.quantity,
+        price: item.totalPrice,
+      };
     }));
+     
 
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
     let finalAmount=0;
@@ -488,13 +538,19 @@ const verifyPayment = async (req, res, next) => {
       orderedItems: cartItems,
       totalPrice: totalPrice,
       finalAmount: finalAmount,
-      address: addressId,
+      address: selectedAddress,
       invoiceDate: invoiceDate,
       status: status,
       paymentMethod: paymentMethod,
       discount:cart.discount,
     });
     await orderSchema.save();
+    if(couponCode){
+      await Coupon.findOneAndUpdate(
+        { name: couponCode },
+        { $addToSet: { usedBy: userId } }
+      );
+    }
 
     await User.findByIdAndUpdate(
       userId,

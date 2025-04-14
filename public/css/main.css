@@ -55,10 +55,10 @@
 /* Start Gradient Area css
 ============================================================================================ */
 .gradient-bg, .primary-btn, .add-bag .add-btn, .single-product .product-details .prd-bottom .social-info span:after, .grid-btn:hover, .list-btn:hover, .grid-btn.active, .list-btn.active, .pagination a.active, .pagination a:hover, .s_Product_carousel .owl-dots div.active, .s_product_text .card_area .icon_btn:after, .product_description_area .nav.nav-tabs li a.active, .blog-pagination .page-item.active .page-link, .single-footer-widget .click-btn {
-  background: -webkit-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
-  background: -moz-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
-  background: -o-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
-  background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%); }
+  background: -webkit-linear-gradient(90deg, #007bff 0%, #007bff 100%);
+  background: -moz-linear-gradient(90deg, #007bff 0%, #007bff 100%);
+  background: -o-linear-gradient(90deg,  #007bff 0%, #007bff 100%);
+  background: linear-gradient(90deg, #007bff 0%, #007bff 100%); }
 
 .gradient-bg-reverse, #search_input_box {
   background: -webkit-linear-gradient(270deg, #ffba00 0%, #ff6c00 100%);
@@ -1293,11 +1293,9 @@ h1, h2, h3, h4, h5, h6 {
       padding-top: 80px; } }
   @media (max-width: 767px) {
     .organic-breadcrumb {
-      background: none;
-      background: -webkit-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
-      background: -moz-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
-      background: -o-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
-      background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%); } }
+      background: url(../img/banner/laptop-with-a-red-adhesive-note-with-big-sale-on-it-discounts-online-shopping-desktop-view-with-copy-space-photo.jpg) center no-repeat;
+  background-size: cover;
+  padding-top: 130px;} }
 
 #category .organic-breadcrumb {
   margin-bottom: 100px; }

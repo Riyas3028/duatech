@@ -29,6 +29,10 @@ const walletSchema = new mongoose.Schema(
         },
         description:{
             type:String,
+        },
+        orderId:{
+          type:mongoose.Schema.Types.ObjectId,
+          ref:'Order'
         }
       },
     ],

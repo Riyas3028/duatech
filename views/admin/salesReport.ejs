@@ -183,7 +183,7 @@
                 <% orders.forEach(order => { %>
                     <tr>
                     <td class="order-id"><%= order.orderId %></td>
-                    <td><%= order.userId.name.toUpperCase() %></td>
+                    <td><%= order.user.name.toUpperCase() %></td>
                     <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
                     <td><%= order.paymentMethod.toUpperCase() %></td>
                     <td><%= order.status.toUpperCase() %></td>
@@ -191,6 +191,11 @@
                     <td>₹<%= order.finalAmount %></td>
                     </tr>
                 <% }) %>
+                <tr class="table-dark fw-bold">
+                  <td colspan="5" class="text-end">Grand Total</td>
+                  <td>₹<%= totalDiscounts.toLocaleString() %></td>
+                  <td>₹<%= totalSales.toLocaleString() %></td>
+                </tr>
                 </tbody>
             </table>
             </div>

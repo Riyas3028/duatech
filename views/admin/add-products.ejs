@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <%- include("../../views/partials/admin/adminheader") %> <%-
-    include("../../views/partials/admin/adminsidebar") %>
+<%-include("../../views/partials/admin/adminsidebar") %>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,14 +30,14 @@
             font-size: 0.75rem;
             display: none;
         }
-        .main{
+        /* .main{
           
           margin-left: 250px;
-        }
+        } */
     </style>
   </head>
 
-  <body class="  bg-light">
+  <body class=" content-wrapper bg-light">
     <div class=" main container mt-5">
       <div class="card shadow p-4">
         <h2 class="text-center mb-3">Add Product</h2>
@@ -128,12 +124,12 @@
           </div>
 
           <!-- Sale Price -->
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">Sale Price</label>
             <input type="number" name="salePrice" class="form-control" id="salePrice" />
             <div id="salePrice-error" class="error-message"></div>
             
-          </div>
+          </div> -->
 
           <!-- Color -->
           <div class="mb-3">
@@ -323,7 +319,7 @@ function validateForm(){
           const brand= document.getElementById('brand').value;
 
           const regularPrice=document.getElementById('regularPrice').value;
-          const salePrice=document.getElementById('salePrice').value;
+          // const salePrice=document.getElementById('salePrice').value;
 
           const quantity= document.getElementById('quantity').value;
           const images = document.getElementById('input1')
@@ -369,13 +365,13 @@ function validateForm(){
             isValid=false;
           }
     
-          if(salePrice.trim()===''|| !/^\d+(\.\d{1,2})?$/.test(salePrice)){
-            displayErrorMessage('salePrice-error', "Please enter a valid non-negative price.")
-            isValid=false;
-          }else if(parseFloat(regularPrice)<parseFloat(salePrice)){
-            displayErrorMessage('salePrice-error', "Sale price can't be greater than Regular price")
-            isValid=false;
-          }
+          // if(salePrice.trim()===''|| !/^\d+(\.\d{1,2})?$/.test(salePrice)){
+          //   displayErrorMessage('salePrice-error', "Please enter a valid non-negative price.")
+          //   isValid=false;
+          // }else if(parseFloat(regularPrice)<parseFloat(salePrice)){
+          //   displayErrorMessage('salePrice-error', "Sale price can't be greater than Regular price")
+          //   isValid=false;
+          // }
           
           if(quantity.trim()===''|| !/^\d+$/.test(quantity)){
             displayErrorMessage('quantity-error', "Please enter a valid number as quantity")

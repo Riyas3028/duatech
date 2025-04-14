@@ -70,7 +70,13 @@
                         <td><%= data[i].brand ? data[i].brand.brandName: "No Brand" %></td>
                         <td><%= data[i].category ? data[i].category.name : "No Category" %></td>
                         <td><%= data[i].salePrice %></td>
-                        <td><%= data[i].productOffer || "0%" %></td>
+                        <td><%if(data[i].productOffer>data[i].categoryOffer){%>
+                            <span class="text-success">Product Offer <%=data[i].productOffer%>%</span>
+                          <%}else if(data[i].productOffer < data[i].categoryOffer){%>
+                            <span class="text-warning">Category Offer <%=data[i].categoryOffer%>%</span>
+                          <%}else{%>
+                            <span class="text-muted">0%</span>
+                          <%}%></td>
                         <td>
                             <% if (data[i].productOffer === 0) { %>
                             <button class="btn btn-info btn-sm" onclick="addOffer('<%= data[i]._id %>')">Add Offer</button>

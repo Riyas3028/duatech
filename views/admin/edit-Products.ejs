@@ -111,7 +111,7 @@
                             <label class="form-label">Category</label>
                             <select class="form-select border" name="category" id="category">
                                 <% cat.forEach(cat => { %>
-                                    <option value="<%= cat._id %>" <%= cat._id.equals(product.cat) ? 'selected' : '' %>>
+                                    <option value="<%= cat._id %>" <%= cat._id.equals(product.category) ? 'selected' : '' %>>
                                         <%= cat.name %>
                                     </option>
                                 <% }) %>
@@ -139,7 +139,7 @@
                             <div class="col-lg-4">
                                 <div class="mb-4">
                                     <label class="form-label">Sale Price</label>
-                                    <input type="number" name="salePrice" id="salePrice" value="<%= product.salePrice %>" class="form-control border">
+                                    <input disabled type="number" name="salePrice" id="salePrice" value="<%= product.salePrice %>" class="form-control border">
                                     <div id="salePrice-error" class="error-message"></div>
                                 </div>
                             </div>

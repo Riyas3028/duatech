@@ -83,48 +83,16 @@
   }
   
   .ml-3 {
-    margin-left: 15px;
+    margin-left: 1px;
   }
   
-  /* Sidebar styles */
-  .sidebar {
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    height: fit-content;
-  }
-  
-  .sidebar a {
-    color: #333;
-    display: block;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    transition: all 0.3s ease;
-  }
-  
-  .sidebar a.active {
-    color: #ff6600;
-    background-color: rgba(255, 102, 0, 0.1);
-  }
-  
-  .sidebar a:hover {
-    color: #ff6600;
-    background-color: rgba(255, 102, 0, 0.05);
-  }
-  
-  .sidebar a i {
-    margin-right: 10px;
-  }
-  
+ 
   /* Main content styles */
   .main-content {
     background-color: white;
-    padding: 25px;
+    padding: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 3px;
   }
   
   .main-content h2 {
@@ -257,11 +225,11 @@
   
   @media (max-width: 767px) {
     .sidebar {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     
     .main-content {
-      padding: 20px 15px;
+      padding: 10px 15px;
     }
     
     .form-row {
@@ -310,15 +278,15 @@
   <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="previewImage(event)">
 </section>
 
-<div class="container mb-5">
-  <div class="row">
+<div class="container-fluid">
+  <div class="row ">
     <!-- Sidebar -->
-    <div class="col-lg-3 col-md-4 mb-4">
+    <div class="col-sm-6 col-md-3">
       <%- include('../partials/user/profileSidebar') %>
     </div>
     
     <!-- Main Content -->
-    <div class="col-lg-9 col-md-8">
+    <div class="col-md-9">
       <div class="main-content">
         <h2>Personal Information</h2>
         
@@ -335,11 +303,11 @@
               <input name="name" type="text" value="<%= user.name %>" class="form-control" required>
             </div>
             
-            <div class="col-md-6 mb-3">
+            <!-- <div class="col-md-6 mb-3">
               <label>Username <span class="text-danger">*</span></label>
               <input name="username" type="text" value="<%= user.username %>" placeholder="Set your Username" class="form-control" required>
               <small class="text-muted">Choose a unique username</small>
-            </div>
+            </div> -->
             
             <div class="col-md-6 mb-3">
               <label>Email address</label>
@@ -349,8 +317,9 @@
             
             <div class="col-md-6 mb-3">
               <label>Phone Number <span class="text-danger">*</span></label>
-              <div class="input-group">
-                <span class="input-group-text">+91</span>
+              <!-- <div class="input-group"> -->
+                <!-- <span class="input-group-text">+91</span> -->
+
                 <input type="text" name="phone" class="form-control" value="<%= user.phone %>" 
                     pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number"
                     placeholder="Enter phone number" required>
@@ -608,5 +577,147 @@
     });
   }
 </script>
-
+<script>
+  // Form validation script for name and username
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the form and input elements
+  const form = document.querySelector('form');
+  const nameInput = document.querySelector('input[name="name"]');
+  const usernameInput = document.querySelector('input[name="username"]');
+  
+  // Add submit event listener to the form
+  if (form) {
+    form.addEventListener('submit', function(event) {
+      const nameValid = validateName();
+      const usernameValid = validateUsername();
+      
+      // Prevent form submission if validation fails
+      if (!nameValid || !usernameValid) {
+        event.preventDefault();
+      }
+    });
+  }
+  
+  // Add input event listeners for real-time validation
+  if (nameInput) {
+    nameInput.addEventListener('blur', validateName);
+    nameInput.addEventListener('input', function() {
+      clearError(nameInput);
+    });
+  }
+  
+  if (usernameInput) {
+    usernameInput.addEventListener('blur', validateUsername);
+    usernameInput.addEventListener('input', function() {
+      clearError(usernameInput);
+    });
+  }
+  
+  // Validate full name
+  function validateName() {
+    if (!nameInput) return true;
+    
+    const name = nameInput.value.trim();
+    
+    // Check if empty
+    if (name === '') {
+      showError(nameInput, 'Full name is required');
+      return false;
+    }
+    
+    // Check if name contains at least two words (first and last name)
+    const nameParts = name.split(' ').filter(word => word.length > 0);
+    if (nameParts.length < 2) {
+      showError(nameInput, 'Please enter both first and last name');
+      return false;
+    }
+    
+    // Check if name contains any numbers or special characters
+    if (/[0-9!@#$%^&*(),.?":{}|<>]/.test(name)) {
+      showError(nameInput, 'Name should not contain numbers or special characters');
+      return false;
+    }
+    
+    // Valid name
+    clearError(nameInput);
+    return true;
+  }
+  
+  // Validate username
+  function validateUsername() {
+    if (!usernameInput) return true;
+    
+    const username = usernameInput.value.trim();
+    
+    // Check if empty
+    if (username === '') {
+      showError(usernameInput, 'Username is required');
+      return false;
+    }
+    
+    // Check length (typically between 3-20 characters)
+    if (username.length < 3) {
+      showError(usernameInput, 'Username must be at least 3 characters long');
+      return false;
+    }
+    
+    if (username.length > 20) {
+      showError(usernameInput, 'Username cannot exceed 20 characters');
+      return false;
+    }
+    
+    // Check if username contains only alphanumeric characters and underscores
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      showError(usernameInput, 'Username can only contain letters, numbers, and underscores');
+      return false;
+    }
+    
+    // Username should start with a letter
+    if (!/^[a-zA-Z]/.test(username)) {
+      showError(usernameInput, 'Username must start with a letter');
+      return false;
+    }
+    
+    // Valid username
+    clearError(usernameInput);
+    return true;
+  }
+  
+  // Helper function to show error message
+  function showError(input, message) {
+    // Remove any existing error first
+    clearError(input);
+    
+    // Add error class to input
+    input.classList.add('is-invalid');
+    
+    // Create error message element
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'invalid-feedback';
+    errorDiv.textContent = message;
+    
+    // Find where to insert the error message
+    const small = input.nextElementSibling;
+    if (small && small.tagName === 'SMALL') {
+      // Insert after the small element
+      small.parentNode.insertBefore(errorDiv, small.nextSibling);
+    } else {
+      // Insert directly after the input
+      input.parentNode.insertBefore(errorDiv, input.nextSibling);
+    }
+  }
+  
+  // Helper function to clear error message
+  function clearError(input) {
+    input.classList.remove('is-invalid');
+    
+    // Remove any existing error messages
+    const parent = input.parentNode;
+    const errorElements = parent.querySelectorAll('.invalid-feedback');
+    errorElements.forEach(element => {
+      parent.removeChild(element);
+    });
+  }
+});
+</script>
 <%- include("../../views/partials/user/footer") %>

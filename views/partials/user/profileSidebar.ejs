@@ -1,35 +1,115 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css" integrity="sha512-v8QQ0YQ3H4K6Ic3PJkym91KoeNT5S3PnDKvqnwqFD1oiqIl653crGZplPdU5KKtHjO0QKcQ2aUlQZYjHczkmGw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-v8QQ0YQ3H4K6Ic3PJkym91KoeNT5S3PnDKvqnwqFD1oiqIl653crGZplPdU5KKtHjO0QKcQ2aUlQZYjHczkmGw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://kit.fontawesome.com/c4265f3711.js" crossorigin="anonymous"></script>
-<div class="col-md-2 sidebar">
-    <h2>My Account</h2>
-    <div class="sidebar-profileImage">
-        <img src="/uploads/re-image/<%= user.profileImage? user.profileImage : 'images/single_2_thumb.jpg' %>" alt="" class="profile-img" style="width: 100px; height: 100px; border-radius: 5px;">
 
-        <form action="/uploadProfile" method="POST" enctype="multipart/form-data">
-            <input type="file" class="inputFile" name="profileImage" required>
-            <button type="submit" class="upload-btn"><i class="fa-solid fa-upload"></i></button>
-        </form>
-    </div>
-    <a href="/userProfile"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-    </svg> Account Details</a>
-    <a href="/address"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
-        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/>
-    </svg> Address</a>
-    <a href="/orders" cla   ss="active"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
-        <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"/>
-    </svg> Orders</a>
-    <a href="/wishlist"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-    </svg> Wishlist</a>
-    <a href="/wallet"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet-fill" viewBox="0 0 16 16">
-        <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v2h6a.5.5 0 0 1 .5.5c0 .253.08.644.306.958.207.288.557.542 1.194.542s.987-.254 1.194-.542C9.42 6.644 9.5 6.253 9.5 6a.5.5 0 0 1 .5-.5h6v-2A1.5 1.5 0 0 0 14.5 2z"/>
-        <path d="M16 6.5h-5.551a2.7 2.7 0 0 1-.443 1.042C9.613 8.088 8.963 8.5 8 8.5s-1.613-.412-2.006-.958A2.7 2.7 0 0 1 5.551 6.5H0v6A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5z"/>
-    </svg> Wallet</a>
-    <a href="/mycoupons"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
-        <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
-        <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2z"/>
-    </svg> My Coupons</a>
-    <a href="#" onclick="confirmLogout(event)" class="text-danger mt-4"><i class="fas fa-sign-out-alt"></i> Logout</a>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+  }
+
+  .sidebar {
+    /* width: 360px; */
+    background-color: #f8f8f8;
+    color: #080808;
+    /* padding: 30px; */
+    height: 100vh;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    /* margin: 10px; */
+    /* position: fixed; */
+  }
+
+  .sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ffffff33;
+    padding-bottom: 10px;
+    text-align: center;
+  }
+
+  .sidebar-profileImage {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .profile-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #0a0a0a88;
+    margin-bottom: 10px;
+    transition: transform 0.3s;
+  }
+
+  .profile-img:hover {
+    transform: scale(1.05);
+  }
+
+  .inputFile {
+    color: #080000aa;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  .upload-btn {
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: rgb(7, 7, 7);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .upload-btn:hover {
+    background-color: #45a049;
+  }
+
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #0a0a0a;
+    text-decoration: none;
+    margin: 12px 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .sidebar a:hover {
+    background-color: #2f2f48;
+    color: #ffffff;
+  }
+
+  .sidebar svg {
+    fill: currentColor;
+  }
+</style>
+</head>
+
+<body>
+<div class="sidebar ml-1">
+  <h2>My Account</h2>
+
+  <div class="sidebar-profileImage">
+    <img src="/uploads/re-image/<%= user.profileImage ? user.profileImage : 'images/single_2_thumb.jpg' %>" alt="Profile Image" class="profile-img">
+
+    <form action="/uploadProfile" method="POST" enctype="multipart/form-data">
+      <input type="file" class="inputFile" name="profileImage" required>
+      <br>
+      <button type="submit" class="upload-btn"><i class="fa-solid fa-upload"></i> Upload</button>
+    </form>
+  </div>
+
+  <a href="/userProfile"><i class="fa-solid fa-user"></i> Account Details</a>
+  <a href="/address"><i class="fa-solid fa-location-dot"></i> My Addresses</a>
+  <a href="/orders"><i class="fa-solid fa-box"></i> My Orders</a>
+  <a href="/wishlist"><i class="fa-solid fa-heart"></i> My Wishlist</a>
+  <a href="/wallet"><i class="fa-solid fa-wallet"></i> My Wallet</a>
+  <!-- <a href="/coupon"><i class="fa-solid fa-tags"></i> My Coupon</a> -->
+  <a href="/logout"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
 </div>

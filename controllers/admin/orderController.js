@@ -59,28 +59,18 @@ const viewOrderDetails = async (req, res) => {
     console.log(id);
 
     const order = await Order.findById(id)
-      .populate("orderedItems.product")
       .populate("userId")
       .lean();
 
     if (order) {
-      const userId = order.userId;
-      const addressDoc = await Address.findOne({ userId: userId }).lean();
-
-      const userAddress = addressDoc.address.find(
-        (addr) => addr._id.toString() === order.address.toString()
-      );
-
-      order.address = userAddress;
-
-      res.render("adminOrderDetails", { order: order, currentPage: "orders" });
+            res.render("adminOrderDetails", { order: order, currentPage: "orders" });
     } else {
       return res
         .status(400)
         .json({ success: false, message: "order not found" });
     }
   } catch (error) {
-    console.errror(error);
+    console.error(error);
     res.redirect("/pageNotFound");
   }
 };
@@ -236,7 +226,7 @@ const updateReturnStatus=async(req,res)=>{
       wallet.transactions.push({
         amount:orderData.finalAmount,
         type: "credit",
-        description: "Order return Refund",
+        description: "Order return Refund",orderId:orderData._id
       });
 
       await wallet.save();

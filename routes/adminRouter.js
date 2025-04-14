@@ -92,4 +92,5 @@ router.get('/salesReport',adminAuth,salesController.loadSalesReport);
 
 
 router.get('/wallet',adminAuth,walletController.loadWallet)
+router.get('/wallet/transaction/:id',adminAuth,walletController.loadTransaction)
 module.exports = router;

@@ -1,6 +1,7 @@
 <%- include('../partials/user/header') %>
 
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
  .card-green {
@@ -41,127 +42,281 @@
    border-radius: 10px 10px 0 0;
  }
 
- .profile-image-container {
+ /* .profile-image-container {
    display: flex;
    align-items: center;
- }
+ } */
 
- .rounded-circle {
+ /* .rounded-circle {
    border-radius: 50%;
    border: 2px solid #fff;
    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
- }
+ } */
 
  .ml-3 {
    margin-left: 15px;
  }
 
- @media (max-width: 768px) {
-   .dashboard-menu {
-     padding: 10px;
-   }
-   .card {
-     margin-bottom: 15px;
-   }
- }
  body {
-            background-color: #f7f7f7;
-        }
-        .sidebar {
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar a {
-            color: #333;
-            display: block;
-            padding: 10px 0;
-            text-decoration: none;
-        }
-        .sidebar a.active {
-            color: #ff6600;
-        }
-        .sidebar a:hover {
-            color: #ff6600;
-        }
-        .sidebar a i {
-            margin-right: 10px;
-        }
-        .main-content {
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .main-content h2 {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            font-weight: bold;
-        }
-        .form-group span {
-            color: red;
-        }
-        .btn-orange {
-            background-color: #ff6600;
-            color: white;
-        }
-        .btn-orange:hover {
-            background-color: #e65c00;
-        }
-        .btn-blue {
-            background-color: #0000ff;
-            color: white;
-        }
-        .btn-blue:hover {
-            background-color: #0000cc;
-        }
-        .photo img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        .order-header {
-            background-color: #f0f0f0;
-            padding: 10px;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-        }
-        .order-body {
-            padding: 20px;
-        }
-        .order-footer {
-            padding: 10px;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-        }
-        .order-card {
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .order-status {
-            color: red;
-        }
-        .order-ship-to {
-            color: green;
-        }
-        .order-link {
-            color: blue;
-            text-decoration: none;
-        }
-        .order-link:hover {
-            text-decoration: underline;
-        }
-        .btn-orange {
-            background-color: orange;
-            color: white;
-        }
-        .product-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-        }
+    background-color: #f7f7f7;
+ }
+ 
+ .main-content {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ }
+ 
+ .main-content h2 {
+    margin-bottom: 20px;
+ }
+ 
+ .form-group label {
+    font-weight: bold;
+ }
+ 
+ .form-group span {
+    color: red;
+ }
+ 
+ .btn-orange {
+    background-color: #ff6600;
+    color: white;
+ }
+ 
+ .btn-orange:hover {
+    background-color: #e65c00;
+ }
+ 
+ .btn-blue {
+    background-color: #0000ff;
+    color: white;
+ }
+ 
+ .btn-blue:hover {
+    background-color: #0000cc;
+ }
+ 
+ .photo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+ }
+ 
+ .order-header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+ }
+ 
+ .order-body {
+    padding: 20px;
+ }
+ 
+ .order-footer {
+    padding: 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+ }
+ 
+ .order-card {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    margin-bottom: 20px;
+ }
+ 
+ .order-status {
+    color: red;
+ }
+ 
+ .order-ship-to {
+    color: green;
+ }
+ 
+ .order-link {
+    color: blue;
+    text-decoration: none;
+ }
+ 
+ .order-link:hover {
+    text-decoration: underline;
+ }
+ 
+ .btn-orange {
+    background-color: orange;
+    color: white;
+ }
+ 
+ .product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+ }
+ 
+ .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 0.25rem;
+    color: white;
+ }
+ 
+ .search-container {
+    margin-bottom: 20px;
+ }
+ 
+ .search-form {
+    width: 100%;
+ }
+ 
+ .no-style {
+    text-decoration: none;
+    color: inherit;
+ }
+ 
+ /* Responsive styles */
+ @media (max-width: 991px) {
+    .order-header .row > div {
+       margin-bottom: 8px;
+    }
+    
+    .order-header .text-end {
+       text-align: left !important;
+    }
+ }
+ 
+ @media (max-width: 767px) {
+    .dashboard-menu {
+       padding: 10px;
+       margin-bottom: 20px;
+    }
+    
+    .card {
+       margin-bottom: 15px;
+    }
+    
+    .col-md-10 {
+       padding-left: 15px;
+       padding-right: 15px;
+    }
+    
+    .order-header {
+       padding: 15px 10px;
+    }
+    
+    .order-actions {
+       display: flex;
+       justify-content: space-between;
+       margin-top: 10px;
+       width: 100%;
+    }
+    
+    .product-image {
+       width: 60px;
+       height: 60px;
+    }
+    
+    .search-form {
+       flex-direction: row;
+       flex-wrap: wrap;
+    }
+    
+    .search-form input {
+       flex: 1;
+       min-width: 200px;
+    }
+    
+    .search-form button, 
+    .search-form a {
+       flex: 0 0 auto;
+       margin-top: 0;
+    }
+ }
+ 
+ @media (max-width: 575px) {
+    .banner-area .breadcrumb-banner {
+       flex-direction: column;
+       align-items: flex-start;
+    }
+    
+    .banner-area .col-first {
+       margin-top: 15px;
+    }
+    
+    .order-card {
+       margin-bottom: 15px;
+    }
+    
+    .order-header {
+       flex-direction: column;
+    }
+    
+    .order-header [class*="col-"] {
+       width: 100%;
+       margin-bottom: 5px;
+    }
+    
+    .order-body .row {
+       flex-direction: column;
+    }
+    
+    .order-body .col-md-2,
+    .order-body .col-md-6 {
+       width: 100%;
+       text-align: center;
+       margin-bottom: 10px;
+    }
+    
+    .order-body .col-md-6 {
+       text-align: left;
+    }
+    
+    .product-image {
+       width: 100px;
+       height: 100px;
+       margin: 0 auto 10px;
+    }
+    
+    .pagination {
+       flex-wrap: wrap;
+       justify-content: center;
+    }
+    
+    .pagination a {
+       margin: 2px;
+    }
+    
+    .search-container {
+       padding: 0 15px;
+    }
+    
+    .search-form {
+       gap: 5px !important;
+    }
+    
+    .search-form input {
+       width: 100% !important;
+       margin-bottom: 5px;
+    }
+    
+    .search-form button,
+    .search-form a {
+       flex: 1;
+    }
+    
+    .modal-footer {
+       flex-direction: column;
+    }
+    
+    .modal-footer button {
+       width: 100%;
+       margin: 5px 0;
+    }
+ }
 </style>
 
 <section class="banner-area organic-breadcrumb">
@@ -187,42 +342,43 @@
     </div>
 </section>
 
-<div class="container-fluid mt-5">
+<div class="container-fluid mt-2">
     <div class="row">
         <!-- Sidebar -->
-        <%- include('../partials/user/profileSidebar') %>
+        <div class=" side col-lg-3 col-md-3 col-sm-6">
+            <%- include('../partials/user/profileSidebar') %>
+        </div>
+        
         <!-- Main Content -->
-        <div class="col-md-10">
-            <h2 class="mb-4">Your Orders</h2>
-            <div class="mx-auto search-container mb-3 d-flex justify-content-center" style="max-width: 600px;">
-                <form action="/orderSearch" method="POST" class="search-form d-flex gap-2">
-                    <input type="text" id="searchInput" name="query" placeholder="Enter Order Id..." class="form-control" style="width: 500px;"/>
+        <div class="col-lg-9 col-md-9">
+            <h2 class="">Your Orders</h2>
+            
+            <div class="search-container mb-4">
+                <form action="/orderSearch" method="POST" class="search-form d-flex flex-wrap gap-2">
+                    <input type="text" id="searchInput" name="query" placeholder="Enter Order Id..." class="form-control" />
                     <button type="submit" class="btn btn-secondary">Search</button>
                     <a href="/orders" id="clearButton" class="btn btn-secondary">Clear</a>
                 </form>
             </div>
             
-            
-
-            
             <% if (orders && orders.length > 0) { %>
                 <% orders.forEach(order => { %>
                     <div class="order-card">
                         <div class="order-header">
-                            <div class="row align-items-center">
-                                <div class="col-md-2">
+                            <div class="row g-2">
+                                <div class="col-6 col-md-2">
                                     <small class="text-muted">ORDER PLACED</small><br>
                                     <%= new Date(order.createdAt).toLocaleDateString() %>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-6 col-md-1">
                                     <small class="text-muted">TOTAL</small><br>
                                     ₹<%= Math.round(order.finalAmount) %>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-12 col-md-3">
                                     <small class="text-muted">ORDER ID</small><br>
-                                    #<%= order.orderId %>
+                                    <span class="text-truncate d-inline-block" style="max-width: 100%;">#<%= order.orderId %></span>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-12 col-md-2">
                                     <small class="text-muted">STATUS</small><br>
                                     <span class="status-badge <%= 
                                         order.status === 'delivered' ? 'bg-success' :
@@ -231,7 +387,6 @@
                                         'bg-warning'
                                     %>">
                                         <%= order.status.toUpperCase() %>
-                                           
                                     </span>
                                     <%if(order.status === 'delivered'){%>
                                         On
@@ -242,7 +397,7 @@
                                         <%=new Date(order.updatedAt).toLocaleDateString()%>
                                     <%}%>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-12 col-md-2">
                                     <small class="text-muted">PAYMENT METHOD</small><br>
                                     <% if (order.paymentMethod === 'cod') { %>
                                         CASH ON DELIVERY
@@ -251,54 +406,97 @@
                                     <% } else if (order.paymentMethod === 'wallet') { %>
                                         WALLET PAYMENT
                                     <% } else { %>
-                                        UNKNOWN PAYMENT METHOD
+                                        UNKNOWN
                                     <% } %>
                                 </div>
-                                <div class="col-md-3 text-end d-flex">
-                                    <a href="/orderDetails?orderId=<%= order.orderId %>" 
-                                       class="btn btn-outline-primary btn-sm mt-2" style="height: 30px; margin-right: 10px;">View Details</a>
-                                    
-                                    <% if (order.status === 'delivered' && !order.returnReason && order.requestStatus !== "rejected") { %>
-                                        <button onclick="initiateReturn('<%= order._id %>')" 
-                                                class="btn btn-warning btn-sm mt-2">
-                                            Request Return
-                                        </button>
-                                    <% } else if (order.status === 'Return Requested' && order.requestStatus === 'pending') { %>
-                                        <button onclick="cancelReturn('<%= order._id %>')"
-                                                class="btn btn-danger btn-sm mt-2">
-                                            Cancel Return Request
-                                        </button>
-                                    <% } else if (!['delivered', 'cancelled', 'Return Requested', 'returning', 'returned'].includes(order.status)) { %>
-                                        <button onclick="cancelOrder('<%= order._id %>')"
-                                                class="btn btn-outline-danger btn-sm mt-2">
-                                            Cancel Order
-                                        </button>
-                                    <% } %>
+                                <div class="col-12 col-md-2 mt-2 mt-md-0">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <a href="/orderDetails?orderId=<%= order.orderId %>" 
+                                           class="btn btn-outline-primary btn-sm" style="height: 30px;">View Details</a>
+                                        
+                                        <% if (order.status === 'delivered' && !order.returnReason && order.requestStatus !== "rejected") { %>
+                                            <button onclick="initiateReturn('<%= order._id %>')" 
+                                                    class="btn btn-warning btn-sm">
+                                                Return
+                                            </button>
+                                        <% } else if (order.status === 'Return Requested' && order.requestStatus === 'pending') { %>
+                                            <button onclick="cancelReturn('<%= order._id %>')"
+                                                    class="btn btn-danger btn-sm">
+                                                Cancel Return
+                                            </button>
+                                        <% } else if (!['delivered', 'cancelled', 'Return Requested', 'returning', 'returned'].includes(order.status)) { %>
+                                            <button onclick="cancelOrder('<%= order._id %>')"
+                                                    class="btn btn-outline-danger btn-sm">
+                                                Cancel
+                                            </button>
+                                        <% } %>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <%for(let i=0;i<order.orderedItems.length;i++){%>
                         <div class="order-body">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-12 col-sm-3 col-md-2 text-center text-sm-start mb-3 mb-sm-0">
                                     <img src="/uploads/re-image/<%= order.orderedItems[i].product.productImage[0] %>" 
                                          alt="<%= order.orderedItems[i].productName %>"
                                          class="product-image">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-12 col-sm-9 col-md-6">
                                     <a href="/details?id=<%= order.orderedItems[i].product._id %>" class="no-style">
-                                        <h5><%= order.orderedItems[i].product.productName %></h5>
+                                        <h5 class="mb-2"><%= order.orderedItems[i].product.productName %></h5>
                                     </a>
-                                    <p class="text-muted mb-0">Quantity: <%= order.orderedItems[i].quantity %></p>
-                                    <p class="text-muted">Price: ₹<%= order.orderedItems[i].product.salePrice*order.orderedItems[i].quantity %></p>
+                                    <div class="d-flex flex-wrap gap-3">
+                                        <p class="text-muted mb-0">Quantity: <%= order.orderedItems[i].quantity %></p>
+                                        <p class="text-muted mb-0">Price: ₹<%= order.orderedItems[i].product.salePrice*order.orderedItems[i].quantity %></p>
+                                    </div>
                                 </div>
-                                
-                               
                             </div>
                         </div>
                         <%}%>
                     </div>
                 <% }); %>
+                
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center mt-4">
+                    <div class="pagination">
+                        <% if (currentPage > 1) { %>
+                            <a href="/orders?page=<%= currentPage - 1 %>" class="prev-arrow">
+                                <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+                            </a>
+                        <% } %>
+                    
+                        <% if (totalPages > 5 && currentPage > 3) { %>
+                            <a href="/orders?page=1">1</a>
+                            <% if (currentPage > 4) { %>
+                                <a href="#" class="dot-dot">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                </a>
+                            <% } %>
+                        <% } %>
+                    
+                        <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
+                            <a href="/orders?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+                        <% } %>
+                    
+                        <% if (totalPages > 5 && currentPage < totalPages - 2) { %>
+                            <% if (currentPage < totalPages - 3) { %>
+                                <a href="#" class="dot-dot">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                </a>
+                            <% } %>
+                            <a href="/orders?page=<%= totalPages %>"><%= totalPages %></a>
+                        <% } %>
+                    
+                        <% if (currentPage < totalPages) { %>
+                            <a href="/orders?page=<%= currentPage + 1 %>" class="next-arrow">
+                                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+                
             <% } else { %>
                 <div class="text-center py-5">
                     <div class="mb-4">
@@ -353,44 +551,6 @@
         </div>
     </div>
 </div>
-<div class=" d-flex justify-content-center">
-					
-    <div class="pagination">
-        <% if (currentPage > 1) { %>
-            <a href="/orders?page=<%= currentPage - 1 %>" class="prev-arrow">
-                <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
-            </a>
-        <% } %>
-    
-        <% if (totalPages > 5 && currentPage > 3) { %>
-            <a href="/orders?page=1">1</a>
-            <% if (currentPage > 4) { %>
-                <a href="#" class="dot-dot">
-                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                </a>
-            <% } %>
-        <% } %>
-    
-        <% for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
-            <a href="/orders?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
-        <% } %>
-    
-        <% if (totalPages > 5 && currentPage < totalPages - 2) { %>
-            <% if (currentPage < totalPages - 3) { %>
-                <a href="#" class="dot-dot">
-                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                </a>
-            <% } %>
-            <a href="/orders?page=<%= totalPages %>"><%= totalPages %></a>
-        <% } %>
-    
-        <% if (currentPage < totalPages) { %>
-            <a href="/orders?page=<%= currentPage + 1 %>" class="next-arrow">
-                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-            </a>
-        <% } %>
-    </div>
-</div>
 
 <!-- SweetAlert2 for dialogs -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -441,6 +601,16 @@ async function submitReturn() {
             formData.append('images', files[i]);
         }
 
+        // Show loading indicator
+        Swal.fire({
+            title: 'Processing...',
+            html: 'Submitting your return request',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         const response = await fetch('/returnOrder', {
             method: 'POST',
             body: formData
@@ -483,6 +653,16 @@ async function cancelReturn(orderId) {
         });
 
         if (result.isConfirmed) {
+            // Show loading indicator
+            Swal.fire({
+                title: 'Processing...',
+                html: 'Canceling your return request',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             const response = await fetch('/cancelReturnRequest', {
                 method: 'PUT',
                 headers: {
@@ -555,6 +735,16 @@ async function cancelOrder(orderId) {
     }
 
     try {
+        // Show loading indicator
+        Swal.fire({
+            title: 'Processing...',
+            html: 'Canceling your order',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         const response = await fetch('/cancelOrder', {
             method: 'PUT',
             headers: {
@@ -602,6 +792,19 @@ function confirmLogout(event) {
         }
     });
 }
+
+// Add this for better mobile experience
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('focus', function() {
+            // Scroll to make sure the input is visible when keyboard appears on mobile
+            setTimeout(() => {
+                this.scrollIntoView({behavior: 'smooth', block: 'center'});
+            }, 300);
+        });
+    }
+});
 </script>
 
 <%- include('../partials/user/footer') %>

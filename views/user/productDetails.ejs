@@ -1,296 +1,484 @@
 <%- include('../partials/user/header') %>
 <!-- Font Awesome 6 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-	.icon_btn {
-    position: relative;
-    display: inline-block;
-}
-
-.tooltip {
-    font-size: 14px;
-    white-space: nowrap;
-}
-
-/* Product Card Styling */
-.product-card {
-    transition: transform 0.3s ease;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.product-card img {
-    height: 200px;
-    object-fit: cover;
-}
-
-.product-card .card-body {
-    padding: 16px;
-}
-
-.product-card .price h6 {
-    margin-bottom: 0;
-}
-
-.product-actions .btn {
-    margin-right: 4px;
-    font-size: 14px;
-    padding: 6px 10px;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
-
-.l-through {
-    text-decoration: line-through;
-}
-
-.single-img img {
-  max-height: 60px;
-  filter: grayscale(100%);
-  transition: all var(--transition-speed) ease;
-  opacity: 0.7;
-}
-
-.single-img:hover img {
-  filter: grayscale(0%);
-  opacity: 1;
-}
-
-.product-card .btn {
-  width: 36px;
-  height: 36px;
-  padding: 10;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-
-.product-card .btn i {
-  font-size: 0.9rem;
-}
-
-.product-card .btn:hover {
-  transform: scale(1.1);
-}
+    /* General Responsive Styles */
+    body {
+        overflow-x: hidden;
+    }
+    
+    .container {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Icon Button Styling */
+    .icon_btn {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .tooltip {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+    
+    /* Product Card Styling */
+    .product-card {
+        transition: transform 0.3s ease;
+        border-radius: 12px;
+        overflow: hidden;
+        height: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .product-card img {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+    }
+    
+    .product-card .card-body {
+        padding: 16px;
+    }
+    
+    .product-card .price h6 {
+        margin-bottom: 0;
+    }
+    
+    .product-actions .btn {
+        margin-right: 4px;
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    
+    .l-through {
+        text-decoration: line-through;
+    }
+    
+    /* Brand Images */
+    .single-img img {
+        max-height: 60px;
+        filter: grayscale(100%);
+        transition: all var(--transition-speed) ease;
+        opacity: 0.7;
+    }
+    
+    .single-img:hover img {
+        filter: grayscale(0%);
+        opacity: 1;
+    }
+    
+    /* Product Card Buttons */
+    .product-card .btn {
+        width: 36px;
+        height: 36px;
+        padding: 10px 0;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .product-card .btn i {
+        font-size: 0.9rem;
+    }
+    
+    .product-card .btn:hover {
+        transform: scale(1.1);
+    }
+    
+    /* Responsive Banner */
+    .banner-area {
+        padding: 40px 0;
+    }
+    
+    /* Product Image Area */
+    .product_image_area {
+        padding: 40px 0;
+    }
+    
+    .s_Product_carousel {
+        margin-bottom: 30px;
+    }
+    
+    /* Zoom Container */
+    .zoom-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        margin-bottom: 15px;
+        border-radius: 8px;
+    }
+    
+    .zoom-image {
+        width: 100%;
+        transition: transform 0.3s ease;
+    }
+    
+    /* Product Text */
+    .s_product_text {
+        margin-top: 30px;
+    }
+    
+    /* Quantity Controls */
+    .product-extra-link2 {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .qty-btn {
+        width: 40px;
+        height: 40px;
+        background-color: #f6f6f6;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    
+    .qty-input {
+        width: 60px;
+        height: 40px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-left: none;
+        border-right: none;
+    }
+    
+    /* Card Area */
+    .card_area {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    /* Description Area */
+    .product_description_area {
+        padding: 40px 0;
+    }
+    
+    /* Related Products */
+    .related-product-area {
+        padding: 40px 0;
+    }
+    
+    /* Mobile-specific styles */
+    @media (max-width: 767px) {
+        .s_product_inner {
+            flex-direction: column;
+        }
+        
+        .col-lg-6, .col-lg-5, .offset-lg-1 {
+            width: 100%;
+            margin-left: 0;
+        }
+        
+        .breadcrumb-banner {
+            text-align: center;
+            justify-content: center !important;
+        }
+        
+        .banner-area h1 {
+            font-size: 24px;
+        }
+        
+        .product-extra-link2 {
+            justify-content: center;
+        }
+        
+        .card_area {
+            justify-content: center;
+        }
+        
+        .tab-content {
+            padding: 15px;
+        }
+        
+        .s_product_text h3 {
+            font-size: 22px;
+            margin-top: 0;
+        }
+        
+        .nav-tabs .nav-link {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+    }
+    
+    /* Tablet styles */
+    @media (min-width: 768px) and (max-width: 991px) {
+        .s_product_inner {
+            flex-direction: row;
+        }
+        
+        .col-lg-6, .col-lg-5 {
+            width: 50%;
+        }
+        
+        .offset-lg-1 {
+            margin-left: 0;
+        }
+        
+        .s_product_text {
+            padding-left: 15px;
+        }
+    }
+    
+    /* Ensure responsive grid for products */
+    .row.g-4 {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+    
+    @media (max-width: 575px) {
+        .col-lg-3, .col-md-4, .col-sm-6 {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+    }
+    
+    @media (min-width: 576px) and (max-width: 767px) {
+        .col-sm-6 {
+            width: 50%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+    }
+    
+    @media (min-width: 768px) and (max-width: 991px) {
+        .col-md-4 {
+            width: 33.333333%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+    }
+    
+    @media (min-width: 992px) {
+        .col-lg-3 {
+            width: 25%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+    }
 </style>
 
-	<!-- Start Banner Area -->
-	<section class="banner-area organic-breadcrumb">
-		<div class="container">
-			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-				<div class="col-first">
-					<h1>Product Details Page</h1>
-					<nav class="d-flex align-items-center">
-						<a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
-						<a href="/shop">Shop<span class="lnr lnr-arrow-right"></span></a>
-						<a href="#">Product Details</a>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End Banner Area -->
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Product Details</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/shop">Shop<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="#">Product Details</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
 
-	<!--================Single Product Area =================-->
-	<div class="product_image_area">
-		<div class="container">
-			<div class="row s_product_inner">
-				<div class="col-lg-6">
-					<div class="s_Product_carousel">
-						<div class="single-prd-item zoom-container">
-							<img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[0] %>" alt="">
-						</div>
-						<div class="single-prd-item zoom-container">
-							<img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[1] %>" alt="">
-						</div>
-						<div class="single-prd-item zoom-container">
-							<img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[2] %>" alt="">
-						</div>
-                        <div class="single-prd-item zoom-container">
-							<img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[3] %>" alt="">
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-5 offset-lg-1">
-					<div class="s_product_text">
-						<h3><%=product.productName%></h3>
-						<h2>₹ <%= Math.round(product.salePrice) %>.00</h2>
-						<div style="display: flex; align-items: center;">
-                        	<h6 style="text-decoration: line-through;
-								color: #cccccc;
-								margin-bottom: 0;" class="l-through">₹ <%=product.regularPrice%>.00</h6>
-						
-							<h4 style="margin-left: 10px;"> <%=product.category.categoryOffer > product.productOffer ? product.category.categoryOffer : product.productOffer %> % Off</h4>
-						</div>
-						<ul class="list">
-							<li><a class="active" href="#"><span>Category</span> : <%=product.category.name%></a></li>
-							<%if(product.quantity >=1){%>
-							<li><a href="#" ><span>Availibility</span> : <span style="color: green;">In Stock</span></a></li>
-							<%} else{%>
-								<li><a href="#"><span>Availibility</span> : <span style="color: red;">No Stock</span></a></li>
-								<%}%>
-                            <li><a href="#"><span>Colour</span> : <%=product.color%></a></li>
-						</ul>
-						<p><%=product.description%></p>
-						<div class="product-extra-link2">
-							<button class="qty-btn decrease">−</button>
-						<input type="number" id="quantity" class="qty-input" value="1" min="1" max="10" readonly>
-						<button class="qty-btn increase">+</button>
-						</div>
-						
-						<div class="card_area d-flex align-items-center">
-							<!-- <a class="primary-btn" href="#" onclick="addToCart('<%=product._id%>')">Add to Cart</a> -->
-							
-								<button type="submit" class="btn btn-warning px-4 addToCartBtn main" data-id="<%= product._id %>">
-								  Add To Cart
-							  </button>
-							<a class="icon_btn d-inline-block" onclick="addToWishlist('<%=product._id%>')"  href="#">
-								<i class="lnr lnr-heart"></i>
-							</a>
-							
-							
-							
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--================End Single Product Area =================-->
+<!--================Single Product Area =================-->
+<div class="product_image_area">
+    <div class="container">
+        <div class="row s_product_inner">
+            <div class="col-lg-6">
+                <div class="s_Product_carousel">
+                    <div class="single-prd-item zoom-container">
+                        <img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[0] %>" alt="">
+                    </div>
+                    <div class="single-prd-item zoom-container">
+                        <img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[1] %>" alt="">
+                    </div>
+                    <div class="single-prd-item zoom-container">
+                        <img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[2] %>" alt="">
+                    </div>
+                    <div class="single-prd-item zoom-container">
+                        <img class="img-fluid zoom-image" src="/uploads/re-image/<%= product.productImage[3] %>" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="s_product_text">
+                    <h3><%=product.productName%></h3>
+                    <h2 class="">₹ <%= Math.round(product.salePrice) %>.00</h2>
+                    <div style="display: flex; align-items: center;">
+                        <h6 style="text-decoration: line-through; color: #cccccc; margin-bottom: 0;" class="l-through">₹ <%=product.regularPrice%>.00</h6>
+                        <h4 style="margin-left: 10px;"> <%=product.category.categoryOffer > product.productOffer ? product.category.categoryOffer : product.productOffer %> % Off</h4>
+                    </div>
+                    <ul class="list">
+                        <li><a class="active" href="#"><span>Category</span> : <%=product.category.name%></a></li>
+                        <%if(product.quantity >=1){%>
+                        <li><a href="#" ><span>Availibility</span> : <span style="color: green;">In Stock</span></a></li>
+                        <%} else{%>
+                            <li><a href="#"><span>Availibility</span> : <span style="color: red;">No Stock</span></a></li>
+                        <%}%>
+                        <li><a href="#"><span>Colour</span> : <%=product.color%></a></li>
+                    </ul>
+                    <p><%=product.description%></p>
+                    <div class="product-extra-link2">
+                        <button class="qty-btn decrease">−</button>
+                        <input type="number" id="quantity" class="qty-input" value="1" min="1" max="10" readonly>
+                        <button class="qty-btn increase">+</button>
+                    </div>
+                    
+                    <div class="card_area d-flex align-items-center">
+                        <button type="submit" class="btn btn-warning bg-primary px-4 addToCartBtn main" data-id="<%= product._id %>">
+                            Add To Cart
+                        </button>
+                        <a class="icon_btn d-inline-block" onclick="addToWishlist('<%=product._id%>')" href="#">
+                            <i class="lnr lnr-heart"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--================End Single Product Area =================-->
 
-	<!--================Product Description Area =================-->
-	<section class="product_description_area">
-		<div class="container">
-			<ul class="nav nav-tabs" id="myTab" role="tablist">
-				<li class="nav-item">
-					<a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Description</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-					 aria-selected="false">Specification</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-					 aria-selected="false">Comments</a>
-				</li>
-			</ul>
-			<div class="tab-content" id="myTabContent">
-				<div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
-					<p><%=product.description%></p>
-					
-				</div>
-				<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-					<div class="table-responsive">
-						<table class="table">
-							<tbody>
-								<tr>
-									<td>
-										<h5>Warranty</h5>
-									</td>
-									<td>
-										<h5>1 Year Brand Warranty</h5>
-									</td>
-								</tr>
-								
-							</tbody>
-						</table>
-					</div>
-				</div> 
-				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-					<div class="row">
-					  <div class="col-lg-6">
-						<div class="comment_list" id="comments-container">
-						  <!-- Comments will be loaded here dynamically -->
-						</div>
-						<div id="comments-pagination" class="d-flex justify-content-center mt-4">
-						  <!-- Pagination will be added here -->
-						</div>
-					  </div>
-					  <div class="col-lg-6">
-						<div class="review_box">
-						  <h4>Post a comment</h4>
-						  <% if (locals.user) { %>
-							<form class="row contact_form" onsubmit="submitComment('<%= product._id %>'); return false;">
-							  <div class="col-md-12">
-								<div class="form-group">
-								  <textarea class="form-control" id="comment-text" rows="4" placeholder="Your Comment" maxlength="500" required></textarea>
-								  <small class="text-muted">Maximum 500 characters</small>
-								</div>
-							  </div>
-							  <div class="col-md-12 text-right">
-								<button type="submit" class="btn primary-btn">Submit Comment</button>
-							  </div>
-							</form>
-						  <% } else { %>
-							<div class="alert alert-info">
-							  Please <a href="/login">login</a> to post a comment.
-							</div>
-						  <% } %>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				</div>				  
-			</div>
-		</div>
-	</section>
-	<!--================End Product Description Area =================-->
+<!--================Product Description Area =================-->
+<section class="product_description_area">
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Description</a>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Specification</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Comments</a>
+            </li> -->
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <p><%=product.description%></p>
+            </div>
+            <!-- <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h5>Warranty</h5>
+                                </td>
+                                <td>
+                                    <h5>1 Year Brand Warranty</h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>  -->
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="comment_list" id="comments-container">
+                            <!-- Comments will be loaded here dynamically -->
+                        </div>
+                        <div id="comments-pagination" class="d-flex justify-content-center mt-4">
+                            <!-- Pagination will be added here -->
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="review_box">
+                            <h4>Post a comment</h4>
+                            <% if (locals.user) { %>
+                            <form class="row contact_form" onsubmit="submitComment('<%= product._id %>'); return false;">
+                                <div class="col-md-12">
+                                <div class="form-group">
+                                    <textarea class="form-control" id="comment-text" rows="4" placeholder="Your Comment" maxlength="500" required></textarea>
+                                    <small class="text-muted">Maximum 500 characters</small>
+                                </div>
+                                </div>
+                                <div class="col-md-12 text-right">
+                                <button type="submit" class="btn primary-btn">Submit Comment</button>
+                                </div>
+                            </form>
+                            <% } else { %>
+                            <div class="alert alert-info">
+                                Please <a href="/login">login</a> to post a comment.
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Product Description Area =================-->
 
-	<!-- Start related-product Area -->
-	<section class="related-product-area section_gap_bottom">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-lg-6 text-center">
-					<div class="section-title">
-						<h1>Related Products</h1>
-						<p>Explore our range of related products that complement your purchase. Each item is carefully selected to ensure the highest quality and satisfaction.</p>
-					</div>
-				</div>
-			</div>
-			<div class="row g-4">
-				<% for (let i = 0; i < products.length; i++) { %>
-				  <div class="col-lg-3 col-md-4 col-sm-6">
-					<div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden product-card position-relative">
-					  <a href="/productDetails?id=<%= products[i]._id %>">
-						<img src="/uploads/re-image/<%= products[i].productImage[0] %>" class="card-img-top img-fluid" alt="<%= products[i].productName %>" style="object-fit: cover; height: 220px;">
-					  </a>
-					  <div class="card-body text-center">
-						<h6 class="card-title mb-2 fw-semibold"><%= products[i].productName %></h6>
-						<div class="price d-flex justify-content-center align-items-center gap-2 mb-2">
-						  <span class="text-danger fw-bold">₹<%= products[i].salePrice %></span>
-						  <del class="text-muted small">₹<%= products[i].regularPrice %></del>
-						</div>
-						<div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
-							<button class="btn btn-sm btn-outline-primary addToCartBtn d-flex align-items-center gap-1" data-id="<%= products[i]._id %>">
-							  <i class="fas fa-cart-plus"></i>
-							</button>
-							<button onclick="addToWishlist('<%=products[i]._id%>')" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1">
-							  <i class="fas fa-heart"></i>
-							</button>
-							<a href="/productDetails?id=<%= products[i]._id %>" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1">
-							  <i class="fas fa-eye"></i>
-							</a>
-						  </div>
-						  
-					  </div>
-					</div>
-				  </div>
-				<% } %>
-			  </div>
-            
-		</div>
-	</section>
-	<!-- End related-product Area -->
+<!-- Start related-product Area -->
+<section class="related-product-area section_gap_bottom">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="section-title">
+                    <h1>Related Products</h1>
+                    <p>Explore our range of related products that complement your purchase. Each item is carefully selected to ensure the highest quality and satisfaction.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row g-4">
+            <% for (let i = 0; i < products.length; i++) { %>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden product-card position-relative">
+                    <a href="/productDetails?id=<%= products[i]._id %>">
+                    <img src="/uploads/re-image/<%= products[i].productImage[0] %>" class="card-img-top img-fluid" alt="<%= products[i].productName %>" style="object-fit: cover; height: 220px;">
+                    </a>
+                    <div class="card-body text-center">
+                    <h6 class="card-title mb-2 fw-semibold"><%= products[i].productName %></h6>
+                    <div class="price d-flex justify-content-center align-items-center gap-2 mb-2">
+                        <span class="text-danger fw-bold">₹<%= products[i].salePrice %></span>
+                        <del class="text-muted small">₹<%= products[i].regularPrice %></del>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+                        <button class="btn btn-sm btn-outline-primary addToCartBtn d-flex align-items-center gap-1" data-id="<%= products[i]._id %>">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <button onclick="addToWishlist('<%=products[i]._id%>')" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <a href="/productDetails?id=<%= products[i]._id %>" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            <% } %>
+            </div>
+    </div>
+</section>
+<!-- End related-product Area -->
 
-	
-
-    <script>
-		
-
-		document.querySelectorAll(".addToCartBtn.similar").forEach(button => {
+<script>
+    document.querySelectorAll(".addToCartBtn.similar").forEach(button => {
     button.addEventListener("click", async function () {
         const productId = button.getAttribute("data-id");
 
@@ -315,7 +503,6 @@
         }
     });
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
     const decreaseBtn = document.querySelector(".decrease");
@@ -368,25 +555,42 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-        document.querySelectorAll('.zoom-container').forEach(function(container) {
-  container.addEventListener('mousemove', function(e) {
-    const zoomImage = container.querySelector('.zoom-image');
-    const x = e.offsetX;
-    const y = e.offsetY;
-    const width = container.offsetWidth;
-    const height = container.offsetHeight;
 
-    const xPercent = x / width * 100;
-    const yPercent = y / height * 100;
+document.querySelectorAll('.zoom-container').forEach(function(container) {
+    // Use touchstart for mobile devices
+    const startEvent = 'ontouchstart' in window ? 'touchstart' : 'mousemove';
+    const moveEvent = 'ontouchmove' in window ? 'touchmove' : 'mousemove';
+    const endEvent = 'ontouchend' in window ? 'touchend' : 'mouseleave';
+    
+    container.addEventListener(moveEvent, function(e) {
+        const zoomImage = container.querySelector('.zoom-image');
+        
+        // Get coordinates (handle both mouse and touch events)
+        let x, y;
+        if (e.type === 'touchmove') {
+            const touch = e.touches[0];
+            const rect = container.getBoundingClientRect();
+            x = touch.clientX - rect.left;
+            y = touch.clientY - rect.top;
+        } else {
+            x = e.offsetX;
+            y = e.offsetY;
+        }
+        
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
 
-    zoomImage.style.transformOrigin = `${xPercent}% ${yPercent}%`;
-    zoomImage.style.transform = `scale(1.8)`;
-  });
+        const xPercent = x / width * 100;
+        const yPercent = y / height * 100;
 
-  container.addEventListener('mouseleave', function() {
-    const zoomImage = container.querySelector('.zoom-image');
-    zoomImage.style.transform = `scale(1)`;
-  });
+        zoomImage.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+        zoomImage.style.transform = `scale(1.8)`;
+    });
+
+    container.addEventListener(endEvent, function() {
+        const zoomImage = container.querySelector('.zoom-image');
+        zoomImage.style.transform = `scale(1)`;
+    });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -402,66 +606,73 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function handleAuthError(title, message) {
-  return Swal.fire({
-    title: title,
-    text: message,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Login",
-    cancelButtonText: "Cancel",
-    reverseButtons: true
-  }).then((result) => {
-    if (result.isConfirmed) {
-      window.location.href = "/login";
-    }
-  });
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Login",
+        cancelButtonText: "Cancel",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/login";
+        }
+    });
 }
 
 function addToWishlist(productId){
-			$.ajax({
-				url:'/wishlist',
-				method:'POST',
-				data :{productId :productId},
-				success :(response)=>{
-					if(response.status){
-						Swal.fire({
-							title : "Added to wishlist",
-							text : "The product has been added to you wishlist",
-							icon : "success",
-							timer : 2000,
-						})
-					} else {
-						Swal.fire({
-							title:response.message,
-							icon:"warning",
-							timer:2000,
+    $.ajax({
+        url:'/wishlist',
+        method:'POST',
+        data :{productId :productId},
+        success :(response)=>{
+            if(response.status){
+                Swal.fire({
+                    title : "Added to wishlist",
+                    text : "The product has been added to you wishlist",
+                    icon : "success",
+                    timer : 2000,
+                })
+            } else {
+                Swal.fire({
+                    title:response.message,
+                    icon:"warning",
+                    timer:2000,
+                })
+            }
+        },
+        error:(error)=>{
+            Swal.fire({
+                title : "Error",
+                text:"Product already in your Cart",
+                icon:"error",
+                timer :2000,
+            })
+        }
+    })
+}
 
-						})
-					}
-				},
-				error:(error)=>{
-					Swal.fire({
-						title : "Error",
-						text:"Product already in your Cart",
-						icon:"error",
-						timer :2000,
-					})
-					}
+// Check if we're on a touch device
+function isTouchDevice() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
 
-			})
-		}
-    </script>
+// Adjust zoom functionality for mobile
+if (isTouchDevice()) {
+    document.querySelectorAll('.zoom-container').forEach(container => {
+        container.addEventListener('click', function() {
+            const zoomImage = container.querySelector('.zoom-image');
+            
+            if (zoomImage.style.transform === 'scale(1.8)') {
+                zoomImage.style.transform = 'scale(1)';
+            } else {
+                zoomImage.style.transform = 'scale(1.8)';
+                zoomImage.style.transformOrigin = '50% 50%';
+            }
+        });
+    });
+}
+</script>
 
-<!-- <script src="/js/comments.js"></script>
-<script>
-	const currentUserId = '<%= locals.user ? user._id : null %>';
-  </script>
-  <script src="/js/comments.js"></script>
-  <script>
-	document.addEventListener('DOMContentLoaded', function() {
-	  loadComments('<%= product._id %>');
-	});
-  </script> -->
-
-
-	<%- include('../partials/user/footer') %>
+<%- include('../partials/user/footer') %>

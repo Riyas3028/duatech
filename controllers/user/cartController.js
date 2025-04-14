@@ -96,7 +96,9 @@ const loadCart = async (req, res) => {
       ],
     });
 
-    
+    if(cart.discount>0){
+      await Cart.findOneAndUpdate({userId:userData._id},{$set:{discount:0}})
+    }
 
     if (!cart || cart.items.length === 0) {
       return res.render("cart", {

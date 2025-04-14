@@ -57,7 +57,31 @@ const loadWallet = async (req, res, next) => {
     }
   };
   
+  const loadTransaction = async (req,res,next) => {
+    try {
+      const transactionId=req.params.id;
+      console.log(transactionId)
+      const wallet = await Wallet.findOne({
+        "transactions.transactionId": transactionId
+      }).populate("userId").lean();
+      console.log(wallet.userId.name);
+      
   
+  
+      const transaction = wallet.transactions.find(
+        (data) => data.transactionId === transactionId
+      );
+     
+  
+  
+      res.render('walletTransaction',{wallet,transaction})
+    } catch (error) {
+      next(error)
+    }
+    
+  }
 
 
-module.exports={loadWallet}
+module.exports={loadWallet,
+    loadTransaction
+}

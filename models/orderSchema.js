@@ -18,10 +18,19 @@ const orderSchema=new Schema({
     },
     orderedItems:[{
         product:{
-            type:Schema.Types.ObjectId,
-            ref:"Product",
-            required:true
-
+            _id: Schema.Types.ObjectId,
+            productName: String,
+            description: String,
+            category: Schema.Types.ObjectId,
+            regularPrice: Number,
+            salePrice: Number,
+            productOffer: Number,
+            quantity: Number,
+            isBlocked: Boolean,
+            productImage: [String],
+            status: String,
+            brand: Schema.Types.ObjectId,
+            
         },
         quantity:{
             type:Number,
@@ -45,9 +54,38 @@ const orderSchema=new Schema({
         required:true
     },
     address:{
-        type:Schema.Types.ObjectId,
-        ref:"User",
-        required:true
+        addressType:{
+            type:String,
+            required:true
+        },
+        name:{
+            type:String,
+            required:true
+        },
+        city:{
+            type:String,
+            required:true
+        },
+        landMark:{
+            type:String,
+            required:true
+        },
+        state:{
+            type:String,
+            required:true
+        },
+        pincode:{
+            type:Number,
+            required:true
+        },
+        phone:{
+            type:String,
+            required:true
+        },
+        altphone:{
+            type:String,
+            required:true
+        }
     },
     invoiceDate:{
         type:Date,

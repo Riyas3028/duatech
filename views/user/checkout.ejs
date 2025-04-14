@@ -292,8 +292,12 @@
                    </div>
                    <div class="d-flex justify-content-between mb-2">
                        <span>Subtotal</span>
-                       <span>₹ <span id="subtotal"><%= subtotal.toFixed(2) %></span></span>
+                       <span>₹ <span id="subtotal"><%= (subtotal-(subtotal*.18)).toFixed(2) %></span></span>
                    </div>
+                   <div class="d-flex justify-content-between mb-2">
+                    <span>GST</span>
+                    <span>₹ <span id="subtotal"><%= (subtotal*.18).toFixed(2) %></span></span>
+                </div>
                    <div class="d-flex justify-content-between mb-2">
                        <span>Coupon Discount</span>
                        <span>(-) ₹ <span id="couponDiscount">0.00</span></span>

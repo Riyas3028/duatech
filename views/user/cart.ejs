@@ -1,22 +1,144 @@
 <%- include('../partials/user/header') %>
 <!-- Font Awesome 6 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-<main class="main">
-    <div class="page-header breadcrumb-wrap">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="index.html" rel="nofollow">Home</a>
-                <span></span> Shop
-                <span></span> Your Cart
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/cart">Cart</a>
+                </nav>
             </div>
         </div>
     </div>
+</section>
+<!-- End Banner Area -->
+ 
+<style>
+    /* Responsive styles */
+    @media (max-width: 991px) {
+        .col-9, .col-3 {
+            width: 100%;
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+        .cart-totals {
+            margin-top: 30px;
+        }
+    }
+  
+    /* Card view for mobile */
+    .cart-card {
+        display: none;
+        margin-bottom: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .cart-card-header {
+        display: flex;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .cart-card-header img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+    
+    .cart-card-body {
+        padding: 15px;
+    }
+    
+    .cart-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        background-color: #f9f9f9;
+    }
+    
+    .cart-card-price {
+        font-weight: bold;
+    }
+    
+    /* Table and card visibility control */
+    @media (max-width: 767px) {
+        .table-view {
+            display: none;
+        }
+        .cart-card {
+            display: block;
+        }
+    }
+    
+    @media (min-width: 768px) {
+        .table-view {
+            display: block;
+        }
+        .cart-card {
+            display: none;
+        }
+    }
+  
+    @media (max-width: 576px) {
+        .breadcrumb-wrap {
+            padding: 10px 0;
+        }
+        .mt-50 {
+            margin-top: 30px;
+        }
+        .mb-50 {
+            margin-bottom: 30px;
+        }
+        .page-header {
+            padding: 10px 0;
+        }
+        .cart-totals {
+            padding: 15px !important;
+        }
+    }
+  
+    /* Quantity control styling */
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  
+    .decrement-button, .increment-button {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+  
+    .quantity-input {
+        text-align: center;
+        border: 1px solid #ddd;
+        margin: 0 5px;
+        height: 30px;
+    }
+</style>
+
+<main class="main">
     <section class="mt-50 mb-50">
         <div class="container">
             <div class="row">
-                <div class="col-9">
-                    <div class="table-responsive">
+                <div class="col-lg-9 col-md-12 col-sm-12 col-12">
+                    <!-- Table View (for larger screens) -->
+                    <div class="table-responsive table-view">
                         <table class="table shopping-summery text-center clean">
                             <thead>
                                 <tr class="main-heading">
@@ -28,110 +150,156 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                                <% if (data.length> 0) { %>
-                                    <% var x=0 %>
-                                        <% for (let i=0; i < data.length;i++) { %>
-
-                                            <tr>
-                                                <td class="image product-thumbnail">
-                                                    <img src="/uploads/re-image/<%= data[i].productDetails.productImage[0] %>" style="width:100px; height:100px"
-                                                        alt="#" />
-                                                </td>
-                                                <td class="product-des product-name">
-                                                    <h5 class="product-name">
-                                                        <a href="cart">
-                                                            <%= data[i].productDetails.productName %>
-                                                        </a>
-                                                    </h5>
-                                                    <p class="font-xs">
-                                                        <%= data[i].productDetails.category.name%>
-                                                        <br>
-                                                        
-                                                            <%= data[i].productDetails.brand.brandName %>
-                                                    </p>
-                                                </td>
-                                                <td class="price" data-title="Price">₹<span> <text
-                                                            id="subTotal<%= data[i].productDetails.id %>">
-                                                            <%= data[i].productDetails.salePrice * data[i].quantity %>
-                                                        </text><br>
-                                                        <small class="text-muted text-nowrap">₹<span id="price">
-                                                                <%= data[i].productDetails.salePrice %>
-
-                                                            </span>
-                                                            / per item </small>
-
-                                                </td>
-                                               
-
-                                                    <% x +=data[i].productDetails.salePrice * data[i].quantity%>
-
-
-                                                        <td class="text-center" data-title="Stock">
-                                                            <div class="detail-qty border radius m-auto">
-
-
-                                                                <div class="quantity-control">
-
-                                                                    <%if(data[i].productDetails.quantity>0){%>
-                                                                    
-                                                                    <button id="decrement<%= data[i].productDetails.id %>"
-                                                                        class="btn btn-sm decrement-button"
-                                                                        onclick="changeQuantity('<%= data[i].productDetails._id %>', -1, '<%= data[i].productDetails.salePrice %>', '<%= data[i].productDetails.id %>', '<%= data[i].productDetails.quantity %>')"
-                                                                        <% if (data[i].quantity === 1) { %> disabled <% } %> >
-                                                                        -
-                                                                    </button>
-                                                                    
-                                                                    <input class="quantity-input"
-                                                                        id="cartProductQuantity<%= data[i].productDetails.id %>"
-                                                                        value="<%= data[i].quantity %>"
-                                                                        style="width: 45px;" type="text" readonly>
-                                                                    
-                                                                    <button id="increment<%= data[i].productDetails.id %>"
-                                                                        class="btn btn-sm increment-button"
-                                                                        onclick="changeQuantity('<%= data[i].productDetails._id %>', 1, '<%= data[i].productDetails.salePrice %>', '<%= data[i].productDetails.id %>', '<%= data[i].productDetails.quantity %>')" >
-                                                                        +
-                                                                    </button>
-                                                                    <%}else{%>
-                                                                        <span class="text-danger">Out Of stock</span>
-                                                                        <%}%>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-
-                                                        <td class="action" data-title="Remove">
-                                                            <a class="btn btn-sm"
-                                                                href="#" onclick="confirmRemove('<%= data[i].productDetails._id %>')">
-                                                                <i class="fas fa-trash"></i>
-                                                            </a>
-                                                        </td>
-
-                                                        <% } %>
-                                                       
-                                                            <% } else { %>
-                                            <tr>
-
-                                                <td colspan="2" class="text-center">
-                                                    <p class="lead mb-4">No item found in Cart</p>
-                                                </td>
-                                            </tr>
-                                            <% } %>
-                                                    <input type="hidden" name="" id="totalabc" value="<%= x  %>">
-
+                                <% if (data.length > 0) { %>
+                                    <% var x = 0 %>
+                                    <% for (let i = 0; i < data.length; i++) { %>
+                                        <tr>
+                                            <td class="image product-thumbnail">
+                                                <img src="/uploads/re-image/<%= data[i].productDetails.productImage[0] %>" style="width:100px; height:100px"
+                                                    alt="#" />
+                                            </td>
+                                            <td class="product-des product-name">
+                                                <h5 class="product-name">
+                                                    <a href="cart">
+                                                        <%= data[i].productDetails.productName %>
+                                                    </a>
+                                                </h5>
+                                                <p class="font-xs">
+                                                    <%= data[i].productDetails.category.name%>
+                                                    <br>
+                                                    <%= data[i].productDetails.brand.brandName %>
+                                                </p>
+                                            </td>
+                                            <td class="price" data-title="Price">₹<span> <text
+                                                        id="subTotal<%= data[i].productDetails.id %>">
+                                                        <%= data[i].productDetails.salePrice * data[i].quantity %>
+                                                    </text><br>
+                                                    <small class="text-muted text-nowrap">₹<span id="price">
+                                                            <%= data[i].productDetails.salePrice %>
+                                                        </span>
+                                                        / per item </small>
+                                            </td>
+                                            <% x += data[i].productDetails.salePrice * data[i].quantity%>
+                                            <td class="text-center" data-title="Stock">
+                                                <div class="detail-qty border radius m-auto">
+                                                    <div class="quantity-control">
+                                                        <%if(data[i].productDetails.quantity>0){%>
+                                                        <button id="decrement<%= data[i].productDetails.id %>"
+                                                            class="btn btn-sm decrement-button"
+                                                            onclick="changeQuantity('<%= data[i].productDetails._id %>', -1, '<%= data[i].productDetails.salePrice %>', '<%= data[i].productDetails.id %>', '<%= data[i].productDetails.quantity %>')"
+                                                            <% if (data[i].quantity === 1) { %> disabled <% } %> >
+                                                            -
+                                                        </button>
+                                                        <input class="quantity-input"
+                                                            id="cartProductQuantity<%= data[i].productDetails.id %>"
+                                                            value="<%= data[i].quantity %>"
+                                                            style="width: 45px;" type="text" readonly>
+                                                        <button id="increment<%= data[i].productDetails.id %>"
+                                                            class="btn btn-sm increment-button"
+                                                            onclick="changeQuantity('<%= data[i].productDetails._id %>', 1, '<%= data[i].productDetails.salePrice %>', '<%= data[i].productDetails.id %>', '<%= data[i].productDetails.quantity %>')" >
+                                                            +
+                                                        </button>
+                                                        <%}else{%>
+                                                            <span class="text-danger">Out Of stock</span>
+                                                        <%}%>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="action" data-title="Remove">
+                                                <a class="btn btn-sm"
+                                                    href="#" onclick="confirmRemove('<%= data[i].productDetails._id %>')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <p class="lead mb-4">No item found in Cart</p>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                                <input type="hidden" name="" id="totalabc" value="<%= x %>">
                             </tbody>
                         </table>
                     </div>
+                    
+                    <!-- Card View (for mobile screens) -->
+                    <div>
+                        <% if (data.length > 0) { %>
+                            <% for (let i = 0; i < data.length; i++) { %>
+                                <div class="cart-card">
+                                    <div class="cart-card-header">
+                                        <img src="/uploads/re-image/<%= data[i].productDetails.productImage[0] %>" alt="#">
+                                        <div>
+                                            <h5 class="product-name"><%= data[i].productDetails.productName %></h5>
+                                            <p class="font-xs">
+                                                <%= data[i].productDetails.category.name%> | 
+                                                <%= data[i].productDetails.brand.brandName %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="cart-card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Price per item:</span>
+                                            <span>₹<%= data[i].productDetails.salePrice %></span>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Quantity:</span>
+                                            <div class="quantity-control">
+                                                <%if(data[i].productDetails.quantity>0){%>
+                                                <button id="decrement-mobile<%= data[i].productDetails.id %>"
+                                                    class="btn btn-sm decrement-button"
+                                                    onclick="changeQuantity('<%= data[i].productDetails._id %>', -1, '<%= data[i].productDetails.salePrice %>', '<%= data[i].productDetails.id %>', '<%= data[i].productDetails.quantity %>')"
+                                                    <% if (data[i].quantity === 1) { %> disabled <% } %> >
+                                                    -
+                                                </button>
+                                                <input class="quantity-input"
+                                                    id="cartProductQuantity-mobile<%= data[i].productDetails.id %>"
+                                                    value="<%= data[i].quantity %>"
+                                                    style="width: 45px;" type="text" readonly>
+                                                <button id="increment-mobile<%= data[i].productDetails.id %>"
+                                                    class="btn btn-sm increment-button"
+                                                    onclick="changeQuantity('<%= data[i].productDetails._id %>', 1, '<%= data[i].productDetails.salePrice %>', '<%= data[i].productDetails.id %>', '<%= data[i].productDetails.quantity %>')" >
+                                                    +
+                                                </button>
+                                                <%}else{%>
+                                                    <span class="text-danger">Out Of stock</span>
+                                                <%}%>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cart-card-footer">
+                                        <div class="cart-card-price">
+                                            Subtotal: ₹<span class="mobile-subtotal" id="mobileSubTotal<%= data[i].productDetails.id %>">
+                                                <%= data[i].productDetails.salePrice * data[i].quantity %>
+                                            </span>
+                                        </div>
+                                        <a class="btn btn-sm btn-danger" href="#" onclick="confirmRemove('<%= data[i].productDetails._id %>')">
+                                            <i class="fas fa-trash"></i> Remove
+                                        </a>
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% } else { %>
+                            <div class="cart-card">
+                                <div class="cart-card-body text-center">
+                                    <p class="lead mb-4">No item found in Cart</p>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
                 </div>
-                <div class="col-3">
-                    <div class="border p-md-4 p-30 border-radius cart-totals">
+                
+                <div class="col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="border p-md-4 p-3 border-radius cart-totals">
                         <div class="heading_s1 mb-3">
                             <h4>PRICE DETAILS</h4>
                         </div>
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
-
-                                    
                                     <tr>
                                         <td class="cart_total_label">Total</td>
                                         <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">₹
@@ -143,105 +311,96 @@
                                 </tbody>
                             </table>
                         </div>
-                        <a href="/checkout?userId" class="btn "> <i class="fi-rs-box-alt mr-10"></i>
+                        <a href="/checkout?userId" class="btn w-100"> <i class="fi-rs-box-alt mr-10"></i>
                             Proceed To CheckOut</a>
                     </div>
                 </div>
-
-
             </div>
-
-        </div>
-        </div>
-        </div>
         </div>
     </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Add this in <head> or before your script -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     function changeQuantity(productId, count, salePrice, productElementId, maxStock) {
-    let quantityInput = $(`#cartProductQuantity${productElementId}`);
-    let decrementButton = $(`#decrement${productElementId}`);
-    let incrementButton = $(`#increment${productElementId}`);
-    let currentQuantity = parseInt(quantityInput.val()) || 0; // Ensure it's a number
-    
-    let newQuantity = currentQuantity + count;
-    if(newQuantity>maxStock){
-        Swal.fire({
-                    icon: "warning",
-                    title: "Oops...",
-                    text: "Stock Limit reached",
-                });
-                return;
-    }
+        let quantityInput = $(`#cartProductQuantity${productElementId}`);
+        let mobileQuantityInput = $(`#cartProductQuantity-mobile${productElementId}`);
+        let decrementButton = $(`#decrement${productElementId}`);
+        let mobileDecrementButton = $(`#decrement-mobile${productElementId}`);
+        let incrementButton = $(`#increment${productElementId}`);
+        let mobileIncrementButton = $(`#increment-mobile${productElementId}`);
+        let currentQuantity = parseInt(quantityInput.val()) || 0; // Ensure it's a number
+        
+        let newQuantity = currentQuantity + count;
+        if(newQuantity > maxStock){
+            Swal.fire({
+                icon: "warning",
+                title: "Oops...",
+                text: "Stock Limit reached",
+            });
+            return;
+        }
 
-    $.ajax({
-        url: "/cart",
-        type: "PUT",
-        contentType: "application/json",
-        data: JSON.stringify({
-            productId: productId,
-            count: count,
-            currentQuantity: currentQuantity
-        }),
-        success: function(response) {
-            if (response.success) {
- 
+        $.ajax({
+            url: "/cart",
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({
+                productId: productId,
+                count: count,
+                currentQuantity: currentQuantity
+            }),
+            success: function(response) {
+                if (response.success) {
+                    // Prevent quantity from going below 1
+                    if (newQuantity < 1) {
+                        newQuantity = 1;
+                    }
 
-                // Prevent quantity from going below 1
-                if (newQuantity < 1) {
-                    newQuantity = 1;
-                }
+                    // Prevent exceeding stock
+                    if (newQuantity > maxStock) {
+                        newQuantity = maxStock;
+                    }
 
-                // Prevent exceeding stock
-                if (newQuantity > maxStock) {
-                    newQuantity = maxStock;
-                }
+                    // Update quantity input value (both desktop and mobile)
+                    quantityInput.val(newQuantity);
+                    mobileQuantityInput.val(newQuantity);
 
-                // Update quantity input value
-                quantityInput.val(newQuantity);
+                    // Update subtotal (both desktop and mobile)
+                    let newSubtotal = salePrice * newQuantity;
+                    $(`#subTotal${productElementId}`).text(newSubtotal);
+                    $(`#mobileSubTotal${productElementId}`).text(newSubtotal);
 
-                // Update subtotal
-                let newSubtotal = salePrice * newQuantity;
-                $(`#subTotal${productElementId}`).text(newSubtotal);
+                    // Update grand total
+                    $("#total").text(response.grandTotal);
 
-                // Update grand total
-                $("#total").text(response.grandTotal);
-
-                // Disable decrement button if quantity is 1
-                if (newQuantity === 1) {
-                    decrementButton.prop("disabled", true);
+                    // Disable decrement button if quantity is 1 (both desktop and mobile)
+                    if (newQuantity === 1) {
+                        decrementButton.prop("disabled", true);
+                        mobileDecrementButton.prop("disabled", true);
+                    } else {
+                        decrementButton.prop("disabled", false);
+                        mobileDecrementButton.prop("disabled", false);
+                    }
                 } else {
-                    decrementButton.prop("disabled", false);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: response.message,
+                    });
                 }
-
-                // Disable increment button if quantity reaches stock limit
-                // if (newQuantity > maxStock) {
-                //     incrementButton.prop("disabled", true);
-                // } else {
-                //     incrementButton.prop("disabled", false);
-                // }
-                // location.reload();
-            } else {
+            },
+            error: function() {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: response.message,
+                    text: "Something went wrong! Try again.",
                 });
             }
-        },
-        error: function() {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Something went wrong! Try again.",
-            });
-        }
-    });
-}
+        });
+    }
+
     async function confirmRemove(productId) {
         console.log("Deleting product ID:", productId);
 
@@ -249,9 +408,9 @@
             title: "Are you sure?",
             text: "Product will be removed from cart",
             icon: "warning",
-			position:'center',
-			toast:false,
-			backdrop: true,
+            position: 'center',
+            toast: false,
+            backdrop: true,
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",

@@ -146,23 +146,43 @@ const postAddAddressCheckout = async (req, res) => {
     }
 };
 
-const applyCoupon = async (req, res,next) => {
-    try {
-      const userId= req.session.user;
-      const {couponCode, subtotal} = req.body;
-      
-      const coupon = await Coupon.findOne({name:couponCode})
-  
-      if(!coupon){
-        return res.json({success:false, message:'Invalid coupon code'});
-       }
-       await Cart.findOneAndUpdate({userId:userId},{$set:{discount:coupon.offerPrice}},{new:true});
-       
-       res.status(200).json({success:true,message:'Coupon applied',coupon})
-    } catch (error) {
-      next(error)
+const applyCoupon = async (req, res, next) => {
+  try {
+    const userId = req.session.user;
+    const { couponCode, subtotal } = req.body;
+
+    const coupon = await Coupon.findOne({ name: couponCode, isListed: true });
+
+    if (!coupon) {
+      return res.json({ success: false, message: "Invalid coupon code" });
     }
-  };
+    if (coupon.minimumPrice > subtotal) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: `You need to have items worth ${coupon.minimumPrice} to apply this coupon`,
+        });
+    }
+    if (coupon.usedBy.includes(userId)) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "You have already used this coupon.",
+        });
+    }
+    await Cart.findOneAndUpdate(
+      { userId: userId },
+      { $set: { discount: coupon.offerPrice } },
+      { new: true }
+    );
+
+    res.status(200).json({ success: true, message: "Coupon applied", coupon });
+  } catch (error) {
+    next(error);
+  }
+};
   
 const removeCoupon = async (req,res,next) => {
     try {
