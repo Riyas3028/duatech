@@ -97,7 +97,10 @@
             <div class="button-container">
                 <a href="/admin/sales" class="btn btn-success" style="margin-right: 10px;">Back To Sales Analysis Page</a>
             <button onclick="generatePDF()" class="download-btn">
-                Download Sales Report
+                Download Pdf Report
+            </button>
+            <button onclick="downloadExcel()" class="download-btn" >
+              Download Excel Report
             </button>
             </div>
             <form method="GET" action="/admin/salesReport" class="d-flex align-items-center bg-light p-2 rounded shadow-sm flex-wrap gap-2" id="filterForm">
@@ -207,7 +210,56 @@
             </div>
         </div>
         
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+        <script>
+          function downloadExcel() {
+            const wb = XLSX.utils.book_new();
+            const ws_data = [];
+        
+            // Title and header
+            ws_data.push(["DuaTech"]);
+            ws_data.push(["Sales Report"]);
+            ws_data.push([`Report Range: ${"<%= new Date(startDate).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %>"} - ${"<%= new Date(endDate).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %>"}`]);
+            ws_data.push([`Generated On: ${new Date().toLocaleDateString()}`]);
+            ws_data.push([]); // Blank row
+        
+            // Summary Section
+            ws_data.push(["Total Sales", `₹<%= totalSales.toLocaleString() %>`, "Total Orders", "<%= totalOrders %>"]);
+            ws_data.push(["Products Sold", "<%= totalProducts %>", "Discounts Given", `₹<%= totalDiscounts.toLocaleString() %>`]);
+            ws_data.push(["Net Revenue", `₹<%= netRevenue.toLocaleString() %>`, "Avg. Order Value", `₹<%= averageOrderValue.toFixed(2) %>`]);
+            ws_data.push([]); // Blank row
+        
+            // Order Table Header
+            ws_data.push(["Order ID", "Customer", "Date", "Payment", "Status", "Discount", "Total (₹)"]);
+        
+            // Order Rows
+            <% orders.forEach(order => { %>
+              ws_data.push([
+                "<%= order.orderId %>",
+                "<%= order.user.name %>",
+                "<%= new Date(order.createdAt).toLocaleDateString() %>",
+                "<%= order.paymentMethod.toUpperCase() %>",
+                "<%= order.status.toUpperCase() %>",
+                "<%= order.discount %>",
+                "₹<%= order.finalAmount %>"
+              ]);
+            <% }) %>
+        
+            // Grand Total Row
+            ws_data.push([
+              "", "", "", "", "Grand Total",
+             ` ₹<%= totalDiscounts.toLocaleString() %>`,
+              `₹<%= totalSales.toLocaleString() %>`
+            ]);
+        
+            // Create worksheet and append to workbook
+            const ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "Sales Report");
+        
+            // Download the Excel file
+            XLSX.writeFile(wb, "sales-report.xlsx");
+          }
+        </script>
 <script>
   function generatePDF() {
     const element = document.getElementById("salesReport");

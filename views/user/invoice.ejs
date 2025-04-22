@@ -186,8 +186,8 @@
                 </div>
                 <div>
                     <div class="section-title">Order Status</div>
-                    <div class="status-badge">DELIVERED</div>
-                    <div class="status-badge"><%= new Date(order.deliveredAt).toLocaleDateString() %></div>
+                    <div class="status-badge"><%=order.status.toUpperCase()%></div>
+                    <!-- <div class="status-badge"><%= new Date(order.deliveredAt).toLocaleDateString() %></div> -->
                 </div>
             </div>
         </div>

@@ -341,6 +341,16 @@
             });
             return;
         }
+        if (newQuantity > 5) {
+
+Swal.fire({
+    icon: "warning",
+    title: "Purchase Limit Reached",
+    text: "You can only buy a maximum of 5 products.",
+    showConfirmButton: true
+});
+return;
+}
 
         $.ajax({
             url: "/cart",
@@ -357,12 +367,12 @@
                     if (newQuantity < 1) {
                         newQuantity = 1;
                     }
-
+                    
                     // Prevent exceeding stock
                     if (newQuantity > maxStock) {
                         newQuantity = maxStock;
                     }
-
+                    
                     // Update quantity input value (both desktop and mobile)
                     quantityInput.val(newQuantity);
                     mobileQuantityInput.val(newQuantity);

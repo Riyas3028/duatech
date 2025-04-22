@@ -213,6 +213,22 @@ const updateReturnStatus=async(req,res)=>{
         },
         { new: true }
       );
+        
+      const orderedItems = order.orderedItems.map((item) => ({
+        product: item.product,
+        quantity: item.quantity,
+      }));
+  
+      console.log(orderedItems);
+      for (let i = 0; i < orderedItems.length; i++) {
+        await Product.findByIdAndUpdate(orderedItems[i].product._id, {
+          $inc: { quantity: orderedItems[i].quantity },
+        });
+      }
+
+
+
+
       const orderData = await Order.findById(orderId);
       const userId = orderData.userId;
 

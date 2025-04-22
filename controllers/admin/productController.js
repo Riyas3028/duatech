@@ -26,6 +26,7 @@ const getProductAddPage = async (req, res) => {
 };
 
 const addProducts = async (req, res) => {
+  
   try {
     const {
       productName,
@@ -42,7 +43,13 @@ const addProducts = async (req, res) => {
     let images = [];
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
+        
         try {
+          if (!file.mimetype.startsWith("image/")) {
+            return res
+              .status(400)
+              .json({ success:true, message: "Only image files are allowed." });
+          }
           const originalImagePath = file.path;
           const resizedImagePath = path.join(
             "public",
@@ -130,11 +137,19 @@ const getAllProducts = async (req, res) => {
         { productName: { $regex: search, $options: "i" } },
         { brand: { $in: brandIds } },
       ],
-    })
-      .populate("category")
-      .populate("brand")
+    })  
+      // .sort({ createdAt: -1 })
+      // .populate("category")
+      // .populate("brand")
+      // .skip(skip)
+      // .limit(limit);
+
+      .sort({ createdAt:-1 })
+      .limit(limit)
       .skip(skip)
-      .limit(limit);
+      .populate("brand")
+      .populate("category")
+      .exec();
 
     const totalProducts = await Product.countDocuments({
       $or: [
@@ -430,7 +445,8 @@ const loadInventory = async (req, res) => {
         { brand: brand ? brand._id : null },
         { category: category ? category._id : null },
       ],
-    })
+    })  
+      .sort({ createdAt:-1 })
       .limit(limit)
       .skip((page - 1) * limit)
       .populate("brand")

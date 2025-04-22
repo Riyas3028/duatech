@@ -32,7 +32,7 @@ const getBrandPage = async (req, res) => {
 const addBrand = async (req, res) => {
     try {
         const brand = req.body.name;
-        const findBrand = await Brand.findOne({ brandName:brand });
+        const findBrand = await Brand.findOne({ brandName: new RegExp(`^${brand}$`, 'i') })
 
         if (!findBrand) {
             const image = req.file.filename;

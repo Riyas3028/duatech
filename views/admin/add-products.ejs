@@ -178,8 +178,270 @@
       </div>
     </div>
 
-    <!-- JavaScript -->
+
     <script>
+      function validateForm() {
+  clearErrorMessages();
+  const name = document.getElementById('productName').value;
+  const description = document.getElementById('description').value;
+  const category = document.getElementById('category').value;
+  const brand = document.getElementById('brand').value;
+  const regularPrice = document.getElementById('regularPrice').value;
+  const color = document.getElementById('color').value;
+  const quantity = document.getElementById('quantity').value;
+  
+  let isValid = true;
+  
+  // Product Name validation
+  const nameRegex = /^[a-zA-Z][a-zA-Z0-9\/\-\s]*$/;
+  if (name.trim() === '') {
+    displayErrorMessage('productName-error', "Product name can't be empty");
+    isValid = false;
+  } else if (!nameRegex.test(name)) {
+    displayErrorMessage('productName-error', "Enter a valid product name (must start with a letter)");
+    isValid = false;
+  }
+  
+  // Description validation
+  const descriptionRegex = /^[A-Za-z].*/;
+  if (description.trim() === '') {
+    displayErrorMessage('description-error', "Description can't be empty");
+    isValid = false;
+  } else if (!descriptionRegex.test(description)) {
+    displayErrorMessage('description-error', "Enter a valid description (must start with a letter)");
+    isValid = false;
+  }
+  
+  // Category validation
+  if (category === '') {
+    displayErrorMessage('category-error', "Please select a category");
+    isValid = false;
+  }
+  
+  // Brand validation
+  if (brand === '') {
+    displayErrorMessage('brand-error', "Please select a brand");
+    isValid = false;
+  }
+  
+  // Regular Price validation
+  if (regularPrice.trim() === '' || !/^\d+(\.\d{1,2})?$/.test(regularPrice) || parseFloat(regularPrice) <= 0) {
+    displayErrorMessage('regularPrice-error', "Please enter a valid positive price");
+    isValid = false;
+  }
+  
+  // Color validation (optional field)
+  if (color.trim() !== '' && !/^[a-zA-Z\s]+$/.test(color)) {
+    displayErrorMessage('color-error', "Please enter a valid color name");
+    isValid = false;
+  }
+  
+  // Quantity validation
+  if (quantity.trim() === '' || !/^\d+$/.test(quantity) || parseInt(quantity) <= 0) {
+    displayErrorMessage('quantity-error', "Please enter a valid positive number as quantity");
+    isValid = false;
+  }
+  
+  // Image validation - check at least one image is selected
+  let hasImage = false;
+  for (let i = 1; i <= 4; i++) {
+    const imageInput = document.getElementById(`input${i}`);
+    if (imageInput && imageInput.files && imageInput.files.length > 0) {
+      hasImage = true;
+      break;
+    }
+  }
+  
+  if (!hasImage) {
+    // Add a new error message element for images if it doesn't exist
+    const imagesContainer = document.querySelector('.row');
+    let imageErrorElement = document.getElementById('images-error');
+    if (!imageErrorElement) {
+      imageErrorElement = document.createElement('div');
+      imageErrorElement.id = 'images-error';
+      imageErrorElement.className = 'error-message text-center w-100';
+      imagesContainer.appendChild(imageErrorElement);
+    }
+    displayErrorMessage('images-error', "Please select at least one image");
+    isValid = false;
+  }
+  
+  return isValid;
+}
+
+function validateAndSubmit(event) {
+  event.preventDefault(); // Prevent default form submission
+  const successMsg = urlParams.get('success');
+        const errorMsg = urlParams.get('error');
+        
+        if (successMsg) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Product updated successfully!',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+        } else if (errorMsg) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: decodeURIComponent(errorMsg),
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Try Again'
+            });
+        }
+  if (validateForm()) {
+    const form = document.querySelector('form');
+    const formData = new FormData(form);
+    
+    // Show loading indicator (optional)
+    // You can add a loading indicator here if needed
+    
+    fetch('/admin/add-products', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Product added successfully!',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          window.location.href = "/admin/add-products";
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: data.message || 'Something went wrong!',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'Try Again'
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Server Error',
+        text: 'An error occurred while adding the product.',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Try Again'
+      });
+    });
+  }
+}
+
+function displayErrorMessage(elementId, message) {
+  const errorElement = document.getElementById(elementId);
+  if (errorElement) {
+    errorElement.innerText = message;
+    errorElement.style.display = "block";
+  }
+}
+
+function clearErrorMessages() {
+  const errorElements = document.getElementsByClassName('error-message');
+  Array.from(errorElements).forEach(element => {
+    element.style.display = "none";
+    element.innerText = '';
+  });
+}
+
+// Fixed image cropper functionality
+let cropperInstances = {}; // Store cropper instances
+
+function viewImage(event, index) {
+  const input = event.target;
+  if (!input.files || input.files.length === 0) return;
+  
+  const reader = new FileReader();
+  
+  reader.onload = function() {
+    const dataURL = reader.result;
+    const image = document.getElementById(`imgView${index}`);
+    image.src = dataURL;
+    
+    // Destroy any existing cropper instance
+    if (cropperInstances[index]) {
+      cropperInstances[index].destroy();
+    }
+    
+    // Initialize Cropper.js
+    const cropper = new Cropper(image, {
+      aspectRatio: 1,
+      viewMode: 1,
+      guides: true,
+      background: false,
+      autoCropArea: 1,
+      zoomable: true
+    });
+    
+    cropperInstances[index] = cropper;
+    
+    // Show cropping container
+    const cropperContainer = document.getElementById(`cropperContainer${index}`);
+    cropperContainer.style.display = 'flex';
+    
+    const saveButton = document.getElementById(`saveButton${index}`);
+    
+    // Remove existing event listeners before adding a new one
+    saveButton.replaceWith(saveButton.cloneNode(true));
+    const newSaveButton = document.getElementById(`saveButton${index}`);
+    
+    newSaveButton.addEventListener('click', function() {
+      const croppedCanvas = cropper.getCroppedCanvas();
+      const croppedImage = document.getElementById(`croppedImg${index}`);
+      croppedImage.src = croppedCanvas.toDataURL('image/jpeg', 1.0);
+      
+      const timestamp = new Date().getTime();
+      const fileName = `cropped-img-${timestamp}-${index}.png`;
+      
+      croppedCanvas.toBlob(blob => {
+        const imgFile = new File([blob], fileName, { type: "image/png" });
+        
+        const inputField = document.getElementById(`input${index}`);
+        if (inputField) {
+          const fileList = new DataTransfer();
+          fileList.items.add(imgFile);
+          inputField.files = fileList.files;
+        }
+      });
+      
+      // Hide cropper container after saving
+      cropperContainer.style.display = 'none';
+    });
+  };
+  
+  reader.readAsDataURL(input.files[0]);
+}
+
+// Initialize form on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('form');
+  form.addEventListener('submit', validateAndSubmit);
+  
+  // Reset error messages when inputs change
+  const formInputs = form.querySelectorAll('input, textarea, select');
+  formInputs.forEach(input => {
+    input.addEventListener('input', function() {
+      const errorId = this.id + '-error';
+      const errorElement = document.getElementById(errorId);
+      if (errorElement) {
+        errorElement.style.display = 'none';
+        errorElement.innerText = '';
+      }
+    });
+  });
+});
+    </script>
+    <!-- JavaScript -->
+    <!-- <script>
 function validateAndSubmit(){
 if(validateForm()){
           fetch('/admin/add-products', {
@@ -322,7 +584,7 @@ function validateForm(){
           // const salePrice=document.getElementById('salePrice').value;
 
           const quantity= document.getElementById('quantity').value;
-          const images = document.getElementById('input1')
+          const images = document.getElementById('imgView0')
     
     
           let isValid=true;
@@ -379,7 +641,7 @@ function validateForm(){
           }
 
   
-          if (images.files.length === 0) {
+          if (!images) {
             displayErrorMessage("images-error",'Please select an image.');
             isValid = false;
         }
@@ -401,6 +663,6 @@ function validateForm(){
         const errorMessage = document.getElementById('errorMessage');
     
     }
-    </script>
+    </script> -->
   </body>
 </html>

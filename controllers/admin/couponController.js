@@ -2,32 +2,42 @@ const Coupon = require("../../models/couponSchema");
 
 const loadCoupon = async (req, res) => {
     try {
-        
-        let coupons = await Coupon.find();
-
-    for (let coupon of coupons) {
-      if (coupon.expireOn < new Date()||coupon.createdOn>new Date()) {
-        await Coupon.findByIdAndUpdate(
-          coupon._id,
-          { $set: { isListed: false } },
-          { new: true }
-        );
-      } else {
-        await Coupon.findByIdAndUpdate(
-          coupon._id,
-          { $set: { isListed: true } },
-          { new: true }
-        );
+      let page = parseInt(req.query.page) || 1;
+      const limit = 8;
+      let coupons = await Coupon.find();
+  
+      for (let coupon of coupons) {
+        if (coupon.expireOn < new Date() || coupon.createdOn > new Date()) {
+          await Coupon.findByIdAndUpdate(
+            coupon._id,
+            { $set: { isListed: false } },
+            { new: true }
+          );
+        } else {
+          await Coupon.findByIdAndUpdate(
+            coupon._id,
+            { $set: { isListed: true } },
+            { new: true }
+          );
+        }
       }
-    }
-
-    const updatedCoupons = await Coupon.find();
-        return res.render('coupon', { coupons:updatedCoupons });
+  
+      const updatedCoupons = await Coupon.find()
+        .limit(limit)
+        .skip((page - 1) * limit)
+  
+      const count= await Coupon.countDocuments()
+      const totalPages = Math.ceil(count / limit);
+  
+      return res.render("coupon", { 
+        coupons: updatedCoupons,
+        currentPage: page,
+        totalPages
+      });
     } catch (error) {
-        console.error(error);
-        return res.status(500).send("Internal Server Error");
+      console.error(error);
     }
-};
+  };
 
 const addCoupon = async (req, res) => {
     try {

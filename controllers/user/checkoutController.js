@@ -149,14 +149,14 @@ const postAddAddressCheckout = async (req, res) => {
 const applyCoupon = async (req, res, next) => {
   try {
     const userId = req.session.user;
-    const { couponCode, subtotal } = req.body;
-
+    const { couponCode, grandtotal} = req.body;
+    console.log(req.body)
     const coupon = await Coupon.findOne({ name: couponCode, isListed: true });
 
     if (!coupon) {
       return res.json({ success: false, message: "Invalid coupon code" });
     }
-    if (coupon.minimumPrice > subtotal) {
+    if (coupon.minimumPrice > grandtotal) {
       return res
         .status(400)
         .json({

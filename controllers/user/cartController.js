@@ -24,7 +24,7 @@ const addToCart = async (req, res) => {
       );
 
       if (itemIndex > -1) {
-        if(cart.items[itemIndex].quantity+quantity>=5){
+        if(cart.items[itemIndex].quantity+quantity>5){
           return res.status(400).json({success:false,message:"You have reached maximum product in your cart"})
         }
         else if(cart.items[itemIndex].quantity+quantity>product.quantity){

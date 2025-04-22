@@ -214,7 +214,7 @@ const cancelOrder=async(req,res)=>{
     
           
           for (let i = 0; i < orderedItems.length; i++) {
-            await Product.findByIdAndUpdate(orderedItems[i].product, {
+            await Product.findByIdAndUpdate(orderedItems[i].product._id, {
               $inc: { quantity: orderedItems[i].quantity },
             });
           }
@@ -455,7 +455,7 @@ const createOrder = async (req, res, next) => {
     }));
 
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
-    let finalAmount = totalPrice < 15000 ? totalPrice + 500 : totalPrice;
+    let finalAmount = totalPrice < 35000 ? totalPrice + 200-cart.discount : totalPrice-cart.discount;
 
     const options = {
       amount: finalAmount * 100, 
@@ -481,7 +481,6 @@ const verifyPayment = async (req, res, next) => {
    
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature, amount } = req.body;
     const { addressId, paymentMethod,couponCode } = req.body;
-    console.log(addressId,paymentMethod);
     const userId = req.session.user;
      
     
@@ -518,12 +517,11 @@ const verifyPayment = async (req, res, next) => {
         price: item.totalPrice,
       };
     }));
-     
-
+   
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
     let finalAmount=0;
     if(totalPrice<50000){
-    finalAmount = totalPrice + 200-cart.discount;
+    finalAmount = totalPrice + 200-(cart.discount);
     }else{
       finalAmount = totalPrice-cart.discount
     }
@@ -532,7 +530,7 @@ const verifyPayment = async (req, res, next) => {
 
     const invoiceDate = new Date();
     const status = "Processing";
-
+    
     const orderSchema = new Order({
       userId: userId,
       orderedItems: cartItems,
@@ -544,6 +542,7 @@ const verifyPayment = async (req, res, next) => {
       paymentMethod: paymentMethod,
       discount:cart.discount,
     });
+    
     await orderSchema.save();
     if(couponCode){
       await Coupon.findOneAndUpdate(
