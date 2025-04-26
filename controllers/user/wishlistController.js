@@ -16,8 +16,8 @@ const loadWishlist = async (req,res) => {
 
         const cart = await Cart.findOne({ userId })
     
-    const  cartProductIds = cart.items.map(item=>item.productId);
-
+    // const  cartProductIds = cart.items.map(item=>item.productId);
+    const cartProductIds = cart ? cart.items.map((item) => item.productId) : [];
     const products = await Product.find({ _id: { $in: user.wishlist, $nin: cartProductIds },isBlocked:false})
     .populate('category')
     .populate('brand')

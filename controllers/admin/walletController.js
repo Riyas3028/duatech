@@ -42,7 +42,7 @@ const loadWallet = async (req, res, next) => {
         wallets = await Wallet.find()
           .populate("userId")
           .lean();
-  
+
         totalWallets = wallets.length;
       }
   

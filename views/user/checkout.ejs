@@ -579,68 +579,90 @@
 
 
     async function processRazorpayOrder(orderData) {
-        const response = await  fetch('/order/createOrder', {
-           method: 'POST',
-           headers: {
-               'Content-Type': 'application/json',
-           },
-           body: JSON.stringify(orderData)
-       })
-       
-       const order = await response.json();
+  const response = await fetch('/order/createOrder', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      orderData,
+      addressId: orderData.addressId,
+      paymentMethod: orderData.paymentMethod,
+      couponCode: orderData.couponCode,
+    }),
+  });
 
-      const options = {
-      key: "<%= process.env.RAZORPAY_KEY_ID %>",
-      amount: order.amount,
-      currency: "INR",
-      name: "DuaTech",
-      description: "Order Payment",
-      order_id: order.id,
-      handler: async function (response) {
-        console.log("Razorpay Handler Triggered", response);
-        const verifyRes = await fetch("/order/verifyPayment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-            amount: order.amount,
-            addressId:orderData.addressId,
-            paymentMethod:orderData.paymentMethod
-          }),
+  const order = await response.json();
+
+  const options = {
+    key: "<%= process.env.RAZORPAY_KEY_ID %>",
+    amount: order.amount,
+    currency: "INR",
+    name: "Tyrex",
+    description: "Order Payment",
+    order_id: order.id,
+    handler: async function (response) {
+      // Payment successful
+      const verifyRes = await fetch("/order/verifyPayment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+          amount: order.amount,
+        }),
+      });
+
+      const result = await verifyRes.json();
+      if (result.success) {
+        Swal.fire({
+          title: "Success!",
+          text: "Payment Successful!",
+          icon: "success",
+          timer: 1500,
+          timerProgressBar: true,
+        }).then(() => {
+          window.location.href = "/confirmation";
         });
-
-        const result = await verifyRes.json();
-        if (result.success) {
-          Swal.fire({
-            title: "Success!",
-            text: "Payment Successfull!",
-            icon: "success",
-            timer:1500,
-            timerProgressBar:true
-          }).then(() => {
-            window.location.href = "/confirmation";
-          });
-        } else {
-          Swal.fire({   
-            title: "Error!",
-            text: "Payment Verification Failed",
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
-        }
+      } else {
+        window.location.href = `/paymentFailure?orderId=${order.orderId}`;
+      }
+    },
+    prefill: {
+      email: "<%= user.email %>",
+      contact: "<%= user.phone %>",
+    },
+    theme: { color: "#3399cc" },
+    modal: {
+      ondismiss: function () {
+        // User closed modal without paying
+        window.location.href = `/paymentFailure?orderId=${order.id}`;
       },
-      prefill: {
-        email: "<%= user.email %>",
-        contact: "<%= user.phone %>",
-      },
-      theme: { color: "#3399cc" },
-    };
+    },
+  };
 
-    const paymentObject = new Razorpay(options);
-    paymentObject.open();
-    }
+  const paymentObject = new Razorpay(options);
+
+  // Handle failed payments
+  paymentObject.on("payment.failed", async function (response) {
+    // Update order status to failed
+    await fetch("/order/verifyPayment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        razorpay_order_id: response.error.metadata.order_id,
+        razorpay_payment_id: response.error.metadata.payment_id,
+        razorpay_signature: "", // No signature in case of failure
+        amount: order.amount,
+      }),
+    });
+    
+    window.location.href = `/paymentFailure?orderId=${order.id}`;
+  });
+
+  paymentObject.open();
+}
 
     document.getElementById('confirmWalletPayment').addEventListener('click', async () => {
        const selectedAddress = document.getElementById('existingAddress');

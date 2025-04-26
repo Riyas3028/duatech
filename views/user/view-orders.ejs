@@ -401,13 +401,13 @@
                                     <small class="text-muted">PAYMENT METHOD</small><br>
                                     <% if (order.paymentMethod === 'cod') { %>
                                         CASH ON DELIVERY
-                                    <% } else if (order.paymentMethod === 'online payment') { %>
+                                    <% } else if (order.paymentMethod === 'online payment'&&order.paymentStatus==='Success') { %>
                                         ONLINE PAYMENT
                                     <% } else if (order.paymentMethod === 'wallet') { %>
                                         WALLET PAYMENT
-                                    <% } else { %>
-                                        UNKNOWN
-                                    <% } %>
+                                    <% } else if(order.paymentStatus === "Failed"){ %>
+                                        <a href="/retryPayment?orderId=<%=order.orderId%>" class="btn btn-primary">Retry Payment</a>
+                                      <% } %>
                                 </div>
                                 <div class="col-12 col-md-2 mt-2 mt-md-0">
                                     <div class="d-flex flex-wrap gap-2">
@@ -424,7 +424,7 @@
                                                     class="btn btn-danger btn-sm">
                                                 Cancel Return
                                             </button>
-                                        <% } else if (!['delivered', 'cancelled', 'Return Requested', 'returning', 'returned'].includes(order.status)) { %>
+                                        <% } else if (!['delivered', 'cancelled', 'Return Requested', 'returning', 'returned','Pending'].includes(order.status)) { %>
                                             <button onclick="cancelOrder('<%= order._id %>')"
                                                     class="btn btn-outline-danger btn-sm">
                                                 Cancel

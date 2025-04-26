@@ -9,6 +9,7 @@ const wishlistController=require('../controllers/user/wishlistController')
 const checkoutController=require('../controllers/user/checkoutController')
 const orderController=require('../controllers/user/orderController')
 const walletController=require('../controllers/user/walletController')
+const retryPaymentController=require('../controllers/user/retryPaymentController')
 const { userAuth } = require("../middlewares/auth");
 
 const multer=require('multer')
@@ -111,4 +112,12 @@ router.post('/placeWalletOrder',userAuth,orderController.placeWalletOrder)
 
 router.post("/order/createOrder",userAuth,orderController.createOrder)
 router.post("/order/verifyPayment",userAuth,orderController.verifyPayment);
+
+//retry payment
+router.get("/paymentFailure",userAuth,retryPaymentController .loadPaymentFailure)
+router.get("/retryPayment",userAuth,retryPaymentController .loadRetryPayment)
+router.put("/retryPayment/cod",userAuth,retryPaymentController .retryPaymentCod)
+router.put('/retryPayment/wallet',userAuth,retryPaymentController.retryPaymentWallet)
+router.post('/retryPayment/online',userAuth,retryPaymentController.retryPaymentOnline)
+router.post('/retryPayment/verifyPayment',userAuth,retryPaymentController.verifyPayment)
 module.exports=router

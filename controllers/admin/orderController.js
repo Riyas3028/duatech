@@ -104,7 +104,22 @@ const orderCancel = async (req, res) => {
     const { orderId } = req.body;
 
     const order = await Order.findById(orderId);
+    if(order.paymentMethod!='cod'){
+             let wallet = await Wallet.findOne({ userId: order.userId });
 
+             if (!wallet) {
+               wallet = new Wallet({ userId:order.userId, balance: 0, transactions: [] });
+             }
+       
+             wallet.balance += parseInt(order.finalAmount);
+             wallet.transactions.push({
+              amount:order.finalAmount,
+              type: "credit",
+              description: "Order cancellation Refund",orderId:order._id
+            });
+            await wallet.save();
+       
+           }
     await Order.findOneAndUpdate(
       { _id: orderId },
       { $set: { status: "cancelled" } },
@@ -118,7 +133,7 @@ const orderCancel = async (req, res) => {
 
     console.log(orderedItems);
     for (let i = 0; i < orderedItems.length; i++) {
-      await Product.findByIdAndUpdate(orderedItems[i].product, {
+      await Product.findByIdAndUpdate(orderedItems[i].product._id, {
         $inc: { quantity: orderedItems[i].quantity },
       });
     }

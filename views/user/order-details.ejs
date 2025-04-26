@@ -295,7 +295,7 @@
                                 <button class="btn btn-danger" onclick="cancelReturn('<%= order._id %>')">
                                     Cancel Return Request
                                 </button>
-                            <% } else if (!['delivered', 'cancelled', 'Return Requested', 'returning', 'returned'].includes(order.status)) { %>
+                            <% } else if (!['delivered', 'cancelled', 'Return Requested', 'returning', 'returned','Pending'].includes(order.status)) { %>
                                 <button onclick="cancelOrder('<%= order._id %>')" class="btn btn-danger">
                                     Cancel Order
                                 </button>
