@@ -405,7 +405,7 @@
                                         ONLINE PAYMENT
                                     <% } else if (order.paymentMethod === 'wallet') { %>
                                         WALLET PAYMENT
-                                    <% } else if(order.paymentStatus === "Failed"){ %>
+                                    <% } else if(order.paymentStatus !== "Success"){ %>
                                         <a href="/retryPayment?orderId=<%=order.orderId%>" class="btn btn-primary">Retry Payment</a>
                                       <% } %>
                                 </div>

@@ -490,7 +490,7 @@ const createOrder = async (req, res, next) => {
     }));
 
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
-    let finalAmount = totalPrice < 35000 ? totalPrice + 200 - cart.discount: totalPrice - cart.discount;
+    let finalAmount = totalPrice < 50000 ? totalPrice + 200 - cart.discount: totalPrice - cart.discount;
 
     const options = {
       amount: finalAmount * 100, 
