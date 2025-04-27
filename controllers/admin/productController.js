@@ -220,7 +220,7 @@ const removeProductOffer = async (req, res) => {
     const category = await Category.findById(product.category);
     console.log(category.categoryOffer);
     if (category && category.categoryOffer > 0) {
-      product.salePrice = Math.round(
+      product.salePrice = Math.floor(
         product.regularPrice * (1 - category.categoryOffer / 100)
       );
     } else {

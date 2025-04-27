@@ -69,7 +69,7 @@
                         <td><%= data[i].productName %></td>
                         <td><%= data[i].brand ? data[i].brand.brandName: "No Brand" %></td>
                         <td><%= data[i].category ? data[i].category.name : "No Category" %></td>
-                        <td><%= data[i].salePrice %></td>
+                        <td><%=Math.floor( data[i].salePrice) %></td>
                         <td><%if(data[i].productOffer>data[i].categoryOffer){%>
                             <span class="text-success">Product Offer <%=data[i].productOffer%>%</span>
                           <%}else if(data[i].productOffer < data[i].categoryOffer){%>

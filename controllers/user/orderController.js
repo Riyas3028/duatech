@@ -154,13 +154,13 @@ const loadOrderDetails = async (req, res) => {
 
         let orders = await Order.findOne({orderId:orderId}).lean();
         
-        const addressDoc = await Address.findOne({ userId:userId }).lean();
+        // const addressDoc = await Address.findOne({ userId:userId }).lean();
 
 
-        const userAddress = addressDoc.address.find(addr => addr._id.toString() === orders.address.toString());
+        // const userAddress = addressDoc.address.find(addr => addr._id.toString() === orders.address.toString());
         
 
-        orders.address= userAddress;
+        // orders.address= userAddress;
         
 
 
