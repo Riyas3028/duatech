@@ -414,7 +414,7 @@ const placeWalletOrder = async (req, res, next) => {
 
     await User.findByIdAndUpdate(
       userId,
-      { $push: { orders: orderSchema._id } },
+      { $push: { orderHistory: orderSchema._id } },
       { new: true }
     );
 
@@ -554,7 +554,7 @@ const createOrder = async (req, res, next) => {
 
     await User.findByIdAndUpdate(
       userId,
-      { $push: { orders: orderSchema._id } },
+      { $push: { orderHistory: orderSchema._id } },
       { new: true }
     );
 
