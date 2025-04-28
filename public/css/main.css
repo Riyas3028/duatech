@@ -1209,7 +1209,9 @@ h1, h2, h3, h4, h5, h6 {
 .banner-area {
   background: url(../img/banner/laptop-with-a-red-adhesive-note-with-big-sale-on-it-discounts-online-shopping-desktop-view-with-copy-space-photo.jpg) center no-repeat;
   background-size: cover;
-  position: relative; }
+  position: relative;
+  height:60lvh;
+  }
   @media (max-width: 768px) {
     .banner-area .fullscreen {
       height: 650px !important; } }
