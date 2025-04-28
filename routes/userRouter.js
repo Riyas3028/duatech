@@ -10,6 +10,7 @@ const checkoutController=require('../controllers/user/checkoutController')
 const orderController=require('../controllers/user/orderController')
 const walletController=require('../controllers/user/walletController')
 const retryPaymentController=require('../controllers/user/retryPaymentController')
+const staticController = require("../controllers/user/staticController")
 const { userAuth } = require("../middlewares/auth");
 
 const multer=require('multer')
@@ -120,4 +121,8 @@ router.put("/retryPayment/cod",userAuth,retryPaymentController .retryPaymentCod)
 router.put('/retryPayment/wallet',userAuth,retryPaymentController.retryPaymentWallet)
 router.post('/retryPayment/online',userAuth,retryPaymentController.retryPaymentOnline)
 router.post('/retryPayment/verifyPayment',userAuth,retryPaymentController.verifyPayment)
+
+// Static Pages
+router.get("/contact",staticController.loadContact)
+router.get("/about",staticController.loadAbout)
 module.exports=router

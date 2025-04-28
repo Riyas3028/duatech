@@ -504,7 +504,7 @@ body {
 									₹<%= discountProducts[i].regularPrice.toLocaleString('en-IN') %>
 								</h6>
 							</div>
-							<span class="badge bg-danger mb-3">
+							<span class="badge bg-danger text-light mb-3">
 								<% 
 									let discountPercentage = ((discountProducts[i].regularPrice - discountProducts[i].salePrice) / discountProducts[i].regularPrice) * 100;
 									discountPercentage = Math.round(discountPercentage);
