@@ -326,7 +326,7 @@
                    <div class="mb-3">
                     <label class="d-flex align-items-center">
                         <input type="radio" name="payment" value="online payment" class="mr-2">
-                        <img src="./img/razorpay.webp" alt="" style="height: 30px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" alt="Razorpay" style="height: 24px; background-color: white; padding: 4px; border-radius: 4px;">
                         <span class="ml-2">Online Payment</span>
                     </label>
                 </div>
@@ -593,7 +593,14 @@
   });
 
   const order = await response.json();
-
+  if (!response.ok || order.success === false) {
+      Swal.fire({
+        icon: "error",
+        title: "Order Creation Failed",
+        text: order.message || "Something went wrong while creating your order. Please try again.",
+      });
+      return;
+    }
   const options = {
     key: "<%= process.env.RAZORPAY_KEY_ID %>",
     amount: order.amount,

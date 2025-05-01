@@ -46,7 +46,15 @@ app.use(express.static(path.join(__dirname,'public')))
 app.use("/",userRouter);
 app.use('/admin',adminRouter)
 
+//error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack); 
 
+    res.status(err.status || 500).json({
+        success: false,
+        message: err.message || 'Internal Server Error'
+    });
+});
 
 
 app.listen(process.env.PORT, ()=>{

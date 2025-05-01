@@ -121,18 +121,39 @@
 
 <script>
 async function addOffer(productId) {
-    const { value: amount } = await Swal.fire({
-        title: 'Offer in percentage',
-        input: 'number',
-        inputLabel: 'Percentage',
-        inputPlaceholder: '%',
-        inputAttributes:{
-            min:1,
-            max:99
-        }
-
-    });
-
+    const {value:amount}=await Swal.fire({
+  title: "Add Offer Percentage",
+  input: "number",
+  inputLabel: "Percentage",
+  inputPlaceholder: "Enter percentage (e.g., 10 for 10%)",
+  inputAttributes: {
+    min: 1,
+    max: 99,
+  },
+  showCancelButton: true,
+  confirmButtonText: "Add Offer",
+  cancelButtonText: "Cancel",
+  inputValidator: (value) => {
+    if (!value || value < 1 || value > 99) {
+      return "Please enter a valid percentage between 1 and 100";
+    }
+  },
+  customClass: {
+    validationMessage: 'my-validation-message'
+  },
+  didOpen: () => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .my-validation-message {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        margin: 0 auto;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+});
     if (amount !== undefined) {
         $.ajax({
             url: '/admin/addProductOffer',
